@@ -1,0 +1,10 @@
+.git/
+out/*.bin
+settings.conf
+_debug.txt
+_listing.txt
+*.mlb
+*.nes
+*.o
+*.exe
+*.dll

@@ -1,0 +1,20 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {},
+	"launch": {
+		"version": "0.2.0",
+		"configurations": [
+			{
+				"type": "lua",
+				"request": "launch",
+				"name": "Debug",
+				"cwd": "${workspaceRoot}",
+				"program": "${file}"
+			}
+		]
+	}
+}
