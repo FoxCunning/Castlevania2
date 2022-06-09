@@ -1,3 +1,13 @@
+.segment "BANK_04"
+; Offset in ROM: $10000
+.setcpu "6502X"
+
+.feature org_per_seg
+.feature pc_assignment
+
+.include "globals.inc"
+
+
 PPU_DirectToPPU_Data_ScreensList_1_title:
 	.byte $00,$20,$6B,$00,$8B,$21,$22,$23,$24,$25,$26,$27,$28,$29,$2A,$2B
 	.byte $14,$00,$8C,$30,$31,$32,$33,$34,$35,$2C,$2D,$2E,$2F,$42,$43,$14

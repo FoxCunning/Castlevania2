@@ -1,3 +1,13 @@
+.segment "BANK_01"
+; Offset in ROM: $04000
+.setcpu "6502X"
+
+.feature org_per_seg
+.feature pc_assignment
+
+.include "globals.inc"
+
+
 Refresh_CurrentLevelData_Actors_Pointer:
 	lda CurrentLevelMapType
 	asl a

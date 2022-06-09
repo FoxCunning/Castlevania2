@@ -1,4 +1,14 @@
-	ion
+.segment "BANK_03"
+; Offset in ROM: $0C000
+.setcpu "6502X"
+
+.feature org_per_seg
+.feature pc_assignment
+
+.include "globals.inc"
+
+
+Simon_TryAvoidCollision:
                           ; If Simon's feet (X+0, Y+$10) are colliding with type $0 or $3, try:
                             ;   First move him left by 8 pixels:
                             ;   If still colliding, try moving right by $10 pixels:

@@ -904,18 +904,18 @@ SoundCode_ExecuteTickForLogicalChannelX:
 
 	@96D4:
 	cpx #$05
-	beq @96C9
+	beq _loc_16C9		; $96C9 @96C9
 	cpx #$02
-	beq @96C9
+	beq _loc_16C9		; $96C9 @96C9
 	cpx #$04
-	beq @96C9
+	beq _loc_16C9		; $96C9 @96C9
 SoundCode_TickForSquareWaveChannel:
 	lda #$41
 	sta Sound_TempPtr015C_lo
 	lda Sound_FlagsC3_Channel0_square0,x
 	bit Sound_TempPtr015C_lo
 	beq @96EE
-	bne @96C9
+	bne _loc_16C9		; $96C9 @96C9
 	@96EE:
 	lda #$00
 	sta SoundEffectRelatedPtrLo
@@ -1961,10 +1961,10 @@ Sound_TranslateChannelToRegisterOffset:
 Sound_SetCarry_If_X_is_00_and_B4_is_nonzero:
 	pha
 	 cpx #$00
-	 @9E1C
+	 bne @9E1C
 	 lda Sound_CurrentSongNumber_Channel3_effectsquare
-	 @9E1C
-	 @9E19
+	 beq @9E1C
+	 bne @9E19
 	@9E19:
 	 sec
 	pla

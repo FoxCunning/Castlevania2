@@ -1,4 +1,14 @@
-	EE,$FF,$FF,$4C,$08,$C0,$FF,$FF
+.segment "BANK_05"
+; Offset in ROM: $14000
+.setcpu "6502X"
+
+.feature org_per_seg
+.feature pc_assignment
+
+.include "globals.inc"
+
+
+	.byte $D8,$78,$EE,$FF,$FF,$4C,$08,$C0,$FF,$FF
 	.byte $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
 	.byte $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
 	.byte $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF

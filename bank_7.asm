@@ -1,3 +1,13 @@
+.segment "BANK_07"
+; Offset in ROM: $1C000
+.setcpu "6502X"
+
+.feature org_per_seg
+.feature pc_assignment
+
+.include "globals.inc"
+
+
 Main_ProgramBegin:
 	lda $2002
 	bpl Main_ProgramBegin

@@ -1,3 +1,12 @@
+.segment "BANK_02"
+; Offset in ROM: $08000
+.setcpu "6502X"
+
+.feature org_per_seg
+.feature pc_assignment
+
+.include "globals.inc"
+
 
 LevelData_ScreenNumbers_0_Towns_7church:
 	.word (LevelData_ScreenNumbers_0_Towns_5doina_80D2) ;80D2 (80D2) ()
