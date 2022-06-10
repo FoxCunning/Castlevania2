@@ -271,23 +271,23 @@ _JumpPointerTable_C1CA:
 	.word (SimonExecuteCurrentAction8_BeginStairsClimb) ;8A47 (CA47) ()
 	.word (SimonExecuteCurrentAction9_StairsStand) ;8AD9 (CAD9) ()
 	.word (SimonExecuteCurrentAction10_StairsClimb_Automatic) ;8A52 (CA52) ()
-	.word @8226
+	.word (SimonExecuteCurrentAction11_Nothing)
 _data_C1E2:
 	.byte $E3
 _data_C1E3:
 	.byte $81,$A2,$00,$4C,$2A,$DD
 _func_C1E9:
 	lda UnknownFlag0446
-	bne @8226
+	bne SimonExecuteCurrentAction11_Nothing
 	lda $68
-	bne @8226
+	bne SimonExecuteCurrentAction11_Nothing
 	lda ScrollingIsLocked
-	bne @8226
+	bne SimonExecuteCurrentAction11_Nothing
 	lda ObjectScreenYCoord
 	cmp #$70
 	bcc @8205
 	cmp #$90
-	bcc @8226
+	bcc SimonExecuteCurrentAction11_Nothing
 	lda #$22
 	bne @8207
 
@@ -300,16 +300,16 @@ _func_C1E9:
 	beq @8219
 	jsr LoadLevelDataScreensPointerLo_Byte1_minus1_storeInY
 	cpy Current_WhatUnknown57
-	bne @8226
-	jmp @827A
+	bne SimonExecuteCurrentAction11_Nothing
+	jmp _827A
 
 	@8219:
 	lda Current_WhatUnknown57
-	bne @8226
+	bne SimonExecuteCurrentAction11_Nothing
 	lda CurrentYScrollingPositionPixels_Mod240
 	ora $55
-	bne @8226
-	jmp @827A
+	bne SimonExecuteCurrentAction11_Nothing
+	jmp _827A
 ;------------------------------------------
 SimonExecuteCurrentAction11_Nothing:
 	rts
@@ -332,9 +332,9 @@ _func_C227:
 	@823D:
 	  sta $68
 	lda ScrollingIsLocked
-	bne @827A
+	bne _827A
 	lda UnknownFlag0446
-	bne @827A
+	bne _827A
 	lda $68
 	tay
 	beq @8280
@@ -342,10 +342,10 @@ _func_C227:
 	beq @8269
 	lda ObjectScreenYCoord
 	cmp #$80
-	bcc @827A
+	bcc _827A
 	jsr LoadLevelDataScreensPointerLo_Byte1_minus1_storeInY
 	cpy Current_WhatUnknown57
-	beq @827A
+	beq _827A
 	lda ObjectYSpeed
 	cmp #$02
 	bcc @8280
@@ -355,13 +355,13 @@ _func_C227:
 	@8269:
 	lda ObjectScreenYCoord
 	cmp #$81
-	bcs @827A
+	bcs _827A
 	lda Current_WhatUnknown57
 	bne @8280
 	lda CurrentYScrollingPositionPixels_Mod240
 	ora $55
-	bne @8280
-	@827A:
+	bne _loc_C280
+	_827A:
 	   lda #$80
 _loc_C27C:
 	ora $68
@@ -1646,12 +1646,12 @@ Simon_InStairs_JoyButtons_01_Rt_pressed:
 	bne @8B02
 	ldx #$00
 	ldy #$00
-	jmp @8B3C
+	jmp _8B3C
 
 	@8B02:
 	ldx #$03
 	ldy #$08
-	jmp @8B3C
+	jmp _8B3C
 ;------------------------------------------
 Simon_InStairs_JoyButtons_02_Lt_pressed:
 	lda #$00
@@ -1663,7 +1663,7 @@ Simon_InStairs_JoyButtons_02_Lt_pressed:
 	ldx #$03
 	ldy #$0C
 	@8B1A:
-	jmp ++		; $8B3C
+	jmp _8B3C		; $8B3C
 ;------------------------------------------
 Simon_InStairs_JoyButtons_08_Up_pressed:
 	ldx #$03
@@ -1679,12 +1679,12 @@ Simon_InStairs_JoyButtons_04_Dn_pressed:
 	ldy #$00
 _loc_CB33:
 	lda ObjectFacingLeft
-	bne @8B3C
+	bne _8B3C
 	iny
 	iny
 	iny
 	iny
-	@8B3C:
+	_8B3C:
 	 stx ObjectAIvar2
 	lda _data_CB66_indexed,y
 	sta $6D

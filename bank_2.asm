@@ -1508,8 +1508,8 @@ LevelData_Screens_2_ForestsAndBridges_4_A:
 	.word (LevelData_Screen_Blank) ;F807 (1F807) ([8:4][A:5])
 LevelData_Screens_2_ForestsAndBridges_5_A:
 	.byte $02,$01
-	.word (LevelData_Screen_Map2_5) ;A432 (A432) ([8:4][A:5])
-	.word (LevelData_Screen_Map2_5) ;A46A (A46A) ([8:4][A:5])
+	.word (LevelData_Screen_Map2_5a) ;A432 (A432) ([8:4][A:5])
+	.word (LevelData_Screen_Map2_5b) ;A46A (A46A) ([8:4][A:5])
 	.word (LevelData_Screen_Blank) ;F807 (1F807) ([8:4][A:5])
 	.word (LevelData_Screen_Blank) ;F807 (1F807) ([8:4][A:5])
 LevelData_Screens_2_ForestsAndBridges_6_A:
@@ -1610,12 +1610,12 @@ LevelData_Screen_Map2_0_and_2_2_3:
 	.byte $11,$11,$11,$11,$11,$11,$11,$11,$42,$42,$42,$10,$10,$10,$10,$10
 	.byte $17,$17,$17,$16,$16,$16,$15,$15,$19,$19,$19,$17,$17,$17,$14,$14
 	.byte $19,$19,$19,$19,$19,$19,$17,$17
-LevelData_Screen_Map2_5:
+LevelData_Screen_Map2_5a:
 	.byte $00,$41,$00,$41,$00,$41,$00,$41,$41,$12,$41,$12,$41,$12,$12,$12
 	.byte $11,$11,$11,$11,$11,$11,$11,$11,$10,$10,$42,$17,$17,$17,$17,$17
 	.byte $15,$16,$17,$22,$43,$43,$43,$43,$14,$0C,$43,$39,$39,$40,$39,$3D
 	.byte $17,$17,$17,$17,$17,$31,$17,$31
-LevelData_Screen_Map2_5:
+LevelData_Screen_Map2_5b:
 	.byte $00,$41,$00,$41,$00,$41,$00,$41,$12,$12,$41,$12,$41,$12,$41,$12
 	.byte $11,$11,$11,$11,$11,$11,$11,$11,$17,$17,$02,$0A,$01,$17,$42,$42
 	.byte $43,$43,$00,$04,$36,$3C,$17,$17,$39,$3D,$39,$39,$04,$36,$43,$19
@@ -2701,5 +2701,3 @@ LevelData_Screen_Map5_1:
 	.byte $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
 	.byte $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
 	.byte $46,$C0,$D0,$FF,$96,$C0
-
-  :

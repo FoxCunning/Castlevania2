@@ -136,7 +136,7 @@ _func_4029:
 	ldx #$11
 	lda #$80
 	sta TempPtr00_lo
-	@80C7:
+	_80C7:
 	 lda ObjectType,x
 	bne @80CF
 	jmp _loc_418D
@@ -150,7 +150,7 @@ _func_4029:
 _loc_40D9:
 	dex
 	cpx #$05
-	bne @80C7
+	bne _80C7
 	ldx TempPtr00_lo
 	bpl _loc_40E5
 	jmp _loc_4183
@@ -399,7 +399,7 @@ ObjectAI_object00_23:
 ;------------------------------------------
 ObjectAI_object37_Heart:
 	lda ObjectCurrentActionType,x
-	bne @82E0
+	bne _82E0
 	@82A0:
 	 lda #$04
 	sta ObjectCurrentActionType,x
@@ -416,11 +416,11 @@ Monster_BecomeHeart:
 	 tay
 	 lda CurrentLevelMapType
 	 cmp #$01
-	 @82C3
+	 beq @82C3
 	 lda IsNightTime
-	 @82C3
+	 bne @82C3
 	 lda MonsterHeartTypeTable_At_Day,y
-	 @82C6
+	 bne @82C6
 	@82C3:
 	 lda MonsterHeartTypeTable_At_Night_Or_InMansion,y
 	@82C6:
@@ -439,9 +439,9 @@ Monster_BecomeHeart:
 	sta ObjectFacingLeft,x
 	rts
 
-	@82E0:
+	_82E0:
 	  lda ObjectAIvar1,x
-	beq @82AB
+	beq _loc_42AB
 	dec ObjectAIvar1,x
 	rts
 ;------------------------------------------
@@ -544,7 +544,7 @@ ObjectAI_object03_Skeleton:
 ;------------------------------------------
 ObjectAI_object2D_2E_2F_VendorAndPriest:
 	lda ObjectCurrentActionType,x
-	bne @83F6
+	bne _83F6
 	lda #$40
 	sta ObjectCurrentActionType,x
 	lda ObjectType,x
@@ -565,7 +565,7 @@ ObjectAI_object2D_2E_2F_VendorAndPriest:
 ;------------------------------------------
 _data_43F3_indexed:
 	.byte $0C,$0B,$0F
-	@83F6:
+	_83F6:
 	 jsr ObjectLoadAutomaticSpriteNumber
 	lda ObjectAIvar1,x
 	cmp #$50
@@ -636,7 +636,7 @@ ObjectAI_object0E_actions_446C:
 	beq _loc_4468
 	lda CurrentLevelMapType
 	cmp #$01
-	bne @84D7
+	bne _loc_44D7
 	jmp _func_4629
 ;------------------------------------------
 ObjectAI_object0E_actions_447F:
@@ -672,11 +672,11 @@ ObjectAI_object0E_actions_44B9:
 	inc ObjectAIvar3,x
 	lda ObjectAIvar3,x
 	cmp #$40
-	bne @84D7
+	bne _loc_44D7
 	inc Ending_PrimaryActionIndex,x
 	lda Ending_PrimaryActionIndex,x
 	cmp #$02
-	beq @84DA
+	beq _84DA
 	lda #$00
 	sta ObjectAIvar3,x
 	lda #$FF
@@ -684,7 +684,7 @@ ObjectAI_object0E_actions_44B9:
 _loc_44D7:
 	jmp Object_GeneringXYmovementEngine
 
-	@84DA:
+	_84DA:
 	jsr _func_1DFA3
 	sta Ending_PrimaryActionIndex,x
 	sta ObjectAIvar4,x
@@ -718,7 +718,7 @@ ObjectAI_object1A:
 	inc ObjectAIvar3,x
 	lda ObjectAIvar3,x
 	cmp #$10
-	bne @84E9
+	bne _loc_44E9
 	lda #$00
 	sta ObjectAIvar3,x
 	lda ObjectAIvar2,x
@@ -728,7 +728,7 @@ ObjectAI_object1A:
 	inc ObjectAIvar2,x
 	lda ObjectAIvar2,x
 	cmp #$08
-	bne @84E9
+	bne _loc_44E9
 	jmp _loc_1DF7F
 
 	@853E:
@@ -743,7 +743,7 @@ ObjectAI_object21_22_34_FloatingPlatform:
 	dec ObjectAIvar4,x
 	@8553:
 	lda ObjectCurrentActionType,x
-	bne @85A5
+	bne _85A5
 	jsr Object_SetCurrentActionType_to_80
 	lda ObjectType,x
 	cmp #$22
@@ -785,7 +785,7 @@ ObjectAI_object21_22_34_actions1_4594:
 	lda #$FF
 _loc_4596:
 	ldy #$80
-	bne @85A2
+	bne _loc_45A2
 ;------------------------------------------
 ObjectAI_object21_22_34_actions1_459A:
 	lda #$01
@@ -798,7 +798,7 @@ _loc_45A0:
 _loc_45A2:
 	jmp Object_SetXVelocity16bit_from_AY_invert_if_ObjectFacingLeft_set
 
-	@85A5:
+	_85A5:
 	   lda ObjectEnemyRemainingHP,x
 	and #$0F
 	jsr JumpWithParams
@@ -886,10 +886,11 @@ _func_463A:
 ;------------------------------------------
 Run_Maybe_CheckDialogActivation:
 	lda DeathStateRelatedFlagMaybe
-	beq @8648
+	beq :+
 	rts
 
-	lda ObjectStunCounter
+	; Elapse Simon's Invulnerability counter
+:	lda ObjectStunCounter
 	beq @8650
 	dec ObjectStunCounter
 	@8650:
@@ -953,14 +954,14 @@ Run_Maybe_CheckDialogActivation:
 	@86AD:
 	lda ObjectCurrentActionType,x
 	and #$80
-	bne @872C
+	bne _872C
 	lda ObjectCurrentActionType,x
 	and #$40
-	beq @872D
+	beq _872D
 	lda Unknown43
 	beq @86C3
 	lda Unknown41
-	bne @872C
+	bne _872C
 	@86C3:
 	lda #$80
 	sta TimeRelated3F
@@ -980,11 +981,11 @@ NPC_SelectDialogForEveryoneElse:
 	cmp #$2D
 	beq @86EA
 	lda #$00
-	beq @872A
+	beq _872A
 
 	@86EA:
 	lda #$A0
-	bne @872A
+	bne _872A
 ;------------------------------------------
 NPC_SelectDialogForFerryMan:
 	ldy #$00
@@ -1008,7 +1009,7 @@ _loc_470A:
 	sta DialogTextID
 	sty Unknown04EC
 	lda #$C0
-	bne @872A
+	bne _872A
 ;------------------------------------------
 NPC_SelectDialogForObject2F_or_1E:
 	lda #$40
@@ -1024,12 +1025,12 @@ NPC_SelectDialogForVendor:
 _loc_4725:
 	lda ObjectDialogTextIndex,x
 	ora TempPtr08_lo
-	@872A:
+	_872A:
 	 sta DialogActivationState
-	@872C:
+	_872C:
 	  rts
 
-	@872D:
+	_872D:
 	   lda ObjectCurrentActionType,x
 	and #$04
 	bne @8737
@@ -1274,7 +1275,7 @@ _loc_48C1:
 	cmp #$37
 	bne @88DC
 	@88D9:
-	  jmp +++		; $895F
+	  jmp @895F
 
 	@88DC:
 	 lda ObjectCurrentActionType,x
@@ -1310,7 +1311,7 @@ _loc_48C1:
 	sbc #$04
 	bpl @895F
 	lda ObjectEnemyRemainingHP,x
-	beq @8971
+	beq _loc_4971
 	sec
 	sbc Unknown13_Horizontal_32pixelUnitForObject
 	sta ObjectEnemyRemainingHP,x
@@ -1349,7 +1350,7 @@ _loc_48C1:
 	@895F:
 	  inx
 	cpx #$12
-	beq @8971
+	beq _loc_4971
 	jmp _loc_48C1
 
 	@8967:
@@ -1408,7 +1409,7 @@ Run_Actions_For_Weapons:
 	 lda ObjectType,y
 	bne @89C8
 	@89C5:
-	jmp ++++		; $8A81
+	jmp @8A81
 
 	@89C8:
 	cmp #$36
@@ -1477,11 +1478,11 @@ Run_Actions_For_Weapons:
 	bne @8A41
 	inc ObjectEnemyRemainingHP,x
 	@8A41:
-	jmp +++		; $8A52
+	jmp @8A52
 
 	@8A44:
 	 cmp #$07
-	beq @8A9C
+	beq _loc_4A9C
 	lda ObjectType,y
 	cmp #$42
 	bne @8A52
@@ -1521,7 +1522,7 @@ Run_Actions_For_Weapons:
 _loc_4A89:
 	inx
 	cpx #$06
-	beq @8A9B
+	beq _loc_4A9B
 	jmp @8981
 ;------------------------------------------
 _loc_4A91:
@@ -1914,9 +1915,9 @@ Math_CalculateCosine_Scale:
 	lda TempPtr02_lo
 	jsr Math_MultiplyOrDivideDependingOnA
 	lda Temp07
-	beq @8DA9
+	beq _loc_4DA9
 	cmp #$03
-	beq @8DA9
+	beq _loc_4DA9
 	jmp Math_Negate16bitWordAt00
 ;------------------------------------------
 Math_CosineTable:
@@ -2326,13 +2327,13 @@ ObjectAI_object01_actions_501D:
 	bpl @9039
 	lda ObjectScreenYCoord,x
 	cmp #$10
-	bcs @900E
+	bcs _loc_501C
 	jmp @9009
 
 	@9039:
 	lda ObjectScreenYCoord
 	cmp ObjectScreenYCoord,x
-	bcs @901C
+	bcs _loc_501C
 	inc ObjectAIvar1,x
 	jsr Object_SetFacing_FaceTowardsSimon
 	lda #$03
@@ -2348,7 +2349,7 @@ ObjectAI_object01_actions_5054:
 ;------------------------------------------
 ObjectAI_object24_TownSign:
 	lda ObjectCurrentActionType,x
-	bne @901C
+	bne _loc_501C
 	lda #$40
 	ldy #$00
 	jmp Object_SetCurrentActionType_And_Y_as_Pose1
@@ -2361,8 +2362,8 @@ _loc_5066:
 NPCtalkAction_CrystalExchanger_Blue:
 	lda #$20
 	bit InventoryBodyParts1
-	beq @9083
-	bvs @9083
+	beq _9083
+	bvs _9083
 	lda InventoryBodyParts1
 	and #$9F
 	ora #$40
@@ -2370,7 +2371,7 @@ NPCtalkAction_CrystalExchanger_Blue:
 	lda #$55
 	bne _loc_5085
 
-	@9083:
+	_9083:
 	   lda #$6B
 _loc_5085:
 	sta DialogTextID
@@ -2379,8 +2380,8 @@ _loc_5085:
 NPCtalkAction_CrystalExchanger_Red:
 	lda #$20
 	bit InventoryBodyParts1
-	bvc @9083
-	bne @9083
+	bvc _9083
+	bne _9083
 	lda InventoryBodyParts1
 	and #$9F
 	ora #$60
@@ -2849,8 +2850,8 @@ ObjectAI_object0F_actions_54D7:
 	sta TempPtr08_lo
 	jsr Object_GravityAccelerateBy_Var08
 	lda ObjectYSpeed,x
-	beq @951F
-	bpl @951F
+	beq _951F
+	bpl _951F
 	lda #$F4
 	ldy #$F0
 	jsr Object_GenericCollisionHelper_ParamAY_ReturnCarry_IfFrameOddThenDefaultSEC
@@ -2881,7 +2882,7 @@ _func_5506:
 	@951E:
 	rts
 
-	@951F:
+	_951F:
 	  jsr _func_5506
 	lda #$F4
 	ldy #$10
@@ -3340,7 +3341,7 @@ ObjectAI_object1F_actions_5849:
 	jsr Object_GravityDecelerateBy_Var08
 	lda ObjectAIvar2,x
 	cmp #$08
-	bmi @9860
+	bmi _loc_5860
 	jmp _loc_5924
 ;------------------------------------------
 _loc_5860:
@@ -3361,16 +3362,16 @@ ObjectAI_object1F_actions_5870:
 	jsr Object_GravityAccelerateBy_Var08
 	lda ObjectAIvar2,x
 	cmp #$08
-	bmi @9860
+	bmi _loc_5860
 	jmp @98CF
 
 	@9887:
 	 lda #$88
-	bne @988D
+	bne _988D
 ;------------------------------------------
 _loc_588B:
 	lda #$3C
-	@988D:
+	_988D:
 	sta ObjectCurrentPose1,x
 	lda #$00
 	sta ObjectCurrentPose2,x
@@ -3399,7 +3400,7 @@ ObjectAI_object1F_actions_58BC:
 	jsr Object_GravityAccelerateBy_Var08
 	jsr _func_1DE8B
 	lda ObjectYSpeed,x
-	bmi @9860
+	bmi _loc_5860
 	@98CF:
 	 lda ObjectFacingLeft,x
 	bne @98D8
@@ -3440,21 +3441,21 @@ ObjectAI_object1F_actions_5908:
 	jsr Object_GravityDecelerateBy_Var08
 	jsr _func_1DE8B
 	lda ObjectYSpeed,x
-	bpl @9930
+	bpl _9930
 	lda ObjectFacingLeft,x
 	bne _loc_5924
 	lda #$FA
-	bne @9926
+	bne _9926
 ;------------------------------------------
 _loc_5924:
 	lda #$06
-	@9926:
+	_9926:
 	ldy #$F8
 	jsr Object_GenericCollisionHelper_ParamAY_ReturnCarry_IfFrameOddThenDefaultSEC
-	bcs @9930
+	bcs _9930
 	jmp @9887
 
-	@9930:
+	_9930:
 	 rts
 ;------------------------------------------
 _loc_5931:
@@ -3689,7 +3690,7 @@ _loc_5D1F:
 ObjectAI_object42_actions_5D22:
 	lda RandomSeed
 	and #$01
-	bne @9D37
+	bne _9D37
 	inc ObjectAIvar1,x
 	inc ObjectAIvar1,x
 _func_5D2E:
@@ -3698,7 +3699,7 @@ _func_5D2E:
 	sta ObjectAIvar3,x
 	rts
 
-	@9D37:
+	_9D37:
 	inc ObjectAIvar1,x
 	rts
 ;------------------------------------------
@@ -3730,7 +3731,7 @@ ObjectAI_object42_actions_5D61:
 	jsr Object_SetVelocityAndAngle_Aangle_Yspeed
 	lda FrameCounter
 	and #$01
-	bne @9D1F
+	bne _loc_5D1F
 	inc ObjectAIvar2,x
 	lda ObjectAIvar2,x
 	cmp #$40
@@ -3741,7 +3742,7 @@ ObjectAI_object42_actions_5D61:
 	@9D81:
 	lda ObjectAIvar3,x
 	cmp #$02
-	bne @9D1F
+	bne _loc_5D1F
 	lda #$80
 	sta ObjectScreenXCoord,x
 	lda #$64
@@ -4608,7 +4609,7 @@ UnusedObjectAI_6558_actions_6586:
 	jmp Object_SetXandYVelocity16bit_ToZero
 
 	@A591:
-	jmp ++++		; $A639
+	jmp @A639
 ;------------------------------------------
 UnusedObjectAI_6558_actions_6594:
 	jsr Object_SetFacing_FaceTowardsSimon
@@ -4631,11 +4632,11 @@ UnusedObjectAI_6558_actions_6594:
 ;------------------------------------------
 UnusedObjectAI_6558_actions_65BC:
 	dec ObjectAIvar2,x
-	bne @A5C6
+	bne _A5C6
 _loc_65C1:
 	ldx Unknown10_CollisionAndScrollingTemp
 	jsr _func_1DFA8
-	@A5C6:
+	_A5C6:
 	rts
 ;------------------------------------------
 UnusedObjectAI_65C7_StationaryFireball:
@@ -6195,11 +6196,11 @@ ObjectAI_object1D_actions_734D:
 ;------------------------------------------
 ObjectAI_object1D_actions_737B:
 	dec ObjectAIvar2,x
-	bne @B385
+	bne _B385
 _loc_7380:
 	ldx Unknown10_CollisionAndScrollingTemp
 	jsr _func_1DFA8
-	@B385:
+	_B385:
 	rts
 ;------------------------------------------
 ObjectAI_object32:
@@ -6279,7 +6280,7 @@ LevelData_Actors_5_Ruins_0_73FE:
 RunFinalConfrontationActions:
 	lda $04A4
 	cmp #$FF
-	beq @B458
+	beq _loc_7458
 	jsr JumpWithParams
 FinalConfrontationOperations:
 	.word (FinalConfrontation_RemoveGarlics_And_DisableInput) ;B415 (7415) ()
@@ -6510,20 +6511,20 @@ ObjectAI_object47_DraculaMaybe:
 	sta TimeRelated2A
 	lda #$F0
 	sta $04C8
-	@B5BE:
+	;@B5BE:
 	  rts
 
 	@B5BF:
 	lda ObjectAIvar6,x
-	beq @B60E
+	beq _B60E
 	lda FrameCounter
 	and #$01
-	bne @B60D
+	bne _B60D
 	dec ObjectAIvar6,x
 	lda ObjectAIvar6,x
 	cmp #$A0
 	bcc @B5DB
-	bne @B60D
+	bne _B60D
 	lda #$4D
 	jsr AnyBankPlayTracks
 	@B5DB:
@@ -6547,23 +6548,23 @@ ObjectAI_object47_DraculaMaybe:
 	@B5FB:
 	sty TempPtr00_lo
 	and TempPtr00_lo
-	bne @B60D
+	bne _B60D
 	lda #$33
 	ldy ObjectCurrentPose1,x
 	beq @B60A
 	lda #$00
 	@B60A:
 	sta ObjectCurrentPose1,x
-	@B60D:
+	_B60D:
 	    rts
 
-	@B60E:
+	_B60E:
 	  lda ObjectAIvar3,x
 	beq @B620
 	dec ObjectAIvar3,x
 	lda ObjectAIvar3,x
 	and #$0F
-	bne @B5BE
+	bne _B60D
 	jmp @B65D
 
 	@B620:
@@ -6579,7 +6580,7 @@ ObjectAI_object47_DraculaMaybe:
 	sta ObjectCurrentPose1,x
 	lda FrameCounter
 	and #$01
-	bne @B60D
+	bne _B60D
 	inc ObjectAIvar2,x
 	lda ObjectAIvar2,x
 	and #$1F
@@ -6591,7 +6592,7 @@ ObjectAI_object47_DraculaMaybe:
 	lda _data_76DA_indexed,y
 	sta ObjectScreenYCoord,x
 	dec Ending_PrimaryActionIndex,x
-	bne @B60D
+	bne _B60D
 	lda #$3D
 	sta Ending_PrimaryActionIndex,x
 	@B65D:
@@ -6615,7 +6616,7 @@ _loc_7665:
 	clc
 	adc #$20
 	cmp #$31
-	bcs @B60D
+	bcs _B60D
 	jmp Object_Erase_And_IfType3C_Set_42to00
 ;------------------------------------------
 ObjectAI_object48:

@@ -1159,7 +1159,7 @@ Sound_TrackCommand00to0F_for_LogicalChannel2:
 ;------------------------------------------
 Sound_TrackCommand00to0F_for_LogicalChannel4:
 	lda (SoundTrackPtrLo),y
-	beq @98C8
+	beq _98C8
 	sta Sound_ChannelTempoPossibly_Channel0_square0,x
 	lda #$30
 	sta Sound_CacheAPUreg0and1_twonibbles,x
@@ -1190,7 +1190,7 @@ _loc_18C2:
 	jsr _func_1B92
 	jmp Sound_Set_TrackDataPointer1_From_TrackPtr_y
 
-	@98C8:
+	_98C8:
 	  iny
 Sound_TrackCommand00to0F_followedBy00_or_10toFA_for_LogicalChannel4:
 	lda Sound_ChannelTempoPossibly_Channel0_square0,x
@@ -1612,7 +1612,7 @@ _func_1B92:
 	lda #$00
 	sta SoundEffectRelatedPtrLo
 	cpx #$02
-	beq @9BED
+	beq _9BED
 	cpx #$04
 	beq _func_1BB7
 	lda Sound_FlagsC3_Channel0_square0,x
@@ -1645,19 +1645,19 @@ _func_1BB7:
 	bne @9BEA
 	lda Sound_CacheAPUreg0and1_twonibbles,x
 	and #$10
-	beq @9BED
+	beq _9BED
 	lda Sound_FlagsC3_Channel0_square0,x
 	and #$08
-	bne @9BED
-	beq @9BF7
+	bne _9BED
+	beq _9BF7
 	@9BEA:
 	sta Sound_CacheAPUreg3,x
-	@9BED:
+_9BED:
 	  lda Sound_PeriodTemp_Unknown9B_hi
 	jsr Sound_SetCarry_If_X_is_00_and_B4_is_nonzero
-	bcs @9BF7
+	bcs _9BF7
 	jsr Sound_PokeChannelSoundRegister3_preserveAX
-	@9BF7:
+_9BF7:
 	   lda Sound_PeriodTemp_Unknown9B_lo
 	sta Sound_CacheAPUreg2,x
 	jsr Sound_SetCarry_If_X_is_00_and_B4_is_nonzero
@@ -2182,7 +2182,7 @@ Sound_StartTracks:
 Unused22FB:
 	jmp _loc_23A0
 
-	@A2FE:
+	_A2FE:
 	 jmp _loc_23B1
 ;------------------------------------------
 _loc_2301:
@@ -2194,7 +2194,7 @@ _loc_2301:
 	lda Sound_StartSong_LatestSongIndex
 	beq @A315
 	cmp Sound_CurrentSongNumber_Channel0_square0,x
-	bcc @A2FE
+	bcc _A2FE
 	@A315:
 	lda #$00
 	sta Sound_CurrentSongNumber_Channel0_square0,x
@@ -2503,13 +2503,13 @@ SpriteConstructionProcess:
 	sta $0202,x
 	iny
 	lda Unknown10_CollisionAndScrollingTemp
-	beq @AB39
+	beq _AB39
 	lda $96
 	eor #$40
 	sta $96
 _loc_2B36:
 	sta $0202,x
-	@AB39:
+	_AB39:
 	lda Unknown10_CollisionAndScrollingTemp
 	bne @AB66
 	jsr LoadFrom08_or_0D__if0Fnegative
