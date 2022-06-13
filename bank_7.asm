@@ -60,15 +60,15 @@ _NMI:
 	   ldy #$02
 	   sty $4014
 	   ldy NMI_InProgress
-	 @C097
+	   bne _C097
 	   inc NMI_InProgress
 	   jsr ResetPPUtoKnownState
 	   jsr NMI_ProcessPPUsendQueue
 	   lda PPUdesiredRegister2001
 	   ldx ScreenBlankingCounter
-	 @C070
+	   beq @C070
 	   dec ScreenBlankingCounter
-	 @C070
+	   beq @C070
 	   lda #$00
 	@C070:
 	   sta $2001
@@ -92,7 +92,7 @@ EndNMI:
 _IRQ:
 	rti
 
-	@C097:
+	_C097:
 	 jsr NMI_SoundCodeCall
 	jmp EndNMI
 ;------------------------------------------
@@ -167,7 +167,7 @@ NMI_SoundCodeCall:
 AnyBankPlayTracks:
 	pha
 	 lda InSoundCode
-	 @C13E
+	 bne @C13E
 	 lda #$01
 	 sta InSoundCode
 	 lda #$00
@@ -390,7 +390,7 @@ PlotAction06_DeathSequence:
 	lda #$1E
 	jsr PPU_Text_ExtractAndSend_With_01prefix
 	dec RemainingLives
-	beq @C2AF
+	beq _C2AF
 	jsr ClearMemory_300_to_3C5
 _loc_1C29B:
 	lda CurrentLevelMapType
@@ -404,7 +404,7 @@ _loc_1C2A4:
 	sta PlotAction05_GameLoop_WhichAction
 	jmp PlotAction05_Action00_ShowGameBeginScreenWithRemainingLives
 
-	@C2AF:
+	_C2AF:
 	lda #$51
 	jsr AnyBankPlayTracks
 	jsr ClearMemory_300_to_3C5
@@ -441,7 +441,7 @@ PlotAction07_RunGameoverMenuScreen:
 	bne PlotAction07_RunGameoverMenuScreen_Start_pressed
 	lda Input_NewJoyButtonsWork
 	and #$20
-	beq @C2FA
+	beq _loc_1C2FA
 PlotAction07_RunGameoverMenuScreen_Select_pressed:
 	lda MainMenuOptionIndex
 	eor #$01
@@ -529,7 +529,7 @@ PlotAction08_RunMainMenuScreen:
 	bne PlotAction08_RunMainMenuScreen_Start_pressed
 	lda Input_NewJoyButtonsWork
 	and #$20
-	beq @C38F
+	beq _loc_1C38F
 PlotAction08_RunMainMenuScreen_Select_pressed:
 	lda #$05
 	jsr AnyBankPlayTracks
@@ -957,7 +957,7 @@ RenderHPbar:
 	jsr Math_divAby16
 	tay
 	@C628:
-	beq ++		; $C650
+	beq @C650
 	lda TempPtr00_hi
 	jsr AppendSpriteTableByte
 	lda #$61
@@ -1521,6 +1521,9 @@ NMI_ProcessPPUsendQueue:
 	cpx #$03
 	beq @CBD1
 	bne @CBC0
+	
+	@CBAE:
+	; Done. Clear the queue.
 	lda #$00
 	sta PPUsendQueue
 	sta PPUsendQueueHead
@@ -1528,9 +1531,13 @@ NMI_ProcessPPUsendQueue:
 	sta $2000
 	rts
 
+	@CBBB:
+	; Send literal FF
 	lda #$FF
 	@CBBD:
 	sta $2007
+	@CBC0:
+	; Process FF-terminated string
 	lda PPUsendQueue,y
 	iny
 	cmp #$FF
@@ -1539,6 +1546,9 @@ NMI_ProcessPPUsendQueue:
 	cmp #$05
 	bcs @CBBB
 	bcc @CB6D
+	
+	@CBD1:
+	; Process $03 BEint16bitWord Count Byte
 	ldx PPUsendQueue,y
 	iny
 	lda PPUsendQueue,y
@@ -1548,6 +1558,9 @@ NMI_ProcessPPUsendQueue:
 	dex
 	bne @CBD9
 	beq @CB6D
+	
+	@CBE1:
+	; Process $04 BEint16bitWord BitNo Bits
 	lda $2002
 	lda PPUsendQueue,y
 	sta TempPtr08_lo
@@ -1625,7 +1638,7 @@ PlotAction05_Action00_ShowGameBeginScreenWithRemainingLives:
 ;------------------------------------------
 PlotAction05_Action01_LevelLoad_ResetNPCs:
 	jsr _func_1C440
-	bne @CC99
+	bne _loc_1CC99
 	jsr PPU_DirectToPPU_Data_ExtractAndSend_Screen0_Blank
 	jsr _func_1D15B
 	jsr _func_1E775
@@ -1644,7 +1657,7 @@ PlotAction05_Action02_LevelLoad_Part2:
 	jsr _func_1C0B3
 	lda $65
 	cmp #$10
-	bne @CC99
+	bne _loc_1CC99
 	lda $018F
 	beq @CCB6
 	jsr _func_1D403
@@ -1715,12 +1728,12 @@ LoadAndPlayCurrentLevelSong:
 	lda SongTableDayNight,y
 	sta $0F
 	cmp Sound_CurrentSongNumber_Channel2_triangle
-	beq @CD3D
+	beq _CD3D
 _loc_1CD35:
 	jsr AnyBankTerminateSound
 	lda $0F
 	jsr AnyBankPlayTracks
-	@CD3D:
+	_CD3D:
 	lda #$FF
 	sta $24
 	rts
@@ -1732,7 +1745,7 @@ _func_1CD42:
 	stx Unknown04ED_finalConfrontationRelated
 	ldy #$00
 	lda CurrentLevelMapType
-	beq @CDA0
+	beq _CDA0
 	cmp #$01
 	beq @CD5A
 	ldy #$41
@@ -1779,7 +1792,7 @@ _loc_1CD63:
 	sta Unknown194_PossiblyScrollingRelated
 	rts
 
-	@CDA0:
+	_CDA0:
 	  lda CurrentLevelSceneNumber
 	cmp #$07
 	bcc _loc_1CD63
@@ -1817,7 +1830,8 @@ _func_1CDCA:
 PlotAction05_Action03_GameActive:
 	lda TimeRelated3F
 	cmp #$FF
-	beq @CE12
+
+	beq _CE12
 	lda TimeRelated3F
 	bne Check_For_B_ButtonActivatedDialog
 	@CDDF:
@@ -1841,7 +1855,7 @@ PlotAction05_Action03_GameActive:
 _loc_1CE11:
 	rts
 
-	@CE12:
+	_CE12:
 	lda #$03
 	jsr SwitchBank_NewPage
 	jmp DialogChooseAndExecuteAction
@@ -1875,7 +1889,7 @@ Check_RunFinalConfrontationActions:
 	lda #$01
 	jsr SwitchBank_NewPage
 	lda Unknown04ED_finalConfrontationRelated
-	beq @CE40
+	beq _loc_1CE40
 	jmp RunFinalConfrontationActions
 ;------------------------------------------
 CheckKneelingWithCrystal_ThoseThreeLocations:
@@ -1893,14 +1907,14 @@ CheckKneelingWithCrystal_ThoseThreeLocations:
 	bne @CE72
 	ldy CurrentLevelSceneNumber
 	cpy #$02
-	bcc @CE40
+	bcc _loc_1CE40
 	cpy #$06
-	bcs @CE40
+	bcs _loc_1CE40
 	jmp CheckKneelingWithBlueCrystal_EnableScroll_YubaLake
 
 	@CE72:
 	cmp #$03
-	bne @CE40
+	bne _loc_1CE40
 	jmp CheckKneelingWithBlueCrystal_EnableScroll_UtaLake
 ;------------------------------------------
 PlotAction05_Action0C:
@@ -2015,7 +2029,7 @@ DayNightTransition_GoNextPaletteFrame:
 	sta DayNightTransitionDelayCounter
 	rts
 
-	@CF20:
+	_CF20:
 	  ldx #$06
 	@CF22:
 	 lda ObjectType,x
@@ -2028,7 +2042,7 @@ DayNightTransition_GoNextPaletteFrame:
 	cpx #$12
 	bcc @CF22
 	lda Unknown04EC
-	beq @CF93
+	beq _CF93
 	lda #$00
 	sta Unknown04EC
 	lda #$06
@@ -2079,8 +2093,8 @@ DayNightTransition_GoNextPaletteFrame:
 PlotAction05_Action08_RelocateSimonLevelBeginningMaybe:
 	jsr PPU_DirectToPPU_Data_ExtractAndSend_Screen0_Blank
 	ldy Unknown41
-	bne @CF20
-	@CF93:
+	bne _CF20
+	_CF93:
 	  lda CurrentLevelMapType
 	cmp #$02
 	bne @CFA7
@@ -2094,7 +2108,7 @@ PlotAction05_Action08_RelocateSimonLevelBeginningMaybe:
 	@CFA7:
 	jsr _func_1D136
 	@CFAA:
-	7:    jsr _func_1E789
+	jsr _func_1E789
 	lda ObjectCurrentActionType
 	cmp #$0B
 	bne @CFCE
@@ -2227,11 +2241,11 @@ PlotAction05_Action0A_RelocateSimonLevelBeginningMaybe:
 ;------------------------------------------
 _loc_1D0B2:
 	ldy #$06
-	bne @D0B8
+	bne _D0B8
 ;------------------------------------------
 _loc_1D0B6:
 	ldy #$03
-	@D0B8:
+	_D0B8:
 	lda (TempPtr02_lo),y
 	cmp #$FF
 	beq @D109
@@ -2472,7 +2486,7 @@ _func_1D21C:
 ;------------------------------------------
 _func_1D230:
 	lda CurrentLevelSubRoomNumber
-	bpl @D256
+	bpl _D256
 _func_1D234:
 	ldy #$00
 	lda (TempPtr02_lo),y
@@ -2496,7 +2510,7 @@ _func_1D234:
 	adc #$01
 	@D254:
 	 sta $89
-	@D256:
+	_D256:
 	  rts
 ;------------------------------------------
 LoadLevelData_ScreenNumbers_PointerForCurrentLevelSceneNumber_Storeto02:
@@ -2552,7 +2566,7 @@ _func_1D2A1:
 	bcc @D2B1
 	inc CurrentYScrollingPositionScreens_maybe
 	@D2B1:
-	jmp -		; $D2A7
+	jmp @D2A7
 
 	@D2B4:
 	 clc
@@ -2823,7 +2837,7 @@ UnknownFunc1D428:
 	bcs @D453
 	bcc @D450
 	@D44E:
-	bcc +++		; $D453
+	bcc @D453
 	@D450:
 	 jsr _func_1D470
 	@D453:
@@ -2934,7 +2948,7 @@ GiveExperience_valueInY:
 	 lsr a
 	 tay
 	 lda (TempPtr00_lo),y
-	 @D516
+	 bcs @D516
 	 jsr Math_divAby16
 	 bne GiveExperience_TestMaxLevelReached
 	@D516:
@@ -3272,7 +3286,7 @@ _loc_1D672:
 	cmp #$10
 	bcc @D737
 	@D764:
-	 jmp --		; $D6F4
+	 jmp @D6F4
 ;------------------------------------------
 AccumulateClockTime:
 	lda CurrentLevelMapType
@@ -6296,6 +6310,9 @@ Convert_6A_13_14_into_NameTableAddress:
 	sec
 	sbc #$1E
 	bpl @EB37
+	
+							; A = $6A mod 30
+	@EB40:
 	ldx #$00
 	stx NameTableAddressHi
 	jsr Math_mulAby16
@@ -6303,6 +6320,7 @@ Convert_6A_13_14_into_NameTableAddress:
 	asl a
 	rol NameTableAddressHi
                             ; $5F:$5E = ($6A mod 30) * 32:
+	@EB5B:
 	sta NameTableAddressLo
 	lda Unknown13_Horizontal_32pixelUnitForObject
 	asl a
@@ -6504,18 +6522,18 @@ DialogAction_PlayPasswordCursorMovingSoundEffect:
 	@EC87:
 	lda FrameCounter
 	and #$03
-	bne @EC9E
+	bne _EC9E
 	lda CurrentHP
 	clc
 	adc #$01
 	sta CurrentHP
 	cmp CurrentMaxHP
-	bcc @EC9E
+	bcc _EC9E
 	lda CurrentMaxHP
 	sta CurrentHP
 _loc_1EC9C:
 	inc DialogActionState
-	@EC9E:
+	_EC9E:
 	rts
 ;------------------------------------------
 DialogAction_ChangeSomeActorsSomehow:
@@ -6636,7 +6654,7 @@ TryBuyGarlics:
 ;------------------------------------------
 DialogAction_MerchantConfirmAction:
 	lda DialogText_Saved_CharacterIndex
-	beq @ED66
+	beq _loc_1ED66
 	jsr Merchant_ChooseSellingItem_times3
                             ;  0,0 = laurels:
                             ;  1,3 = laurels, at cost 2000:
@@ -6761,7 +6779,7 @@ DialogAction_MerchantConfirmationShow:
 	jsr StatusScreenAndMerchants_InitializePPUsendQueue_For_CursorHandling
 	lda FrameCounter
 	and #$04
-	beq @EE4D
+	beq _loc_1EE4D
 DialogBox_RenderDownArrow:
 	ldy DialogText_Saved_CharacterIndex
 	lda MerchantCursorPositionsIntoPPUsendQueue,y
@@ -6906,7 +6924,7 @@ DialogAction_PlayTransformationSoundEffect:
 DialogAction_WaitFor_B_key:
 	lda Input_NewJoyButtonsWork
 	and #$40
-	beq @EF21
+	beq _loc_1EF21
 DialogAction06c_or_08b_Goto_06a:
 	jmp DialogAction_DetermineDialogBoxCoordinates
 ;------------------------------------------
@@ -7431,14 +7449,14 @@ DialogAction_ItemMenuPauseScreen_ButtonPressed_Right:
 	bne @F2B7
 	lda InventoryMiscItems1
 	and #$0C
-	beq @F2E4
+	beq DialogAction_ItemMenuPauseScreen_DoneCursorMovement
 	@F2B7:
 	jsr _func_1F28C
 	jmp DialogAction_ItemMenuPauseScreen_DoneCursorMovement_Do_SFX
 
 	@F2BD:
 	   lda InventoryBodyParts1
-	beq @F2E4
+	beq DialogAction_ItemMenuPauseScreen_DoneCursorMovement
 	ldy InventoryBodyPartSelection
 	iny
 	cpy #$07
@@ -7501,7 +7519,7 @@ _loc_1F307:
 	jsr StatusScreenAndMerchants_InitializePPUsendQueue_For_CursorHandling
 	lda FrameCounter
 	and #$04
-	beq @F35C
+	beq _loc_1F35C
 	lda InventoryBodyPartSelection
 	beq @F329
 	ldy InventoryBodyPartSelection
@@ -7524,9 +7542,9 @@ StatusScreen_AnimateItemsLine:
 	jsr StatusScreen_Add_PPUsendQueueSlots_For_LaurelsAndGarlics
 	lda FrameCounter
 	and #$04
-	beq @F35C
+	beq _loc_1F35C
 	ldy InventoryCursorSelected1
-	beq @F35C
+	beq _loc_1F35C
 	dey
 	lda StatusScreenCursorPositionsIntoPPUsendQueue,y
 DialogBox_RenderDownArrow_StatusScreen_ReplaceArrowOnThisLine:
@@ -7552,7 +7570,7 @@ StatusScreen_PutDownArrowForItemsLine:
 	sta $16
 	ldy InventoryCursorSelected1
 DialogBox_RenderDownArrow_StatusScreen_PutArrowOnTheOtherLine:
-	beq @F35C
+	beq _loc_1F35C
 	dey
 	lda _data_1F386_indexed,y
 	jsr DialogBox_GoForwardHorizontally
@@ -7681,7 +7699,7 @@ _loc_1F449:
 	dec Temp07
 	beq @F488
 	dec Temp93
-	bne $F449
+	bne _loc_1F449
 	stx PPUsendQueueHead
 	lda NameTableAddressLo
 	and #$20

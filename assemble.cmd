@@ -17,6 +17,8 @@ if exist "out\Castlevania2.nes" (copy "out\Castlevania2.nes" "out\Castlevania2.b
 
 if not exist out\ (mkdir out)
 
+:Assemble
+
 echo.
 echo [1;33mAssembling Castlevania II...[0m
 echo.
@@ -78,7 +80,7 @@ if not exist "%emulator%" goto End
 set /p ask=Launch emulator (Y/[N])? 
 if /i "%ask%" neq "Y" goto End
 
-start "" %emulator% "out\Ultima I.nes"
+start "" %emulator% "out\Castlevania2.nes"
 exit /b
 
 :End
@@ -89,8 +91,11 @@ exit /b
 echo.
 echo ... [1;34mErrors found, think harder![0m
 echo.
-pause
 del *.lst >nul 2>&1
+
+choice /C YN /M "Try again"
+if "%errorlevel%"=="1" goto Assemble
+
 exit /b 1
 
 

@@ -2,12 +2,23 @@
     TempPtr02_lo = $02                          ; $02
     TempPtr08_lo = $08                          ; $08
 
+	ObstaclePointerLo = $0A						; $0A
+	
+	Unknown10_CollisionAndScrollingTemp = $10	; $10
+
     MainMenuOptionIndex = $23                   ; $23
 
     CurrentLevelData_Actors_PointerLo = $3D     ; $3D
     InventoryBodyPartSelection = $4F            ; $4F
     CurrentLevelSceneNumber = $50               ; $50
+	LevelData_MetaTiles_pointerLo = $63			; $63
+	LevelData_CategoryThresholds_pointerLo = $6E	; $6E
+	DialogText_Ycoord = $77						; $77
+	DialogText_Saved_ID = $79					; $79
     DialogTextID = $7F                          ; $7F
+	CurrentDayBCD = $83							; $83
+	
+	Temp94 = $94								; $94
 
     SoundEffectRelatedPtrLo = $99               ; $99
     SoundEffectRelatedPtrHi = $9A               ; $9A
@@ -26,6 +37,7 @@
     Sound_CUrrentSongNumber_Channel5_Percussion = $B6   ; $B6
     Sound_FlagsC3_Channel0_square0 = $C3                ; $C3
 
+	Input_CurrentJoyButtonsOrig = $F1				; $F1
     Input_NewJoyButtonsWork = $F5                   ; $F5
     Input_CurrentJoyButtonsWork = $F7               ; $F7
 
@@ -69,6 +81,8 @@
 
     ObjectEnemyRemainingHP = $04C2              ; $04C2
     ObjectDialogTextIndex = $04D7               ; $04D7
+	
+	Unknown04ED_finalConfrontationRelated = $04ED	; $04ED
 
     APU_HW__4008_Reg0_channel2 = $4008          ; $4008
     APU_HW__4015_EnableChannelsMask = $4015     ; $4015

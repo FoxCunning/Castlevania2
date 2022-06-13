@@ -44,15 +44,15 @@ _loc_C030:
 ;------------------------------------------
 SwampTreadingTest:
 	lda RemainingLaurelPower
-	bne @8030
+	bne _loc_C030
 	lda TimeFlag8F_TimeIsStopped
 	and #$01
-	beq @8030
+	beq _loc_C030
 	lda #$00
 	ldy #$08
 	jsr Simon_CheckMapCollision
 	cmp #$03
-	bne @8030
+	bne _loc_C030
 	lda TimeFlag8F_TimeIsStopped
 	bmi @807D
 	lda FrameCounter
@@ -78,7 +78,7 @@ SwampTreadingTest:
 	@8072:
 	 lda FrameCounter
 	and #$0F
-	bne @8030
+	bne _loc_C030
 	lda #$01
 	jmp DecreaseHPbyA
 
@@ -172,34 +172,34 @@ _func_C0D3:
 	@8121:
 	lda ObjectScreenYCoord
 	cmp #$E0
-	bcc @8145
+	bcc _8145
 	lda #$18
 	jmp _func_C0C5
 
-	@812D:
+	_812D:
 	  lda #$00
 	sta $37
 	sta $3A
 	lda ObjectCurrentActionType
 	cmp #$FF
-	bne @8146
+	bne _8146
 	dec $35
-	bne @8145
+	bne _8145
 	lda #$06
 	sta CurrentPlotAction
 	jsr _func_1C0B3
-	@8145:
+	_8145:
 	rts
 
-	@8146:
+	_8146:
 	 jsr _func_C0D3
 	ldx #$00
 	jmp ObjectLoadAutomaticSpriteNumber
 
-	@814E:
+	_814E:
 	 lda #$00
 	sta ObjectPaletteIndex
-	beq @81A1
+	beq _81A1
 ;------------------------------------------
 _loc_C155:
 	lda #$00
@@ -211,7 +211,7 @@ _loc_C155:
 	sta $36
 	@8164:
 	lda DeathStateRelatedFlagMaybe
-	bne @812D
+	bne _812D
 	lda CurrentHP
 	bne @8175
 	lda #$FF
@@ -235,7 +235,7 @@ _loc_C155:
 	@818B:
 	 sty UnknownFlag04D6
 	lda RemainingLaurelPower
-	beq @814E
+	beq _814E
 	lda FrameCounter
 	and #$01
 	beq @819C
@@ -243,7 +243,7 @@ _loc_C155:
 	@819C:
 	ldx #$00
 	jsr Object_FlashPalette
-	@81A1:
+	_81A1:
 	  jsr _func_C090
 	jsr SwampTreadingTest
 	jsr _func_1D5C9
@@ -337,7 +337,7 @@ _func_C227:
 	bne _827A
 	lda $68
 	tay
-	beq @8280
+	beq _loc_C280
 	dey
 	beq @8269
 	lda ObjectScreenYCoord
@@ -348,7 +348,7 @@ _func_C227:
 	beq _827A
 	lda ObjectYSpeed
 	cmp #$02
-	bcc @8280
+	bcc _loc_C280
 	lda #$40
 	bne _loc_C27C
 
@@ -357,7 +357,7 @@ _func_C227:
 	cmp #$81
 	bcs _827A
 	lda Current_WhatUnknown57
-	bne @8280
+	bne _loc_C280
 	lda CurrentYScrollingPositionPixels_Mod240
 	ora $55
 	bne _loc_C280
@@ -400,7 +400,7 @@ _loc_C280:
 	lda #$FF
 	bne @8293
 
-	@82B9:
+	_82B9:
 	lda $68
 	and #$03
 	cmp #$01
@@ -458,7 +458,7 @@ _func_C2DE:
 
 	@8318:
 	asl a
-	bcs @82B9
+	bcs _82B9
 	lda $55
 	adc ObjectYSpeedFrac
 	sta $55
@@ -826,20 +826,21 @@ _func_C510:
 
 	@8573:
 	sec
+	_8574:
 	rts
 
-	@8575:
+	_8575:
 	lda ObjectXSpeed
 	jmp @8582
 ;------------------------------------------
 _func_C57B:
 	lda ObjectCurrentActionType
 	cmp #$04
-	beq @8575
+	beq _8575
 	@8582:
 	ldy #$00
 	cmp #$07
-	bcs @8509
+	bcs _8574
 	cmp #$02
 	beq @8594
 	cmp #$05
@@ -942,7 +943,7 @@ _loc_C632:
 	lda Temp93
 	beq _loc_C684
 	lda ObjectYSpeed
-	bmi @867E
+	bmi _loc_C67E
 	jsr _func_C6FF
 	ldy #$10
 	jsr Simon_CheckMapCollision_LeftAndRight
@@ -954,7 +955,7 @@ _loc_C632:
 	cmp #$01
 	beq @8655
 	cmp #$02
-	bne @867E
+	bne _loc_C67E
 	@8655:
 	   jsr _func_C4F3
 _loc_C658:
@@ -1046,24 +1047,24 @@ Simon_CheckMapCollision_LeftAndRight:
 _func_C6FF:
 	lda TimeFlag8F_TimeIsStopped
 	and #$01
-	beq @8722
+	beq _8722
 	ldy #$00
 	jsr Simon_CheckMapCollision_LeftAndRight
 	cmp #$03
-	bne @8722
+	bne _8722
 	jmp @8655
 ;------------------------------------------
 _func_C711:
 	lda TimeFlag8F_TimeIsStopped
 	and #$01
-	beq @8722
+	beq _8722
 	ldy #$00
 	jsr Simon_CheckMapCollision_LeftAndRight
 	cmp #$03
-	bne @8722
+	bne _8722
 	pla
 	pla
-	@8722:
+	_8722:
 	rts
 ;------------------------------------------
 SimonExecuteCurrentAction0_Idle:
@@ -1234,9 +1235,9 @@ _func_C851:
 	lda $75
 	jmp @8860
 
-	@8858:
+	_8858:
 	ldy #$00
-	beq @886B
+	beq _886B
 ;------------------------------------------
 _func_C85C:
 	ldy Current_WhatUnknown57
@@ -1244,17 +1245,17 @@ _func_C85C:
 	@8860:
 	sec
 	sbc #$0D
-	bcs @886B
+	bcs _886B
 	dey
-	bmi @8858
+	bmi _8858
 	sec
 	sbc #$20
-	@886B:
+	_886B:
 	 sta TempPtr00_lo
 	sty TempPtr00_hi
 	jmp @8886
 
-	@8872:
+	_8872:
 	lda #$00
 	sta TempPtr00_lo
 	sta TempPtr00_hi
@@ -1264,7 +1265,7 @@ _func_C879:
 	lda ObjectScreenYCoord,x
 	sec
 	sbc #$0D
-	bcc @8872
+	bcc _8872
 	sta TempPtr00_lo
 	jsr _func_C83B
 	@8886:
@@ -1388,7 +1389,7 @@ _loc_C943:
 ;------------------------------------------
 SimonUseSpecialWeapon:
 	jsr SpecialWeaponUse_Try_FindSlot
-	bcc @8943
+	bcc _loc_C943
 	lda ObjectXSpeed
 	cmp #$09
 	beq @8957

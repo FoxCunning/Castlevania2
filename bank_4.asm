@@ -749,13 +749,13 @@ Ending_PrimaryAction00:
 	lda Ending_TypeDependingOnDays
 	beq @A1E8
 	dec ObjectPoseChangeCounter
-	bne @A1F4
+	bne _A1F4
 	lda #$30
 	sta ObjectPoseChangeCounter
 	inc ObjectCurrentPose1
 	lda ObjectCurrentPose1
 	cmp #$4E
-	bne @A1F4
+	bne _A1F4
 	@A1E8:
 	inc Ending_PrimaryActionIndex
 	lda #$40
@@ -764,7 +764,7 @@ Ending_PrimaryAction00:
 ;------------------------------------------
 _loc_121F1:
 	dec CurrentYScrollingPositionPixels_Mod240_BackupForExitRoom
-	@A1F4:
+	_A1F4:
 	 rts
 ;------------------------------------------
 Ending_PrimaryAction01_TextRenderLoop:
@@ -1405,13 +1405,13 @@ DecodePassword_DealWithInput:
 	bcs DecodePassword_DealWithInput_40_B_Pressed
 	lda FrameCounter
 	and #$07
-	bne @AB5A
+	bne _loc_12B5A
 	lda $0301
 	eor #$EF
 	sta $0301
 	lda Input_CurrentJoyButtonsWork
 	and #$0F
-	beq @AB5A
+	beq _loc_12B5A
 	lda #$05
 	jsr AnyBankPlayTracks
 	lda Input_CurrentJoyButtonsWork
@@ -1435,18 +1435,18 @@ DecodePassword_DealWithInput_80_A_Pressed:
 
 	@AB4F:
 	cmp #$24
-	beq @AB5B
+	beq _AB5B
 	cmp #$25
-	beq @AB61
+	beq _AB61
 	inc PasswordActionState
 _loc_12B5A:
 	rts
 
-	@AB5B:
+	_AB5B:
 	dec Password_CurrentCharacterPosition
 	jmp @ABBD
 
-	@AB61:
+	_AB61:
 	 inc Password_CurrentCharacterPosition
 	jmp @ABBD
 ;------------------------------------------
@@ -1677,11 +1677,11 @@ Display_InvalidPassword_Message:
 ;------------------------------------------
 DecodePassword_InitializeGameState_AfterAcceptedPasswordInput:
 	dec Password_DelayBeforeContinuing
-	beq @AD4D
+	beq _AD4D
 _loc_12D4C:
 	rts
 
-	@AD4D:
+	_AD4D:
 	lda #$A8
 	sta PPUdesiredRegister2000
 	jsr _func_1C530
@@ -1737,7 +1737,7 @@ _loc_12D4C:
 ;------------------------------------------
 DecodePassword_WaitForDelay_And_RedisplayEnterPasswordPrompt:
 	dec Password_DelayBeforeContinuing
-	bne @AD4C
+	bne _loc_12D4C
 	lda #$5B
 	jsr PPU_Text_ExtractAndSend_With_01prefix
 	lda #$02
@@ -1778,7 +1778,7 @@ _loc_12E01:
 EncodePassword_WaitForStartKey:
 	lda Input_NewJoyButtonsWork
 	and #$10
-	beq @AE01
+	beq _loc_12E01
 	lda #$01
 	sta Sound_FadeMode
 	lda #$C0
