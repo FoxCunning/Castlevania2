@@ -5,6 +5,9 @@
 	ObstaclePointerLo = $0A						; $0A
 	
 	Unknown10_CollisionAndScrollingTemp = $10	; $10
+	
+	Unknown13_Horizontal_32pixelUnitForObject = $13		; $13
+	Unknown14_Horizontal_256pixelUnitForObject = $14	; $14
 
     MainMenuOptionIndex = $23                   ; $23
 
@@ -13,6 +16,8 @@
     CurrentLevelSceneNumber = $50               ; $50
 	LevelData_MetaTiles_pointerLo = $63			; $63
 	LevelData_CategoryThresholds_pointerLo = $6E	; $6E
+	LevelData_Screens_pointerLo = $70			; $70
+	LevelData_Stairs_pointerLo = $72			; $72
 	DialogText_Ycoord = $77						; $77
 	DialogText_Saved_ID = $79					; $79
     DialogTextID = $7F                          ; $7F
@@ -35,8 +40,12 @@
     Sound_CurrentSongNumber_Channel0_square0 = $B1      ; $B1
     Sound_CurrentSongNumber_Channel2_triangle = $B3     ; $B3
     Sound_CUrrentSongNumber_Channel5_Percussion = $B6   ; $B6
+	Sound_TrackDataPointer1Hi_Channel0_square0 = $BD	; $BD
     Sound_FlagsC3_Channel0_square0 = $C3                ; $C3
-
+	
+	Sound_LoopBeginPointerLo_Channel0_square0 = $E1	; $E1
+	Sound_LoopBeginPointerHi_Channel0_square0 = $E7	; $E7
+	
 	Input_CurrentJoyButtonsOrig = $F1				; $F1
     Input_NewJoyButtonsWork = $F5                   ; $F5
     Input_CurrentJoyButtonsWork = $F7               ; $F7

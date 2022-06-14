@@ -40,7 +40,7 @@ for %%f in (bank_*.asm) do (
 
 :: Make sure all object files exist
 for %%o in (0 1 2 3 4 5 6 7) do (
-	if not exist out\bank_0%%o.o (
+	if not exist out\bank_%%o.o (
 		echo.
 		echo out\bank_%%o.o not found!
 		echo.
@@ -52,14 +52,14 @@ echo ... [1;32mdone[0m
 echo [1;33m
 <nul set /p=Linking ... 
 ld65 -C ld65.cfg -o out\C2.bin --dbgfile _debug.txt ^
-	out\bank_00.o ^
-	out\bank_01.o ^
-	out\bank_02.o ^
-	out\bank_03.o ^
-	out\bank_04.o ^
-	out\bank_05.o ^
-	out\bank_06.o ^
-	out\bank_07.o
+	out\bank_0.o ^
+	out\bank_1.o ^
+	out\bank_2.o ^
+	out\bank_3.o ^
+	out\bank_4.o ^
+	out\bank_5.o ^
+	out\bank_6.o ^
+	out\bank_7.o
 
 if %errorlevel% neq 0 goto Error
 echo [1;32mdone[0m

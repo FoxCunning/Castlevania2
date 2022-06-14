@@ -2601,4 +2601,9 @@ PPU_DirectToPPU_Data_ScreensList_5_mainmenu:
 	.byte $FF,$FF,$FF,$FF,$FF,$FF,$D8,$78,$EE,$FF,$FF,$4C,$00,$C0,$FF,$FF
 	.byte $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
 	.byte $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
-	.byte $46,$C0,$D0,$FF,$96,$C0
+
+.segment "VECT_04"
+	;.byte $46,$C0,$D0,$FF,$96,$C0
+	.word (_NMI) ;C046 (1C046) ()
+	.word (_Reset) ;FFD0 (1FFD0) ()
+	.word (_IRQ)

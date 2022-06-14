@@ -2056,4 +2056,9 @@
 	.byte $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
 	.byte $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
 	.byte $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
-	.byte $4E,$C0,$00,$C0,$9E,$C0
+
+.segment "VECT_05"
+	;.byte $4E,$C0,$00,$C0,$9E,$C0
+	.word (_NMI) ;C046 (1C046) ()
+	.word (_Reset) ;FFD0 (1FFD0) ()
+	.word (_IRQ)

@@ -48,6 +48,8 @@ Main_InfiniteLoop_UpdateRandomSeed:
 	sta RandomSeed
 	jmp Main_InfiniteLoop_UpdateRandomSeed
 ;------------------------------------------
+	.export _NMI
+	
 _NMI:
 	pha
 	 txa
@@ -89,6 +91,9 @@ EndNMI:
 	pla
 	tax
 	pla
+
+	.export _IRQ
+	
 _IRQ:
 	rti
 
@@ -2630,21 +2635,21 @@ Check_UpdateScrolling_Maybe:
 GameLoop_CheckIfPauseEnteredOrActive:
 	lda ObjectCurrentActionType
 	cmp #$0B
-	beq @D32D
+	beq _loc_1D32D
 	lda Unknown04ED_finalConfrontationRelated
-	bne @D32D
+	bne _loc_1D32D
 	lda $1E
 	ora GameInDeathState
 	ora ScreenBlankingCounter
-	bne @D32D
+	bne _loc_1D32D
 	lda Input_NewJoyButtonsWork
 	ldy GamePaused
 	beq Check_IfPauseEntered
 	dey
-	beq @D349
+	beq _loc_1D349
 SelectButtonPauseScreen_Run:
 	and #$20
-	beq @D32D
+	beq _loc_1D32D
 	lda #$00
 	sta GamePaused
 _loc_1D32D:
@@ -2655,7 +2660,7 @@ Check_IfPauseEntered:
 	bne PauseEntered_WithStart
 	lda Input_NewJoyButtonsWork
 	and #$20
-	beq @D32D
+	beq _loc_1D32D
 	lda #$02
 	bne PauseEntered_WithSelect
 ;------------------------------------------
@@ -3291,23 +3296,23 @@ _loc_1D672:
 AccumulateClockTime:
 	lda CurrentLevelMapType
 	cmp #$05
-	beq @D79D
+	beq _loc_1D79D
 	lda ObjectCurrentActionType
 	cmp #$0B
-	beq @D79D
+	beq _loc_1D79D
 	lda DeathStateRelatedFlagMaybe
-	bne @D79D
+	bne _loc_1D79D
 	lda TimeFlag8F_TimeIsStopped
 	cmp #$81
-	beq @D79D
+	beq _loc_1D79D
 	cmp #$01
-	beq @D79D
+	beq _loc_1D79D
 	ldy CurrentTimeWaitCounter
 	iny
 	cpy #$0F
 	bcs @D78E
 	sty CurrentTimeWaitCounter
-	jmp @D79D
+	jmp _loc_1D79D
 
 	@D78E:
 	lda #$00
@@ -3315,12 +3320,12 @@ AccumulateClockTime:
 	lda CurrentMinuteBCD
 	jsr MathBCD_additionBy1
 	cmp #$60
-	bcs @D79E
+	bcs _D79E
 	sta CurrentMinuteBCD
 _loc_1D79D:
 	rts
 
-	@D79E:
+	_D79E:
 	lda #$00
 	sta CurrentMinuteBCD
 	lda CurrentHourBCD
@@ -3332,7 +3337,7 @@ _loc_1D79D:
 	beq TriggerDayNightTransition
 	cmp #$18
 	beq TriggerDayNightTransition
-	jmp @D79D
+	jmp _loc_1D79D
 ;------------------------------------------
 IncreaseDayByOne:
 	lda #$00
@@ -3343,7 +3348,7 @@ IncreaseDayByOne:
 	jsr MathBCD_additionBy1
 	@D7C5:
 	sta CurrentDayBCD
-	jmp @D79D
+	jmp _loc_1D79D
 ;------------------------------------------
 MathBCD_additionBy1:
 	sta TempPtr08_lo
@@ -3599,14 +3604,14 @@ SpecialWeaponAI_Weapon7_OakStake:
 ;------------------------------------------
 SpecialWeaponAI_Run:
 	ldx #$03
-	@D96D:
+	_D96D:
 	 lda ObjectType,x
-	bmi @D9AC
+	bmi _loc_1D9AC
 	bne SpecialWeaponAI_RunForX
 _loc_1D974:
 	inx
 	cpx #$06
-	bcc @D96D
+	bcc _D96D
 	rts
 ;------------------------------------------
 SpecialWeaponAI_RunForX:
@@ -3748,14 +3753,14 @@ SpecialWeaponAI_Weapon3_GoldKnife:
 	jsr Object_FlashPalette
 	lda ObjectEnemyRemainingHP,x
 	tay
-	beq @DA6C
+	beq _loc_1DA6C
 	dey
 	beq _loc_1DA6D
 	dey
 	beq _loc_1DA76
 SpecialWeaponAI_Weapon1_Dagger:
 	dec ObjectAIvar5,x
-	bne @DA6C
+	bne _loc_1DA6C
 	@DA67:
 	  lda #$80
 	sta ObjectType,x
@@ -3771,7 +3776,7 @@ _loc_1DA72:
 ;------------------------------------------
 _loc_1DA76:
 	dec ObjectAIvar5,x
-	bne @DA6C
+	bne _loc_1DA6C
 	lda #$20
 	jsr SetObjectIndexToAutomaticSpriteDataTable_to_A_and_PaletteIndexTo0
 	lda #$82
@@ -3786,7 +3791,7 @@ SpecialWeaponAI_Weapon4_Bottle:
 	lda #$00
 	tay
 	jsr SpecialWeapon_CheckMapCollision
-	beq @DAC2
+	beq _DAC2
 	cmp #$01
 	beq @DAA7
 	lda #$16
@@ -3804,18 +3809,18 @@ SpecialWeaponAI_Weapon4_Bottle:
 SpecialWeaponAI_Weapon6_Flame:
 	lda ObjectEnemyRemainingHP,x
 	tay
-	beq @DAC3
+	beq _DAC3
 	dey
 	bne @DABF
 	jmp _loc_1DB0F
 
 	@DABF:
 	dey
-	beq @DAF7
-	@DAC2:
+	beq _DAF7
+	_DAC2:
 	   rts
 
-	@DAC3:
+	_DAC3:
 	  jsr Object_GravityAccelerateBy_020
 	lda #$00
 	sta TempPtr02_hi
@@ -3826,7 +3831,7 @@ SpecialWeaponAI_Weapon6_Flame:
 	adc #$08
 	sta TempPtr00_lo
 	jsr LoadObstacleBufferBits
-	beq @DAC2
+	beq _DAC2
 	lda #$21
 	jsr SetObjectIndexToAutomaticSpriteDataTable_to_A_and_PaletteIndexTo0
 	lda #$15
@@ -3838,7 +3843,7 @@ SpecialWeaponAI_Weapon6_Flame:
 	sta ObjectAIvar1,x
 	jmp _loc_1DA72
 
-	@DAF7:
+	_DAF7:
 	   lda ObjectCurrentPose2,x
 	cmp #$05
 	beq @DB05
@@ -4070,7 +4075,7 @@ _loc_1DC7D:
 	jsr DeleteSimonWhipObject
 	pla
 	pla
-	@DC85:
+	_DC85:
 	rts
 ;------------------------------------------
 _func_1DC86:
@@ -4089,7 +4094,7 @@ _func_1DC86:
 	beq @DCA9
 	cpy #$09
 	beq @DCB1
-	bne @DC85
+	bne _DC85
 	@DCA9:
 	jmp CheckIfBoneHeld_SetSimonAutomaticSprite_To_Table_Atimes2plusBone
 
@@ -4659,10 +4664,10 @@ Object_GeneringXYmovementEngine:
 	lda ObjectYSpeed,x
 	ror a
 	and #$C0
-	beq @E156
+	beq _E156
 	cmp #$C0
-	bne @E14C
-	beq @E156
+	bne _E14C
+	beq _E156
 	@E105:
 	   jsr _func_1E28B
 	@E108:
@@ -4698,16 +4703,16 @@ Object_GeneringXYmovementEngine:
 	bcc @E108
 	cmp #$E0
 	bcs @E108
-	@E149:
+	_E149:
 	jmp Object_Erase_And_IfType3C_Set_42to00
 
-	@E14C:
+	_E14C:
 	  lda ObjectCurrentActionType,x
 	and #$02
 	bne _loc_1E160
 	jmp @E105
 
-	@E156:
+	_E156:
 	   lda ObjectCurrentActionType,x
 	and #$02
 	bne _loc_1E160
@@ -4716,9 +4721,9 @@ Object_GeneringXYmovementEngine:
 _loc_1E160:
 	lda ObjectScreenYCoord,x
 	cmp #$E0
-	bcs @E149
+	bcs _E149
 	cmp #$20
-	bcc @E149
+	bcc _E149
 _loc_1E16B:
 	lda ObjectScreenXCoordFrac,x
 	clc
@@ -4747,9 +4752,9 @@ _loc_1E16B:
 	@E19E:
 	   lda ObjectScreenXCoord,x
 	cmp #$FC
-	bcs @E149
+	bcs _E149
 	cmp #$0C
-	bcc @E149
+	bcc _E149
 	rts
 ;------------------------------------------
 Object_GeneringXmovementEngine:
@@ -4760,7 +4765,7 @@ Object_GeneringXmovementEngine:
 
 	@E1B4:
 	lda $37
-	beq @E1F3
+	beq _loc_1E1F3
 	bmi _loc_1E219
 	clc
 	adc ObjectScreenXCoord,x
@@ -4778,10 +4783,10 @@ _loc_1E1C3:
 	and #$FE
 	@E1D6:
 	 sta ObjectDialogStatusFlag,x
-	@E1D9:
+	_E1D9:
 	 lda ObjectDialogStatusFlag,x
 	and #$01
-	bne @E1F3
+	bne _loc_1E1F3
 	lda ObjectScreenXCoord,x
 	cmp #$F8
 	bcs _loc_1E1F4
@@ -4796,7 +4801,7 @@ _loc_1E1F3:
 _loc_1E1F4:
 	lda ObjectDialogStatusFlag,x
 	and #$80
-	bne @E1F3
+	bne _loc_1E1F3
 	lda ObjectDialogStatusFlag,x
 	ora #$80
 	sta ObjectDialogStatusFlag,x
@@ -4805,12 +4810,12 @@ _loc_1E1F4:
 _loc_1E204:
 	lda ObjectDialogStatusFlag,x
 	and #$01
-	beq @E1D9
+	beq _E1D9
 	lda ObjectScreenXCoord,x
 	cmp #$40
-	bcc @E1D9
+	bcc _E1D9
 	cmp #$C0
-	bcs @E1D9
+	bcs _E1D9
 	jmp Object_Erase_And_IfType3C_Set_42to00
 ;------------------------------------------
 _loc_1E219:
@@ -4903,7 +4908,7 @@ Object_GenericCollisionHelper_ParamAY_ReturnCarry_IfFrameOddThenDefaultCLC:
 	sty Temp97
 	lda FrameCounter
 	and #$01
-	bne @E2FA
+	bne _E2FA
 _loc_1E2B9:
 	ldy #$00
 	lda Temp93
@@ -4940,7 +4945,7 @@ _loc_1E2B9:
 	beq _loc_1E2FC
 	cmp #$03
 	beq _loc_1E2FC
-	@E2FA:
+	_E2FA:
 	  clc
 	rts
 ;------------------------------------------
@@ -5229,7 +5234,7 @@ _loc_1E415:
 	@E4BA:
 	jsr PPU_Text_PutFF
 	dec $98
-	beq @E4F2
+	beq _E4F2
 	jmp @E3FB
 
 	@E4C4:
@@ -5252,7 +5257,7 @@ _func_1E4DB:
 	sta $6B
 	lda CurrentYScrollingPosition_SomeOtherUnit
 	cmp $69
-	beq @E4F2
+	beq _E4F2
 	sta $69
 	lda $68
 	and #$03
@@ -5261,13 +5266,13 @@ _func_1E4DB:
 	beq _loc_1E4F3
 	dey
 	beq _loc_1E4FC
-	@E4F2:
+	_E4F2:
 	     rts
 ;------------------------------------------
 _loc_1E4F3:
 	ldx #$00
 	lda CurrentYScrollingPosition_SomeOtherUnit
-	bmi @E4F2
+	bmi _E4F2
 	jmp _loc_1E500
 ;------------------------------------------
 _loc_1E4FC:
@@ -5408,8 +5413,8 @@ _loc_1E5CC:
 	dey
 	beq @E5EC
 	lda $68
-	beq @E607
-	bmi @E607
+	beq _E607
+	bmi _E607
 	jmp _func_1E832
 
 	@E5E8:
@@ -5423,7 +5428,7 @@ _loc_1E5CC:
 	lda $5A,x
 	sta Unknown6A_ScrollingRelated
 	lda $58,x
-	bmi @E607
+	bmi _E607
 	sta Temp07
 	jsr _func_1EA96
 _loc_1E5FD:
@@ -5433,7 +5438,7 @@ _loc_1E5FD:
 _loc_1E603:
 	ldx $96
 	sta $5A,x
-	@E607:
+	_E607:
 	   rts
 ;------------------------------------------
 _loc_1E608:
@@ -5599,8 +5604,10 @@ SubstituteBlockCheckFakeBlocks:
 	and #$01
 	beq @E71B
 	iny
+                            ; Stupid code: This table contains zeros.
                             ; The whole part from $E6F8 to $E71E:
                             ; could be replaced with simply 'lda #0' and 'rts'.:
+	@E71B:
 	lda _data_1E728_indexed,y
 	rts
 
@@ -8519,6 +8526,9 @@ DataTableEntry_1FF00:
 	.byte $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
 	.byte $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
 	.byte $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
+	
+	.export _Reset
+	
 _Reset:
 	cld
 	sei
@@ -8529,7 +8539,10 @@ _Reset:
 	.byte $00,$43,$41,$53,$54,$4C,$45,$32,$00,$00,$00,$00,$38,$02,$01,$06
 _data_1FFF8:
 	.byte $A4,$1B
+
+
+.segment "VECTORS"
 SystemVectorTable:
 	.word (_NMI) ;C046 (1C046) ()
 	.word (_Reset) ;FFD0 (1FFD0) ()
-	.word @C096
+	.word (_IRQ)
