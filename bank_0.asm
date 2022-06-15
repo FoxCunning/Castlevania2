@@ -415,7 +415,7 @@ SoundData5A_EndingSong_ch0:
 	.byte $B0,$E1,$07,$E7,$26,$E2,$47,$77,$73
 _func_08A2:
 	sta Sound_LoopBeginPointerHi_Channel0_square0
-	.byte MainMenuOptionIndex
+	.byte $23	; MainMenuOptionIndex
 
 	.byte $E2,$A1,$E1,$01,$E2,$81,$E7,$26,$E2,$27,$57,$53,$75,$E7,$23,$E2
 	.byte $81,$A1,$71,$E7,$26,$E2,$89,$E7,$23,$E1,$71,$51,$31,$E7,$26,$E2
@@ -2381,7 +2381,7 @@ SoundData48_MansionSong_ch5:
 	.byte $D7,$FB,$B1,$B0,$A1,$B0,$FE,$02,$B1,$B0,$A0,$A0,$A0,$B2,$B0,$A0
 	.byte $A0,$FB,$B1,$B0,$A1,$B0,$FE
 _loc_2767:
-	.byte TempPtr02_lo
+	.byte $02	; TempPtr02_lo
 
 	.byte $B1,$B0,$A1,$A0,$B0,$A0,$A0,$A0,$A0,$A0,$B2,$A2,$B2,$A0,$A0,$A0
 	.byte $B1,$B0,$B0,$A0,$A0,$B0,$B0,$B0,$A0,$A0,$A0,$FB,$B1,$B0,$A1,$B0

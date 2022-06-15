@@ -6,3 +6,5 @@
 .feature pc_assignment
 
 .include "globals.inc"
+
+.res 16384, $FF

@@ -8447,6 +8447,9 @@ LevelData_Screens_0_Towns_14_A:
 	.word (LevelData_Screen_Map0_14_and_0_15) ;81F7 (81F7) ([8:4][A:5])
 	.word (LevelData_Screen_Map0_9_and_0_10_and_0_14) ;822F (822F) ([8:4][A:5])
 	.word (LevelData_Screen_Blank) ;F807 (1F807) ([8:4][A:5])
+
+; -----------------------------------------------------------------------------
+	.export Sound_PCMsample5D_Config
 Sound_PCMsample5D_Config:
 	.byte $0E,$7F,$F3
 DataTableEntry_1FBC7:
