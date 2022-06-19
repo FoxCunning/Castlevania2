@@ -295,7 +295,7 @@ _func_41CD:
 	lda ObjectType,x
 	jsr JumpWithParams
 _JumpPointerTable_41D3:
-	.word @829A
+	.word (ObjectAI_object00_23)
 	.word (ObjectAI_object01) ;8FAA (4FAA) ()
 	.word (ObjectAI_object02_Leech) ;A513 (6513) ()
 	.word (ObjectAI_object03_Skeleton) ;83B4 (43B4) ()
@@ -330,7 +330,7 @@ _JumpPointerTable_41D3:
 	.word (ObjectAI_object20) ;9762 (5762) ()
 	.word (ObjectAI_object21_22_34_FloatingPlatform) ;854B (454B) ()
 	.word (ObjectAI_object21_22_34_FloatingPlatform) ;854B (454B) ()
-	.word @829A
+	.word (ObjectAI_object00_23)
 	.word (ObjectAI_object24_TownSign) ;905A (505A) ()
 	.word (ObjectAI_object25_CrystalBallAndBodypartBag) ;93BF (53BF) ()
 	.word (ObjectAI_object26_27_ClueBook) ;8335 (4335) ()

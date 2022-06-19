@@ -14,12 +14,19 @@
 	Unknown14_Horizontal_256pixelUnitForObject = $14	; $14
 
     MainMenuOptionIndex = $23                   ; $23
-
+    RandomSeed = $2E                            ; $2E
     CurrentLevelMapType = $30                   ; $30
+    Unknown39_From_XscrollingPositionDividedBy16 = $39  ; $39
+    Unknown3B_From_8C8D_dividedBy16 = $3B       ; $3B
+    ActorSpawnControlUnknown3C = $3C            ; $3C
     CurrentLevelData_Actors_PointerLo = $3D     ; $3D
+    CurrentLevelData_Actors_PointerHi = $3E     ; $3E
+    Unknown42 = $42                             ; $42
     InventoryBodyPartSelection = $4F            ; $4F
     CurrentLevelSceneNumber = $50               ; $50
-    CurrentLevelSubRoomNumber = $51
+    CurrentLevelSubRoomNumber = $51             ; $51
+    CurrentXScrollingPositionPixels = $53       ; $53
+    CurrentXScrollingPositionScreens = $54      ; $54
 	LevelData_MetaTiles_pointerLo = $63			; $63
 	LevelData_CategoryThresholds_pointerLo = $6E	; $6E
 	LevelData_Screens_pointerLo = $70			; $70
@@ -27,8 +34,12 @@
 	DialogText_Ycoord = $77						; $77
 	DialogText_Saved_ID = $79					; $79
     DialogTextID = $7F                          ; $7F
+    IsNightTime = $82                           ; $82
 	CurrentDayBCD = $83							; $83
+    CurrentYScrollingPositionPixels_Mod256 = $8C    ; $8C
+    CurrentYScrollingPositionScreens_maybe = $8D    ; $8D
 	
+    Temp93 = $93                                ; $93
 	Temp94 = $94								; $94
 
     SoundEffectRelatedPtrLo = $99               ; $99
@@ -103,20 +114,23 @@
     Sound_PCMsampleActive = $016C                   ; $016C
 
     ObjectCurrentPose1 = $0300                  ; $0300
-
+    ObjectPaletteIndex = $0312                  ; $0312
     ObjectScreenYCoord = $0324                  ; $0324
     ObjectScreenYCoordFrac = $0336              ; $0336
+    ObjectScreenXCoord = $0348                  ; $0348
     ObjectScreenXCoordFrac = $035A              ; $035A
     ObjectYSpeed = $036C                        ; $036C
     ObjectYSpeedFrac = $037E                    ; $037E
     ObjectXSpeed = $0390                        ; $0390
 
     ObjectType = $03B4                          ; $03B4
+    ObjectDialogStatusFlag = $03C6              ; $03C6
     ObjectCurrentActionType = $03D8             ; $03D8
     ObjectPoseChangeCounter = $03EA             ; $03EA
     ObjectCurrentPose2 = $03FC                  ; $03FC
 
     ObjectFacingLeft = $0420                    ; $0420
+    ObjectUnknown432 = $0432                    ; $0432
 
     ObjectAIvar1 = $0444                        ; $0444
     UnknownFlag0446 = $0446                     ; $0446
@@ -126,11 +140,10 @@
     ObjectAIvar4 = $048C                        ; $048C
     ObjectAIvar5 = $049E                        ; $049E
     ObjectAIvar6 = $04B0                        ; $04B0
-
     ObjectEnemyRemainingHP = $04C2              ; $04C2
     ObjectDialogTextIndex = $04D7               ; $04D7
-	
 	Unknown04ED_finalConfrontationRelated = $04ED	; $04ED
+    ObjectStunCounter = $04F8                   ; $04F8
 
     APU_HW__4000_Reg0 = $4000                       ; $4000
     APU_HW__4001_Reg1_SweepControl = $4001          ; $4001
