@@ -8,6 +8,8 @@
 .include "globals.inc"
 
 
+; -----------------------------------------------------------------------------
+	.export Simon_TryAvoidCollision
 Simon_TryAvoidCollision:
                           ; If Simon's feet (X+0, Y+$10) are colliding with type $0 or $3, try:
                             ;   First move him left by 8 pixels:
@@ -201,6 +203,7 @@ _func_C0D3:
 	sta ObjectPaletteIndex
 	beq _81A1
 ;------------------------------------------
+	.export _loc_C155
 _loc_C155:
 	lda #$00
 	sta $36
@@ -755,6 +758,8 @@ _func_C4AA:
 ;------------------------------------------
 _func_C4F3:
 	ldx #$00
+
+	.export _func_C4F5
 _func_C4F5:
 	jsr _func_C879
 	lda TempPtr00_lo

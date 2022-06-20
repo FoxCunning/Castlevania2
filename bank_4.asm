@@ -8,6 +8,9 @@
 .include "globals.inc"
 
 
+	_data_7020 = $7020
+	_data_1F0EF = $F0EF
+
 PPU_DirectToPPU_Data_ScreensList_1_title:
 	.byte $00,$20,$6B,$00,$8B,$21,$22,$23,$24,$25,$26,$27,$28,$29,$2A,$2B
 	.byte $14,$00,$8C,$30,$31,$32,$33,$34,$35,$2C,$2D,$2E,$2F,$42,$43,$14
@@ -555,143 +558,245 @@ LevelData_MetaTiles_5_Ruins:
 	.byte $00,$00,$00,$E9,$EA,$00,$00,$ED,$EE,$F6,$F8,$F6,$F8,$F7,$F9,$F7
 	.byte $F9,$EB,$EC,$00,$00,$EF,$F0,$00,$00,$F6,$F8,$F6,$F8,$F7,$F9,$F7
 	.byte $F9
+
+	.export PPU_Text_StringsList_14_bank4_palettesWithoutPrefix
 PPU_Text_StringsList_14_bank4_palettesWithoutPrefix:
 	.byte $0F,$0C,$1C,$03, $0F,$0C,$02,$1C, $0F,$0C,$11,$0F, $0F,$01,$31,$05
 	.byte $FF
+
+	.export PPU_Text_StringsList_15_bank4_palettesWithoutPrefix
 PPU_Text_StringsList_15_bank4_palettesWithoutPrefix:
 	.byte $0F,$00,$3C,$0C, $0F,$03,$13,$33, $0F,$00,$20,$21, $0F,$11,$20,$15
 	.byte $FF
+
+	.export PPU_Text_StringsList_16_bank4_palettesWithoutPrefix
 PPU_Text_StringsList_16_bank4_palettesWithoutPrefix:
 	.byte $0F,$00,$10,$05, $0F,$00,$16,$10, $0F,$00,$10,$22, $0F,$11,$20,$15
 	.byte $FF
+
+	.export PPU_Text_StringsList_17_bank4_palettesWithoutPrefix
 PPU_Text_StringsList_17_bank4_palettesWithoutPrefix:
 	.byte $0F,$00,$10,$0C, $0F,$04,$18,$10, $0F,$00,$10,$22, $0F,$11,$20,$15
 	.byte $FF
+
+	.export PPU_Text_StringsList_18_bank4_palettesWithoutPrefix
 PPU_Text_StringsList_18_bank4_palettesWithoutPrefix:
 	.byte $0F,$00,$10,$04, $0F,$08,$1C,$10, $0F,$00,$10,$22, $0F,$11,$20,$15
 	.byte $FF
+
+	.export PPU_Text_StringsList_19_bank4_palettesWithoutPrefix
 PPU_Text_StringsList_19_bank4_palettesWithoutPrefix:
 	.byte $0F,$00,$10,$0C, $0F,$04,$14,$10, $0F,$00,$10,$22, $0F,$11,$20,$15
 	.byte $FF
+
+	.export PPU_Text_StringsList_1A_bank4_palettesWithoutPrefix
 PPU_Text_StringsList_1A_bank4_palettesWithoutPrefix:
 	.byte $0F,$00,$10,$01, $0F,$01,$17,$33, $0F,$00,$10,$22, $0F,$11,$20,$15
 	.byte $FF
+
+	.export PPU_Text_StringsList_1B_bank4_palettesWithoutPrefix
 PPU_Text_StringsList_1B_bank4_palettesWithoutPrefix:
 	.byte $0F,$00,$10,$01, $0F,$07,$17,$10, $0F,$00,$10,$23, $0F,$11,$20,$15
 	.byte $FF
+
+	.export PPU_Text_StringsList_1C_bank4_palettesWithoutPrefix
 PPU_Text_StringsList_1C_bank4_palettesWithoutPrefix:
 	.byte $0F,$00,$20,$0C, $0F,$00,$10,$20, $0F,$00,$20,$23, $0F,$11,$20,$15
 	.byte $FF
+
+	.export PPU_Text_StringsList_1D_bank4_palettesWithoutPrefix
 PPU_Text_StringsList_1D_bank4_palettesWithoutPrefix:
 	.byte $0F,$00,$10,$01, $0F,$02,$12,$20, $0F,$00,$10,$20, $0F,$11,$20,$15
 	.byte $FF
+
+	.export PPU_Text_StringsList_2E_bank4_palettesWithoutPrefix
 PPU_Text_StringsList_2E_bank4_palettesWithoutPrefix:
 	.byte $0F,$17,$20,$0F, $0F,$00,$20,$0F, $FE
+
+	.export PPU_Text_StringsList_0D_bank4_palettesWithoutPrefix
 PPU_Text_StringsList_0D_bank4_palettesWithoutPrefix:
 	.byte $0F,$0C,$1C,$03, $0F,$01,$11,$13, $0F,$01,$11,$13, $0F,$01,$31,$05
 	.byte $FF
+
+	.export PPU_Text_StringsList_0E_bank4_palettesWithoutPrefix
 PPU_Text_StringsList_0E_bank4_palettesWithoutPrefix:
 	.byte $0F,$00,$10,$05, $0F,$01,$16,$18, $0F,$06,$16,$36, $0F,$11,$20,$15
 	.byte $FF
+
+	.export PPU_Text_StringsList_47_bank4_palettesWithoutPrefix
 PPU_Text_StringsList_47_bank4_palettesWithoutPrefix:
 	.byte $0F,$21,$20,$0F, $0F,$00,$20,$0F, $FE
+
+	.export PPU_Text_StringsList_0F_bank4_palettesWithoutPrefix
 PPU_Text_StringsList_0F_bank4_palettesWithoutPrefix:
 	.byte $0F,$00,$10,$0B, $0F,$0A,$17,$00, $0F,$06,$09,$37, $0F,$11,$20,$15
 	.byte $FF
+
+	.export PPU_Text_StringsList_48_bank4_palettesWithoutPrefix
 PPU_Text_StringsList_48_bank4_palettesWithoutPrefix:
 	.byte $0F,$1C,$3C,$0F, $0F,$11,$20,$0F, $FE
+
+	.export PPU_Text_StringsList_10_bank4_palettesWithoutPrefix
 PPU_Text_StringsList_10_bank4_palettesWithoutPrefix:
 	.byte $0F,$00,$10,$0C, $0F,$0C,$06,$17, $0F,$05,$0B,$34, $0F,$11,$20,$15
 	.byte $FF
+
+	.export PPU_Text_StringsList_49_bank4_palettesWithoutPrefix
 PPU_Text_StringsList_49_bank4_palettesWithoutPrefix:
 	.byte $0F,$23,$20,$0F, $0F,$13,$20,$0F, $FE
+
+	.export PPU_Text_StringsList_11and12_bank4_palettesWithoutPrefix
 PPU_Text_StringsList_11and12_bank4_palettesWithoutPrefix:
 	.byte $0F,$00,$10,$09, $0F,$02,$18,$1A, $0F,$05,$00,$34, $0F,$11,$20,$15
 	.byte $FF
+
+	.export PPU_Text_StringsList_4A_bank4_palettesWithoutPrefix
 PPU_Text_StringsList_4A_bank4_palettesWithoutPrefix:
 	.byte $0F,$14,$20,$0F, $0F,$14,$20,$0F, $FE
+
+	.export PPU_Text_StringsList_13_bank4_palettesWithoutPrefix
 PPU_Text_StringsList_13_bank4_palettesWithoutPrefix:
 	.byte $0F,$00,$10,$01, $0F,$0C,$00,$10, $0F,$05,$00,$10, $0F,$11,$20,$15
 	.byte $FF
+
+	.export PPU_Text_StringsList_4B_bank4_palettesWithoutPrefix
 PPU_Text_StringsList_4B_bank4_palettesWithoutPrefix:
 	.byte $0F,$12,$20,$0F, $0F,$17,$20,$0F, $FE
+
+	.export PPU_Text_StringsList_22_bank4_palettesWithoutPrefix
 PPU_Text_StringsList_22_bank4_palettesWithoutPrefix:
 	.byte $0F,$00,$10,$0A, $0F,$16,$1A,$06, $0F,$22,$17,$1A, $0F,$11,$20,$15
 	.byte $FF
+
+	.export PPU_Text_StringsList_23_bank4_palettesWithoutPrefix
 PPU_Text_StringsList_23_bank4_palettesWithoutPrefix:
 	.byte $0F,$00,$10,$0A, $0F,$16,$1C,$06, $0F,$22,$19,$1C, $0F,$11,$20,$15
 	.byte $FF
+
+	.export PPU_Text_StringsList_24_bank4_palettesWithoutPrefix
 PPU_Text_StringsList_24_bank4_palettesWithoutPrefix:
 	.byte $0F,$00,$10,$0C, $0F,$10,$18,$00, $0F,$23,$00,$17, $0F,$11,$20,$15
 	.byte $FF
+
+	.export PPU_Text_StringsList_25_bank4_palettesWithoutPrefix
 PPU_Text_StringsList_25_bank4_palettesWithoutPrefix:
 	.byte $0F,$00,$2B,$0B, $0F,$11,$11,$01, $0F,$02,$1B,$01, $0F,$01,$31,$05
 	.byte $FF
+
+	.export PPU_Text_StringsList_26_bank4_palettesWithoutPrefix
 PPU_Text_StringsList_26_bank4_palettesWithoutPrefix:
 	.byte $0F,$00,$23,$03, $0F,$1C,$04,$0C, $0F,$01,$11,$05, $0F,$01,$20,$05
 	.byte $FF
+
+	.export PPU_Text_StringsList_27_bank4_palettesWithoutPrefix
 PPU_Text_StringsList_27_bank4_palettesWithoutPrefix:
 	.byte $0F,$00,$10,$0A, $0F,$2B,$1B,$0B, $0F,$09,$19,$29, $0F,$11,$20,$15
 	.byte $FF
+
+	.export PPU_Text_StringsList_28_bank4_palettesWithoutPrefix
 PPU_Text_StringsList_28_bank4_palettesWithoutPrefix:
 	.byte $0F,$00,$10,$0A, $0F,$22,$12,$02, $0F,$0C,$1C,$2C, $0F,$01,$31,$05
 	.byte $FF
+
+	.export PPU_Text_StringsList_29_bank4_palettesWithoutPrefix
 PPU_Text_StringsList_29_bank4_palettesWithoutPrefix:
 	.byte $0F,$00,$10,$1C, $0F,$16,$2B,$06, $0F,$22,$20,$2C, $0F,$11,$20,$15
 	.byte $FF
+
+	.export PPU_Text_StringsList_2A_bank4_palettesWithoutPrefix
 PPU_Text_StringsList_2A_bank4_palettesWithoutPrefix:
 	.byte $0F,$00,$10,$08, $0F,$17,$1B,$07, $0F,$22,$20,$1C, $0F,$11,$20,$15
 	.byte $FF
+
+	.export PPU_Text_StringsList_2B_bank4_palettesWithoutPrefix
 PPU_Text_StringsList_2B_bank4_palettesWithoutPrefix:
 	.byte $0F,$00,$10,$01, $0F,$11,$0C,$01, $0F,$02,$13,$0C, $0F,$01,$31,$05
 	.byte $FF
+
+	.export PPU_Text_StringsList_2C_bank4_palettesWithoutPrefix
 PPU_Text_StringsList_2C_bank4_palettesWithoutPrefix:
 	.byte $0F,$00,$3B,$0A, $0F,$17,$10,$07, $0F,$33,$20,$1C, $0F,$11,$20,$15
 	.byte $FF
+	
+	.export PPU_Text_StringsList_2D_bank4_palettesWithoutPrefix
 PPU_Text_StringsList_2D_bank4_palettesWithoutPrefix:
 	.byte $0F,$00,$3B,$0A, $0F,$18,$27,$08, $0F,$33,$20,$1C, $0F,$11,$20,$15
 	.byte $FF
+
+	.export PPU_Text_StringsList_3C_bank4_palettesWithoutPrefix
 PPU_Text_StringsList_3C_bank4_palettesWithoutPrefix:
 	.byte $0F,$00,$3B,$0A, $0F,$19,$18,$00, $0F,$33,$20,$1C, $0F,$11,$20,$15
 	.byte $FF
+
+	.export PPU_Text_StringsList_3D_bank4_palettesWithoutPrefix
 PPU_Text_StringsList_3D_bank4_palettesWithoutPrefix:
 	.byte $0F,$00,$2B,$0B, $0F,$11,$1B,$01, $0F,$02,$13,$0C, $0F,$01,$31,$05
 	.byte $FF
+
+	.export PPU_Text_StringsList_3E_bank4_palettesWithoutPrefix
 PPU_Text_StringsList_3E_bank4_palettesWithoutPrefix:
 	.byte $0F,$00,$10,$05, $0F,$1C,$0A,$0C, $0F,$01,$11,$20, $0F,$11,$20,$15
 	.byte $FF
+
+	.export PPU_Text_StringsList_35_bank4_palettesWithoutPrefix
 PPU_Text_StringsList_35_bank4_palettesWithoutPrefix:
 	.byte $0F,$14,$34,$0F, $0F,$26,$20,$0F, $FE
+
+	.export PPU_Text_StringsList_36_bank4_palettesWithoutPrefix
 PPU_Text_StringsList_36_bank4_palettesWithoutPrefix:
 	.byte $0F,$1C,$3C,$0F, $0F,$2A,$20,$0F, $FE
+
+	.export PPU_Text_StringsList_38_bank4_palettesWithoutPrefix
 PPU_Text_StringsList_38_bank4_palettesWithoutPrefix:
 	.byte $0F,$15,$35,$0F, $0F,$17,$20,$0F, $FE
+
+	.export PPU_Text_StringsList_3F_bank4_palettesWithoutPrefix
 PPU_Text_StringsList_3F_bank4_palettesWithoutPrefix:
 	.byte $0F,$00,$38,$08, $0F,$18,$07,$06, $0F,$22,$20,$1C, $0F,$11,$20,$15
 	.byte $FF
+
+	.export PPU_Text_StringsList_40_bank4_palettesWithoutPrefix
 PPU_Text_StringsList_40_bank4_palettesWithoutPrefix:
 	.byte $0F,$00,$3B,$0A, $0F,$10,$00,$00, $0F,$33,$20,$1C, $0F,$11,$20,$15
 	.byte $FF
+
+	.export PPU_Text_StringsList_41_bank4_palettesWithoutPrefix
 PPU_Text_StringsList_41_bank4_palettesWithoutPrefix:
 	.byte $0F,$00,$2B,$0B, $0F,$11,$0C,$0C, $0F,$02,$13,$0C, $0F,$01,$31,$05
 	.byte $FF
+
+	.export PPU_Text_StringsList_42_bank4_palettesWithoutPrefix
 PPU_Text_StringsList_42_bank4_palettesWithoutPrefix:
 	.byte $0F,$00,$10,$0A, $0F,$18,$20,$08, $0F,$33,$20,$1C, $0F,$11,$20,$15
 	.byte $FF
+
+	.export PPU_Text_StringsList_43_bank4_palettesWithoutPrefix
 PPU_Text_StringsList_43_bank4_palettesWithoutPrefix:
 	.byte $0F,$03,$13,$0B, $0F,$11,$1C,$01, $0F,$02,$1C,$0C, $0F,$01,$31,$05
 	.byte $FF
+
+	.export PPU_Text_StringsList_44_bank4_palettesWithoutPrefix
 PPU_Text_StringsList_44_bank4_palettesWithoutPrefix:
 	.byte $0F,$18,$38,$0F, $0F,$17,$20,$0F, $FE
+
+	.export PPU_Text_StringsList_45_bank4_palettesWithoutPrefix
 PPU_Text_StringsList_45_bank4_palettesWithoutPrefix:
 	.byte $0F,$31,$20,$0F, $0F,$17,$20,$0F, $FE
+
+	.export PPU_Text_StringsList_46_bank4_palettesWithoutPrefix
 PPU_Text_StringsList_46_bank4_palettesWithoutPrefix:
 	.byte $0F,$33,$20,$0F, $0F,$00,$20,$0F, $FE
+
+	.export PPU_Text_StringsList_57_bank4_palettesWithoutPrefix
 PPU_Text_StringsList_57_bank4_palettesWithoutPrefix:
 	.byte $0F,$00,$10,$13, $0F,$00,$10,$22, $0F,$00,$09,$22, $0F,$01,$20,$05
 	.byte $FF
+
+	.export PPU_Text_StringsList_4C_bank4_palettesWithoutPrefix
 PPU_Text_StringsList_4C_bank4_palettesWithoutPrefix:
 	.byte $0F,$05,$35,$0F, $0F,$00,$20,$0F, $FE
+
+
 BeginEnding:
 	lda #$00
 	ldx #$10
@@ -1061,7 +1166,7 @@ EndingAction04_DoneWithSongAndText:
 Ending_PlayDraculaHandScene:
 	lda #<_data_7020
 	sta TempPtr08_hi
-	lda #>$B020
+	lda #>_data_7020
 	sta ObstaclePointerLo
 	lda #$04
 	sta Unknown14_Horizontal_256pixelUnitForObject
@@ -1344,6 +1449,9 @@ PPU_DirectToPPU_Data_ScreensList_2:
 	.byte $FF,$81,$00,$07,$FF,$83,$00,$F0,$FC,$05,$FF,$95,$00,$CF,$FF,$0F
 	.byte $0F,$CF,$FF,$0F,$00,$84,$A5,$A1,$00,$A4,$A5,$A5,$00,$88,$AA,$AA
 	.byte $A5,$03,$AA,$08,$00,$FF
+
+; -----------------------------------------------------------------------------
+	.export _loc_12AA2
 _loc_12AA2:
 	lda PasswordActionState
 	jsr JumpWithParams

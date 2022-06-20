@@ -34,6 +34,7 @@ Refresh_CurrentLevelData_Actors_Pointer:
 	sta CurrentLevelData_Actors_PointerHi
 	rts
 ;------------------------------------------
+	.export _func_4029
 _func_4029:
 	lda $37
 	bne @8036
@@ -265,6 +266,8 @@ LevelData_Actors:
 	.word (LevelData_Actors_3_Wilderness) ;ADF9 (6DF9) ()
 	.word (LevelData_Actors_4_Wastelands) ;A829 (6829) ()
 	.word (LevelData_Actors_5_Ruins) ;B3F8 (73F8) ()
+; -----------------------------------------
+	.export _func_419E
 _func_419E:
 	ldx #$06
 	@81A0:
@@ -879,6 +882,8 @@ _func_4629:
 ;------------------------------------------
 PickUpBodyPartTable:
 	.byte $01,$02,$04,$08,$10,$20,$40,$80
+; -----------------------------------------
+	.export _func_463A
 _func_463A:
 	jsr Run_Actions_For_Weapons
 	jsr Run_Maybe_CheckDialogActivation
@@ -4905,6 +4910,9 @@ LevelData_Actors_4_Wastelands_3_VladGraveyard_68D3:
 	.byte $08,$0C,$3A,$0F,$0C,$0C,$3A,$0F,$14,$0C,$1B,$0F,$18,$0C,$3A,$0F
 	.byte $1C,$0C,$1B,$0F,$24,$0A,$39,$0F,$28,$0A,$39,$0F,$2C,$0A,$39,$0F
 	.byte $34,$0A,$39,$0F,$FF
+
+; -----------------------------------------------------------------------------
+	.export WestBridge_TestInventoryContents_AllBodyParts_BlueCrystal_AndCross
 WestBridge_TestInventoryContents_AllBodyParts_BlueCrystal_AndCross:
 	lda CurrentLevelSceneNumber
 	cmp #$03
@@ -6277,6 +6285,8 @@ LevelData_Actors_5_Ruins_0:
 	.word (LevelData_Actors_5_Ruins_0_73FE) ;B3FE (73FE) ([8:2][A:3])
 LevelData_Actors_5_Ruins_0_73FE:
 	.byte $FF
+; -----------------------------------------
+	.export RunFinalConfrontationActions
 RunFinalConfrontationActions:
 	lda $04A4
 	cmp #$FF

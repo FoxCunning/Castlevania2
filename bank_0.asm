@@ -8,6 +8,7 @@
 .include "globals.inc"
 
 
+	.export SoundData4D_DraculaSong_ch1
 SoundData4D_DraculaSong_ch1:
 	.byte $E9,$31,$D8,$70,$1D,$00,$E4,$45,$B0,$E3,$40,$37,$E4,$75,$E3,$20
 	.byte $70,$87,$E4,$92,$E3,$42,$91,$E4,$A2,$E3,$62,$A1,$D8,$7B,$83,$15
@@ -850,6 +851,9 @@ SoundData40_WildernessSong_ch5:
 	.byte $10,$10,$B1,$10,$10,$11,$10,$10,$B1,$10,$10,$11,$10,$10,$B1,$A0
 	.byte $10,$B1,$10,$10,$B1,$10,$10,$11,$10,$10,$B1,$10,$10,$11,$10,$10
 	.byte $B1,$10,$10,$11,$B0,$B0,$A1,$A0,$A0,$FE,$FF,$EB,$95
+
+; -----------------------------------------------------------------------------
+	.export SoundCode_NMIcallback
 SoundCode_NMIcallback:
 	lda APU_HW__4015_EnableChannelsMask
 	and #$10
@@ -2380,6 +2384,9 @@ SoundData47_MansionSong_ch2:
 SoundData48_MansionSong_ch5:
 	.byte $D7,$FB,$B1,$B0,$A1,$B0,$FE,$02,$B1,$B0,$A0,$A0,$A0,$B2,$B0,$A0
 	.byte $A0,$FB,$B1,$B0,$A1,$B0,$FE
+
+; -----------------------------------------------------------------------------
+	.export _loc_2767
 _loc_2767:
 	.byte $02	; TempPtr02_lo
 
@@ -2848,10 +2855,14 @@ SpriteConstructionData:
 	.word (SpriteData_PoseB0_Simon_Stairs_Pose1_WhipAnim1) ;B1B4 (31B4) ()
 	.word (SpriteData_PoseB1_Simon_Stairs_Pose1_WhipAnim2) ;B1BA (31BA) ()
 	.word (SpriteData_PoseB2_Simon_Stairs_Pose1_WhipAnim3) ;B1C0 (31C0) ()
-_loc_2D96:
-	.byte $9F
 
-	.byte > (SpriteData_Poses_06_B3_Simon_ClimbAnim2)
+; -----------------------------------------------------------------------------
+	.export _loc_2D96
+_loc_2D96:
+	;.byte $9F
+
+	;.byte > (SpriteData_Poses_06_B3_Simon_ClimbAnim2)
+	.word (SpriteData_Poses_06_B3_Simon_ClimbAnim2)	;B19F
 	.word (SpriteData_PoseB4_Simon_Stairs_Pose2_WhipAnim1) ;B1D1 (31D1) ()
 	.word (SpriteData_PoseB5_Simon_Stairs_Pose2_WhipAnim2) ;B1D7 (31D7) ()
 	.word (SpriteData_PoseB6_Simon_Stairs_Pose2_WhipAnim3) ;B1DD (31DD) ()

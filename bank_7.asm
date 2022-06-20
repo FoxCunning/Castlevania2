@@ -8,6 +8,9 @@
 .include "globals.inc"
 
 
+	_data_1FFFF = $FFFF
+
+
 Main_ProgramBegin:
 	lda $2002
 	bpl Main_ProgramBegin
@@ -114,6 +117,8 @@ _func_1C0A8:
 	sta $2000
 	lda #$1E
 	sta PPUdesiredRegister2001
+
+	.export _func_1C0B3
 _func_1C0B3:
 	lda #$05
 	sta ScreenBlankingCounter
@@ -351,6 +356,8 @@ PlotAction04_BeginNewGame:
 UnusedC243:
 	lda #$80
 	sta TimeRelated2A
+
+	.export _loc_1C247
 _loc_1C247:
 	inc CurrentPlotAction
 _loc_1C249:
@@ -802,6 +809,7 @@ LetSimonContinueAfterDeath:
 	sta CurrentHP
 	rts
 ;------------------------------------------
+	.export _func_1C530
 _func_1C530:
 	lda #$00
 	sta DeathStateRelatedFlagMaybe
@@ -1032,6 +1040,7 @@ AppendSpriteTableByte:
 	inx
 	rts
 ;------------------------------------------
+	.export TitleScreen_ClearAndRender
 TitleScreen_ClearAndRender:
 	jsr ClearMemory_300_to_3C5
 	lda #$1E
@@ -2704,6 +2713,7 @@ ItemMenuPauseScreen_CursorMovement_Horizontal_ByY:
 	sty $6D
 	rts
 ;------------------------------------------
+	.export SimonDamageKnockBack
 SimonDamageKnockBack:
 	lda ObjectFacingLeft
 	beq @D37A
@@ -2736,6 +2746,7 @@ SimonDamageKnockBack:
 	jsr AnyBankPlayTracks
 	rts
 ;------------------------------------------
+	.export Simon_CheckMapCollision
 Simon_CheckMapCollision:
 	clc
 	adc ObjectScreenXCoord
@@ -2786,6 +2797,7 @@ FindIfThereIsAFloatingPlatform:
 	sec
 	rts
 ;------------------------------------------
+	.export _func_1D3F6
 _func_1D3F6:
 	lda #$03
 	jsr SwitchBank_NewPage
@@ -2819,6 +2831,7 @@ _loc_1D421:
 	lda #$03
 	jmp SwitchBank_NewPage
 ;------------------------------------------
+	.export UnknownFunc1D428
 UnknownFunc1D428:
 	sta $98
 	jsr $88A2
@@ -3054,6 +3067,9 @@ LevelData_MaxLevelUp_3_Wilderness:
 	.byte $64,$36,$30
 LevelData_MaxLevelUp_4_Wastelands_and_5_Ruins:
 	.byte $34,$45
+
+; -----------------------------------------------------------------------------
+	.export _func_1D5C9
 _func_1D5C9:
 	ldx #$06
 	@D5CB:
@@ -3157,6 +3173,8 @@ SpecialWeaponAI_Bottle_CheckWallBreaking:
 	lda #$01
 	jsr SwitchBank_NewPage
 	jsr WestBridge_TestInventoryContents_AllBodyParts_BlueCrystal_AndCross
+
+	.export _loc_1D672
 _loc_1D672:
 	lda #$1E
 	jsr AnyBankPlayTracks
@@ -3403,6 +3421,7 @@ _loc_1D82A:
 	sec
 	rts
 ;------------------------------------------
+	.export SpecialWeaponUse_Try_FindSlot
 SpecialWeaponUse_Try_FindSlot:
 	ldx #$03
 	@D831:
@@ -3895,6 +3914,7 @@ Object_GravityAccelerateBy_020:
 	sta TempPtr08_lo
 	jmp Object_GravityAccelerateBy_Var08
 ;------------------------------------------
+	.export SimonUseWhip
 SimonUseWhip:
 	lda #$0A
 	ldy CurrentWhipLevel
@@ -4078,6 +4098,7 @@ _loc_1DC7D:
 	_DC85:
 	rts
 ;------------------------------------------
+	.export _func_1DC86
 _func_1DC86:
 	lda ObjectXSpeed
 	sta ObjectCurrentActionType
@@ -4205,10 +4226,12 @@ ObjectLoadAutomaticSpriteNumber:
 	@DD86:
 	  rts
 ;------------------------------------------
+	.export SetObjectIndexToAutomaticSpriteDataTable_to_A_for_Simon
 SetObjectIndexToAutomaticSpriteDataTable_to_A_for_Simon:
 	ldx #$00
 	beq SetObjectIndexToAutomaticSpriteDataTable_to_A
 ;------------------------------------------
+	.export SetObjectIndexToAutomaticSpriteDataTable_to_A_and_PaletteIndexTo0
 SetObjectIndexToAutomaticSpriteDataTable_to_A_and_PaletteIndexTo0:
 	pha
 	 lda #$00
@@ -4245,6 +4268,9 @@ AutomaticSpriteDataTable:
 	.byte $00,$3A,$80, $01,$BC,$10, $00,$74,$80, $01,$3F,$10
 	.byte $01,$46,$10, $01,$C6,$08, $01,$C8,$10, $00,$30,$80
 	.byte $03,$CF,$08, $03,$C3,$08, $03,$E2,$20, $01,$E6,$10
+
+; -----------------------------------------------------------------------------
+	.export _func_1DE62
 _func_1DE62:
 	jsr _func_1D3F6
 	lda ObjectScreenYCoord,x
@@ -4253,6 +4279,7 @@ _func_1DE62:
 	sta ObjectScreenYCoord,x
 	rts
 ;------------------------------------------
+	.export _func_1DE6F
 _func_1DE6F:
 	sta TempPtr08_lo
 	jsr Object_SetFacing_FaceTowardsSimon
@@ -4260,6 +4287,7 @@ _func_1DE6F:
 	ldy TempPtr08_lo
 	jmp Object_SetXVelocity16bit_from_AY_invert_if_ObjectFacingLeft_set
 ;------------------------------------------
+	.export _func_1DE7B
 _func_1DE7B:
 	sta ObjectType,x
 	lda ObjectScreenXCoord,y
@@ -4268,6 +4296,7 @@ _func_1DE7B:
 	sta ObjectScreenYCoord,x
 	rts
 ;------------------------------------------
+	.export _func_1DE8B
 _func_1DE8B:
 	lda ObjectFacingLeft,x
 	bne @DE94
@@ -4284,6 +4313,7 @@ _func_1DE8B:
 	@DEA0:
 	rts
 ;------------------------------------------
+	.export _func_1DEA1
 _func_1DEA1:
 	lda ObjectFacingLeft,x
 	bne @DEAA
@@ -4324,12 +4354,14 @@ Object_SetCurrentActionType:
 	sta ObjectCurrentActionType,x
 	rts
 ;------------------------------------------
+	.export Object_SetCurrentActionType_And_Y_as_Pose1
 Object_SetCurrentActionType_And_Y_as_Pose1:
 	sta ObjectCurrentActionType,x
 	tya
 	sta ObjectCurrentPose1,x
 	rts
 ;------------------------------------------
+	.export SetObjectIndexToAutomaticSpriteDataTable_to_A_and_PaletteIndexTo0_and_RefreshSprite
 SetObjectIndexToAutomaticSpriteDataTable_to_A_and_PaletteIndexTo0_and_RefreshSprite:
 	jsr SetObjectIndexToAutomaticSpriteDataTable_to_A_and_PaletteIndexTo0
 	jmp ObjectLoadAutomaticSpriteNumber
@@ -4427,6 +4459,8 @@ Object_Erase:
 	sta ObjectFacingLeft,x
 	sta ObjectEnemyRemainingHP,x
 	sta ObjectStunCounter,x
+
+	.export _loc_1DF7F
 _loc_1DF7F:
 	jsr _func_1DF93
 Object_SetXandYVelocity16bit_ToZero:
@@ -4439,6 +4473,7 @@ Object_SetYVelocity16bit_ToZero:
 	sta ObjectYSpeedFrac,x
 	rts
 ;------------------------------------------
+	.export _func_1DF93
 _func_1DF93:
 	jsr _func_1DFA3
 	sta Ending_PrimaryActionIndex,x
@@ -4447,12 +4482,17 @@ _func_1DF93:
 	sta ObjectAIvar6,x
 	rts
 ;------------------------------------------
+	.export _func_1DFA3
 _func_1DFA3:
 	lda #$00
 	sta ObjectAIvar3,x
+
+	.export _func_1DFA8
 _func_1DFA8:
 	lda #$00
 	sta ObjectAIvar2,x
+
+	.export _func_1DFAD
 _func_1DFAD:
 	lda #$00
 	sta ObjectAIvar1,x
@@ -4499,6 +4539,8 @@ DeleteAllMonstersExceptFerryManAndHisBoat:
 Object_GravityAccelerateBy_Var08:
 	lda #$00
 	sta TempPtr08_hi
+
+	.export _loc_1DFE8
 _loc_1DFE8:
 	lda ObjectYSpeedFrac,x
 	clc
@@ -4509,6 +4551,7 @@ _loc_1DFE8:
 	sta ObjectYSpeed,x
 	rts
 ;------------------------------------------
+	.export Object_GravityDecelerateBy_Var08
 Object_GravityDecelerateBy_Var08:
 	lda #$00
 	sta TempPtr08_hi
@@ -4596,6 +4639,7 @@ UnusedE07E:
 	@E08B:
 	rts
 ;------------------------------------------
+	.export _func_1E08C
 _func_1E08C:
 	lda ObjectCurrentActionType,x
 	and #$08
@@ -4659,6 +4703,7 @@ Object_IncreaseYPositionByYVelocity:
 	sta ObjectScreenYCoord,x
 	rts
 ;------------------------------------------
+	.export Object_GeneringXYmovementEngine
 Object_GeneringXYmovementEngine:
 	jsr Object_IncreaseYPositionByYVelocity
 	lda ObjectYSpeed,x
@@ -8454,8 +8499,12 @@ Sound_PCMsample5D_Config:
 	.byte $0E,$7F,$F3
 DataTableEntry_1FBC7:
 	.byte $17
+; -----------------------------------------
+	.export Sound_PCMsample5E_Config
 Sound_PCMsample5E_Config:
 	.byte $0F,$00,$F0,$0B
+; -----------------------------------------
+	.export Sound_PCMsample5F_Config_DamageOuchSoundMaybe
 Sound_PCMsample5F_Config_DamageOuchSoundMaybe:
 	.byte $0F,$00,$F9,$0A,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
 	.byte $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
