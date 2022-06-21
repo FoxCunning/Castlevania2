@@ -8,3 +8,4 @@ _listing.txt
 *.o
 *.bak
 *.lst
+*.chr
