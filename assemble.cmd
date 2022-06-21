@@ -64,7 +64,7 @@ ld65 -C ld65.cfg -o out\C2.bin --dbgfile _debug.txt ^
 if %errorlevel% neq 0 goto Error
 echo [1;32mdone[0m
 
-copy /B header.bin + out\C2.bin "out\Castlevania2.nes" >nul
+copy /B header.bin + out\C2.bin + THADDEUS.chr.bin "out\Castlevania2.nes" >nul
 copy /A bank_*.lst _listing.txt >nul
 
 echo [1;97m

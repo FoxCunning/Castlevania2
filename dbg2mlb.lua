@@ -217,7 +217,7 @@ end
 
 -- Write output file
 
-out_file = io.open("out/Ultima I.mlb", "w")
+out_file = io.open("out/Symbols.mlb", "w")
 for i = 1, #output do
     --print("OUT:", output[i])
     out_file:write(output[i], "\n")
