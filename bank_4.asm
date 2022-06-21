@@ -8,7 +8,7 @@
 .include "globals.inc"
 
 
-	_data_7020 = $7020
+	_data_7020 = $B020
 	_data_1F0EF = $F0EF
 
 

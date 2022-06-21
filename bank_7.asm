@@ -6422,23 +6422,19 @@ Convert_NameTableAddress_To_AttributeTableAddress:
 ;------------------------------------------
 Convert_6A_13_14_into_NameTableAddress:
 	lda Unknown6A_ScrollingRelated
-	@EB37:
-	cmp #$1E
-	bcc @EB40
-	sec
-	sbc #$1E
-	bpl @EB37
-	
+:	cmp #$1E
+	bcc :+
+		sec
+		sbc #$1E
+		bpl :-
 							; A = $6A mod 30
-	@EB40:
-	ldx #$00
+:	ldx #$00
 	stx NameTableAddressHi
 	jsr Math_mulAby16
 	rol NameTableAddressHi
 	asl a
 	rol NameTableAddressHi
                             ; $5F:$5E = ($6A mod 30) * 32:
-	@EB5B:
 	sta NameTableAddressLo
 	lda Unknown13_Horizontal_32pixelUnitForObject
 	asl a
@@ -6446,15 +6442,14 @@ Convert_6A_13_14_into_NameTableAddress:
 	clc
 	adc NameTableAddressLo
 	sta NameTableAddressLo
-	bcc @EB5B
-	inc NameTableAddressHi
-	ldy #$20
+	bcc :+
+		inc NameTableAddressHi
+:	ldy #$20
 	lda Unknown14_Horizontal_256pixelUnitForObject
 	lsr a
-	bcc @EB64
-	ldy #$24
-	@EB64:
-	sty Temp93
+	bcc :+
+		ldy #$24
+:	sty Temp93
 	lda NameTableAddressHi
 	clc
 	adc Temp93
@@ -7612,7 +7607,7 @@ DialogAction_ItemMenuPauseScreen_WaitForStatusScreenKeys:
 	lda Input_NewJoyButtonsWork
 	and #$10
 	beq @F2F6
-	jmp DialogAction_DetermineDialogBoxCoordinates
+	jmp DialogAction_ItemMenuPauseScreen_ButtonPressed_Start
 
 	@F2F6:
 	lda Input_NewJoyButtonsWork
@@ -8746,8 +8741,8 @@ DataTableEntry_1FF00:
 	.byte $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
 	.byte $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
 	.byte $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
-	;.byte $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
-	;.byte $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
+	.byte $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
+	.byte $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
 	
 	.export _Reset
 	
