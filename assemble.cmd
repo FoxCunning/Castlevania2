@@ -64,7 +64,20 @@ ld65 -C ld65.cfg -o out\C2.bin --dbgfile _debug.txt ^
 if %errorlevel% neq 0 goto Error
 echo [1;32mdone[0m
 
-copy /B header.bin + out\C2.bin + THADDEUS.chr.bin "out\Castlevania2.nes" >nul
+if not exist CHR_ROM.chr (
+	tools\lua extractchr.lua
+)
+
+if not exist CHR_ROM.chr (
+	echo [1;34m
+	echo CHR_ROM.chr not present!
+	echo Make sure your customised CHR ROM file is in this folder.
+	echo Alternatively, copy your Castlevania2.nes ROM file here to extract the data.
+	echo [0m
+	goto Error
+)
+
+copy /B header.bin + out\C2.bin + CHR_ROM.chr "out\Castlevania2.nes" >nul
 copy /A bank_*.lst _listing.txt >nul
 
 echo [1;97m
