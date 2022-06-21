@@ -147,6 +147,7 @@ ResetPPUtoKnownState:
 	sta $2001
 	rts
 ;------------------------------------------
+	.export AnyBankTerminateSound
 AnyBankTerminateSound:
 	lda #$01
 	sta InSoundCode
@@ -174,6 +175,7 @@ NMI_SoundCodeCall:
 	@C117:
 	rts
 ;------------------------------------------
+	.export AnyBankPlayTracks
 AnyBankPlayTracks:
 	pha
 	 lda InSoundCode
@@ -272,7 +274,7 @@ NMI_ExecuteCurrentPlotAction:
 _JumpPointerTable_1C1BC:
 	.word (PlotAction00_LoadTitleScreen) ;C1F2 (1C1F2) ()
 	.word (PlotAction01_RunTitleScreen) ;C1FF (1C1FF) ()
-	.word @C1F1
+	.word PlotAction02_Nothing
 	.word (PlotAction03_StartKeyPressed_Unused_And_ActivatePlotAction04_With_128FrameDelay) ;C20F (1C20F) ()
 	.word (PlotAction04_BeginNewGame) ;C232 (1C232) ()
 	.word (PlotAction05_RunGameMaybe) ;CC24 (1CC24) ()
@@ -327,7 +329,7 @@ PlotAction03_StartKeyPressed_Unused_And_ActivatePlotAction04_With_128FrameDelay:
 	sta $1E
 	dec TimeRelated2A
 	bne @C21E
-	jmp @C23C
+	jmp _C23C
 
 	@C21E:
 	lda #$04
@@ -347,7 +349,7 @@ PlotAction04_BeginNewGame:
 	sta PlotAction05_GameLoop_WhichAction
 	jmp _loc_1C247
 
-	@C23C:
+	_C23C:
 	 lda #$80
 	sta TimeRelated2A
 	inc CurrentPlotAction_StateWithin
@@ -366,6 +368,7 @@ _loc_1C249:
 	sta CurrentPlotAction_StateWithin
 	rts
 ;------------------------------------------
+	.export ActivatePlotAction_With_128FrameDelay
 ActivatePlotAction_With_128FrameDelay:
 	sta CurrentPlotAction
 	lda #$80
@@ -636,6 +639,7 @@ PlotAction0A_RunEndingTextPerhaps:
 	jsr SwitchBank_NewPage
 	jmp Ending_ChoosePrimaryAction
 ;------------------------------------------
+	.export ResetHeartsAndExp
 ResetHeartsAndExp:
 	lda #$00
 	sta HeartsDigits0011
@@ -838,6 +842,7 @@ InitializeGameVariablesForBeginning:
 	sta CurrentMaxHP
 	rts
 ;------------------------------------------
+	.export ResetSimonTo_80BD_Hour12
 ResetSimonTo_80BD_Hour12:
 	lda #$80
 	sta ObjectScreenXCoord
@@ -874,6 +879,8 @@ ResetAllRAM_from_1D_to_98_and_300_to_6FF:
 	inx
 	cpx #$99
 	bne @C59A
+
+	.export ResetAllRAM_from_300_to_6FF
 ResetAllRAM_from_300_to_6FF:
 	lda #$00
 	ldx #$07
@@ -890,6 +897,7 @@ _loc_1C5AD:
 	bne _loc_1C5AD
 	jmp _func_1C0A8
 ;------------------------------------------
+	.export JumpWithParams
 JumpWithParams:
 	asl a
 	stx TempPtr02_hi
@@ -909,6 +917,8 @@ JumpWithParams:
 	ldy TempPtr02_lo
 	ldx TempPtr02_hi
 	jmp (TempPtr00_lo)
+
+	.export Inc16bitPointerAtX_by_A
 Inc16bitPointerAtX_by_A:
 	clc
 	adc TempPtr00_lo,x
@@ -918,6 +928,7 @@ Inc16bitPointerAtX_by_A:
 	@C5E2:
 	rts
 ;------------------------------------------
+	.export Dec16bitPointerAtX_by_A
 Dec16bitPointerAtX_by_A:
 	eor #$FF
 	sec
@@ -928,6 +939,7 @@ Dec16bitPointerAtX_by_A:
 	@C5EE:
 	rts
 ;------------------------------------------
+	.export ClearMemory_300_to_3C5
 ClearMemory_300_to_3C5:
 	lda #$00
 	ldx #$03
@@ -1053,6 +1065,8 @@ TitleScreen_ClearAndRender:
 ;------------------------------------------
 PPU_DirectToPPU_Data_ExtractAndSend_Screen0_Blank:
 	ldx #$00
+
+	.export PPU_DirectToPPU_Data_ExtractAndSend_ScreenXdiv2
 PPU_DirectToPPU_Data_ExtractAndSend_ScreenXdiv2:
 	lda PPU_DirectToPPU_Data_ScreensList,x
 	sta TempPtr00_lo
@@ -1256,6 +1270,8 @@ UnusedC825:
 	jsr PPU_Text_ExtractAndSend_With_01prefix
 	lda $04
 	bne PPU_Text_ExtractAndSend
+
+	.export PPU_Text_ExtractAndSend_With_01prefix
 PPU_Text_ExtractAndSend_With_01prefix:
 	pha
 	 lda #$02
@@ -1316,6 +1332,8 @@ PPU_Text_ExtractAndSend_Finish_Put00:
 	lda #$00
 PPU_Text_ExtractAndSend_Finish_PutA:
 	ldx PPUsendQueueHead
+
+	.export PPU_Text_ExtractAndSend_Finish_PutA_at_X
 PPU_Text_ExtractAndSend_Finish_PutA_at_X:
 	sta PPUsendQueue,x
 	inx
@@ -1848,7 +1866,7 @@ PlotAction05_Action03_GameActive:
 	beq _CE12
 	lda TimeRelated3F
 	bne Check_For_B_ButtonActivatedDialog
-	@CDDF:
+	_CDDF:
 	 jsr AccumulateClockTime
 	jsr _func_1C75F
 	jsr Check_UpdateScrolling_Maybe
@@ -1888,7 +1906,7 @@ Check_For_B_ButtonActivatedDialog:
 	sec
 	sbc #$40
 	sta TimeRelated3F
-	jmp @CDDF
+	jmp _CDDF
 
 	@CE36:
 	lda #$00
@@ -2064,7 +2082,7 @@ DayNightTransition_GoNextPaletteFrame:
 	lda #$2D
 	jsr AnyBankPlayTracks
 	jsr _func_1D15B
-	jmp @CFAA
+	jmp _CFAA
 
 	@CF4B:
 	lda ObjectDialogStatusFlag,x
@@ -2121,7 +2139,7 @@ PlotAction05_Action08_RelocateSimonLevelBeginningMaybe:
 	inc CurrentLevelSceneNumber
 	@CFA7:
 	jsr _func_1D136
-	@CFAA:
+	_CFAA:
 	jsr _func_1E789
 	lda ObjectCurrentActionType
 	cmp #$0B
@@ -2251,7 +2269,7 @@ PlotAction05_Action0A_RelocateSimonLevelBeginningMaybe:
 	jsr _func_1D15B
 	ldx #$11
 	jsr Object_Erase
-	jmp @CFAA
+	jmp _CFAA
 ;------------------------------------------
 _loc_1D0B2:
 	ldy #$06
@@ -2328,7 +2346,7 @@ _loc_1D11B:
 	pla
 	rts
 
-	@D126:
+	_D126:
 	   iny
 	lda ($04),y
 	sta CurrentLevelMapType
@@ -2343,10 +2361,10 @@ _func_1D136:
 	jsr LoadLevelData_ScreenNumbers_PointerForCurrentLevelSceneNumber_Storeto02
 	jsr _func_1D234
 	lda $8E
-	beq @D143
+	beq _D143
 	jmp _loc_1D1C7
 
-	@D143:
+	_D143:
 	    lda CurrentLevelSubRoomNumber
 	cmp #$FF
 	bne _loc_1D14C
@@ -2430,12 +2448,12 @@ _loc_1D1C7:
 	beq @D208
 	lda CurrentLevelSubRoomNumber
 	bpl @D1D2
-	jmp @D143
+	jmp _D143
 
 	@D1D2:
 	lda Current_WhatUnknown57
 	bne @D1D9
-	jmp @D143
+	jmp _D143
 
 	@D1D9:
 	ldy CurrentLevelSubRoomNumber
@@ -2456,7 +2474,7 @@ _loc_1D1C7:
 	lda ($04),y
 	cmp #$FF
 	bne @D1F8
-	jmp @D126
+	jmp _D126
 
 	@D1F8:
 	iny
@@ -2471,12 +2489,12 @@ _loc_1D1C7:
 	@D208:
 	 lda CurrentLevelSubRoomNumber
 	bmi @D20F
-	jmp @D143
+	jmp _D143
 
 	@D20F:
 	lda Current_WhatUnknown57
 	bne @D216
-	jmp @D143
+	jmp _D143
 
 	@D216:
 	ldy CurrentLevelSubRoomNumber
@@ -2690,8 +2708,12 @@ _func_1D34C:
 	jsr SwitchBank_NewPage
 	jmp _loc_C155
 ;------------------------------------------
+
+	.export DecreaseHPbyA
 DecreaseHPbyA:
 	sta TempPtr08_lo
+
+	.export DecreaseHPbyVar08
 DecreaseHPbyVar08:
 	lda CurrentHP
 	sec
@@ -2702,12 +2724,14 @@ DecreaseHPbyVar08:
 	sta CurrentHP
 	rts
 ;------------------------------------------
+	.export Object0_SetYVelocity16bit_from_AY
 Object0_SetYVelocity16bit_from_AY:
 	sta ObjectYSpeed
 	tya
 	sta ObjectYSpeedFrac
 	rts
 ;------------------------------------------
+	.export ItemMenuPauseScreen_CursorMovement_Horizontal_ByY
 ItemMenuPauseScreen_CursorMovement_Horizontal_ByY:
 	sta $6C
 	sty $6D
@@ -2759,6 +2783,7 @@ Simon_CheckMapCollision:
 	sta TempPtr00_lo
 	jmp LoadObstacleBufferBits
 ;------------------------------------------
+	.export CheckIfBoneHeld_SetSimonAutomaticSprite_To_Table_Atimes2plusBone
 CheckIfBoneHeld_SetSimonAutomaticSprite_To_Table_Atimes2plusBone:
 	asl a
 	tay
@@ -2813,6 +2838,7 @@ _func_1D403:
 _loc_1D40B:
 	rts
 ;------------------------------------------
+	.export LoadLevelDataScreensPointerLo_Byte1_minus1_storeInY
 LoadLevelDataScreensPointerLo_Byte1_minus1_storeInY:
 	lda #$02
 	jsr SwitchBank_NewPage
@@ -2820,6 +2846,7 @@ LoadLevelDataScreensPointerLo_Byte1_minus1_storeInY:
 	lda (LevelData_Screens_pointerLo),y
 	jmp _loc_1D421
 ;------------------------------------------
+	.export LoadLevelDataScreensPointerLo_Byte0_minus1_storeInY
 LoadLevelDataScreensPointerLo_Byte0_minus1_storeInY:
 	lda #$02
 	jsr SwitchBank_NewPage
@@ -2951,6 +2978,7 @@ Math_Invert16bitWordAt04:
 	sta $04
 	rts
 ;------------------------------------------
+	.export GiveExperience_valueInY
 GiveExperience_valueInY:
 	sty Temp93
 	txa
@@ -3385,7 +3413,7 @@ TriggerDayNightTransition:
 	sta Sound_FadeMode
 	pla
 	pla
-	jmp @CE11
+	jmp _loc_1CE11
 ;------------------------------------------
 SpecialWeaponUse_CreateObject:
 	lda InventoryCursorSelected1
@@ -3642,7 +3670,7 @@ SpecialWeaponAI_RunForX:
 	  lda ObjectType,x
 	  jsr JumpWithParams
 _JumpPointerTable_1D98B:
-	.word @D9BB
+	.word SpecialWeaponAI_Nothing
 	.word (SpecialWeaponAI_Weapon1_Dagger) ;DA62 (1DA62) ()
 	.word (SpecialWeaponAI_Weapon2_SilverKnife) ;D9AF (1D9AF) ()
 	.word (SpecialWeaponAI_Weapon3_GoldKnife) ;DA53 (1DA53) ()
@@ -3650,7 +3678,7 @@ _JumpPointerTable_1D98B:
 	.word (SpecialWeaponAI_Weapon5_Diamond) ;D9D7 (1D9D7) ()
 	.word (SpecialWeaponAI_Weapon6_Flame) ;DAB3 (1DAB3) ()
 	.word (SpecialWeaponAI_Weapon7_OakStake) ;D968 (1D968) ()
-	.word @D9BB
+	.word SpecialWeaponAI_Nothing
 	.word (SpecialWeaponAI_Weapon9_Garlic) ;D9B5 (1D9B5) ()
 JumpPointerD99F:
 	.word (SpecialWeaponAI_Done -1) ;D9A1 (1D9A1) ()
@@ -3689,6 +3717,7 @@ _loc_1D9BC:
 	jsr Object_SetXandYVelocity16bit_ToZero
 	jmp _loc_1DA72
 ;------------------------------------------
+	.export Object_FlashPalette
 Object_FlashPalette:
 	lda FrameCounter
 	and #$03
@@ -3780,7 +3809,7 @@ SpecialWeaponAI_Weapon3_GoldKnife:
 SpecialWeaponAI_Weapon1_Dagger:
 	dec ObjectAIvar5,x
 	bne _loc_1DA6C
-	@DA67:
+	_DA67:
 	  lda #$80
 	sta ObjectType,x
 _loc_1DA6C:
@@ -3815,7 +3844,7 @@ SpecialWeaponAI_Weapon4_Bottle:
 	beq @DAA7
 	lda #$16
 	jsr AnyBankPlayTracks
-	jmp @DA67
+	jmp _DA67
 
 	@DAA7:
 	stx $96
@@ -3875,7 +3904,7 @@ SpecialWeaponAI_Weapon6_Flame:
 	lda ObjectPoseChangeCounter,x
 	cmp #$01
 	bne _loc_1DB23
-	jmp @DA67
+	jmp _DA67
 ;------------------------------------------
 _loc_1DB0F:
 	ldy ObjectCurrentPose2,x
@@ -4011,7 +4040,6 @@ _func_1DBB4:
 	@DC00:
 	sty Temp93
 	tya
-DataTableEntry_1DC03:
 	asl a
 	clc
 	adc Temp93
@@ -4141,6 +4169,8 @@ _func_1DC86:
 	 lda ObjectAIvar3
 	beq @DCBB
 	bne @DCBF
+
+	.export DeleteSimonWhipObject
 DeleteSimonWhipObject:
 	ldx #$01
 	jsr Object_Erase
@@ -4174,13 +4204,16 @@ DataTableEntry_1DD14:
 	.byte $10,$6D,$04,$10,$6E,$04,$EA,$70,$08,$DA,$6F
 DataTableEntry_1DD1F:
 	.byte $10,$6D,$04,$10,$6E,$04,$EA,$72,$08,$DA,$71
+
+; -----------------------------------------------------------------------------
+	.export ObjectLoadAutomaticSpriteNumber
 ObjectLoadAutomaticSpriteNumber:
 	lda ObjectPoseChangeCounter,x
 	bmi @DD86
 	beq @DD35
-	dec ObjectPoseChangeCounter,x
-	rts
-
+		dec ObjectPoseChangeCounter,x
+		rts
+; -----------------------------------------
 	@DD35:
 	lda #$00
 	sta Temp95
@@ -4330,26 +4363,33 @@ _func_1DEA1:
 	@DEB6:
 	rts
 ;------------------------------------------
+	.export Math_NegateA
 Math_NegateA:
 	eor #$FF
 	clc
 	adc #$01
 	rts
 ;------------------------------------------
+	.export Object_SetCurrentActionType_For_Simon
 Object_SetCurrentActionType_For_Simon:
 	ldx #$00
 	jmp Object_SetCurrentActionType
 ;------------------------------------------
+	.export Object_SetCurrentActionType_to_80
 Object_SetCurrentActionType_to_80:
 	lda #$80
 	bne Object_SetCurrentActionType
 ;------------------------------------------
+	.export Object_SetCurrentActionType_to_02
 Object_SetCurrentActionType_to_02:
 	lda #$02
 	bne Object_SetCurrentActionType
 ;------------------------------------------
+	.export Object_SetCurrentActionType_to_01
 Object_SetCurrentActionType_to_01:
 	lda #$01
+
+	.export Object_SetCurrentActionType
 Object_SetCurrentActionType:
 	sta ObjectCurrentActionType,x
 	rts
@@ -4366,6 +4406,7 @@ SetObjectIndexToAutomaticSpriteDataTable_to_A_and_PaletteIndexTo0_and_RefreshSpr
 	jsr SetObjectIndexToAutomaticSpriteDataTable_to_A_and_PaletteIndexTo0
 	jmp ObjectLoadAutomaticSpriteNumber
 ;------------------------------------------
+	.export MathBCD_addition_In_Var08_Var09_Out_AandCarry_Temp_Var0A_Var0B
 MathBCD_addition_In_Var08_Var09_Out_AandCarry_Temp_Var0A_Var0B:
 	lda TempPtr08_hi
 	and #$0F
@@ -4435,6 +4476,7 @@ MathBCD_subtract:
 	sec
 	rts
 ;------------------------------------------
+	.export Object_Erase_And_IfType3C_Set_42to00
 Object_Erase_And_IfType3C_Set_42to00:
 	lda ObjectType,x
 	cmp #$3C
@@ -4463,10 +4505,14 @@ Object_Erase:
 	.export _loc_1DF7F
 _loc_1DF7F:
 	jsr _func_1DF93
+
+	.export Object_SetXandYVelocity16bit_ToZero
 Object_SetXandYVelocity16bit_ToZero:
 	lda #$00
 	sta ObjectXSpeed,x
 	sta ObjectXSpeedFrac,x
+
+	.export Object_SetYVelocity16bit_ToZero
 Object_SetYVelocity16bit_ToZero:
 	lda #$00
 	sta ObjectYSpeed,x
@@ -4498,6 +4544,7 @@ _func_1DFAD:
 	sta ObjectAIvar1,x
 	rts
 ;------------------------------------------
+	.export Object_FindUnusedSlot
 Object_FindUnusedSlot:
 	ldx #$06
 	@DFB5:
@@ -4536,6 +4583,7 @@ DeleteAllMonstersExceptFerryManAndHisBoat:
 	bne @DFC5
 	rts
 ;------------------------------------------
+	.export Object_GravityAccelerateBy_Var08
 Object_GravityAccelerateBy_Var08:
 	lda #$00
 	sta TempPtr08_hi
@@ -4564,6 +4612,7 @@ Object_GravityDecelerateBy_Var08:
 	sta ObjectYSpeed,x
 	rts
 ;------------------------------------------
+	.export Object_SetFacing_FaceTowardsSimon
 Object_SetFacing_FaceTowardsSimon:
 	jsr Object_SetCarry_If_OnRightSideOfSimon
 	bcs @E019
@@ -4576,10 +4625,13 @@ Object_SetFacing_FaceTowardsSimon:
 	 sta ObjectFacingLeft,x
 	rts
 ;------------------------------------------
+	.export Object_SetXVelocity16bit_InvertCurrent_AndAlso_ObjectFacingLeft
 Object_SetXVelocity16bit_InvertCurrent_AndAlso_ObjectFacingLeft:
 	lda ObjectFacingLeft,x
 	eor #$01
 	sta ObjectFacingLeft,x
+
+	.export Object_SetXVelocity16bit_InvertCurrent
 Object_SetXVelocity16bit_InvertCurrent:
 	lda ObjectXSpeedFrac,x
 	jsr Math_NegateA
@@ -4590,6 +4642,7 @@ Object_SetXVelocity16bit_InvertCurrent:
 	sta ObjectXSpeed,x
 	rts
 ;------------------------------------------
+	.export Object_SetYVelocity16bit_InvertCurrent
 Object_SetYVelocity16bit_InvertCurrent:
 	lda ObjectYSpeedFrac,x
 	jsr Math_NegateA
@@ -4600,12 +4653,15 @@ Object_SetYVelocity16bit_InvertCurrent:
 	sta ObjectYSpeed,x
 	rts
 ;------------------------------------------
+	.export Object_SetXVelocity16bit_from_AY_invert_if_ObjectFacingLeft_set
 Object_SetXVelocity16bit_from_AY_invert_if_ObjectFacingLeft_set:
 	sta TempPtr00_hi
 	sty TempPtr00_lo
 	lda ObjectFacingLeft,x
 	bne Object_SetXVelocity16bit_from_00
 	jsr Math_Negate16bitWordAt00
+
+	.export Object_SetXVelocity16bit_from_00
 Object_SetXVelocity16bit_from_00:
 	lda TempPtr00_hi
 	sta ObjectXSpeed,x
@@ -4613,6 +4669,7 @@ Object_SetXVelocity16bit_from_00:
 	sta ObjectXSpeedFrac,x
 	rts
 ;------------------------------------------
+	.export Math_Negate16bitWordAt00
 Math_Negate16bitWordAt00:
 	lda TempPtr00_lo
 	jsr Math_NegateA
@@ -4623,6 +4680,7 @@ Math_Negate16bitWordAt00:
 	sta TempPtr00_hi
 	rts
 ;------------------------------------------
+	.export Object_SetYVelocity16bit_from_AY
 Object_SetYVelocity16bit_from_AY:
 	sta ObjectYSpeed,x
 	tya
@@ -4673,6 +4731,7 @@ Object_IncreaseXPositionByVar37_DeleteIfGoesOutScreen:
 	@E0C0:
 	 rts
 ;------------------------------------------
+	.export Object_IncreaseYPositionByVar3A_DeleteIfGoesOutScreen
 Object_IncreaseYPositionByVar3A_DeleteIfGoesOutScreen:
 	lda $3A
 	beq @E0DF
@@ -4693,6 +4752,7 @@ Object_IncreaseYPositionByVar3A_DeleteIfGoesOutScreen:
 	@E0DF:
 	 rts
 ;------------------------------------------
+	.export Object_IncreaseYPositionByYVelocity
 Object_IncreaseYPositionByYVelocity:
 	lda ObjectScreenYCoordFrac,x
 	clc
@@ -4713,9 +4773,9 @@ Object_GeneringXYmovementEngine:
 	cmp #$C0
 	bne _E14C
 	beq _E156
-	@E105:
+	_E105:
 	   jsr _func_1E28B
-	@E108:
+	_E108:
 	  lda ObjectDialogStatusFlag,x
 	and #$02
 	bne @E122
@@ -4739,15 +4799,15 @@ Object_GeneringXYmovementEngine:
 	sta ObjectDialogStatusFlag,x
 	jmp _loc_1E16B
 
-	@E137:
+	_E137:
 	 lda ObjectDialogStatusFlag,x
 	and #$02
-	beq @E108
+	beq _E108
 	lda ObjectScreenYCoord,x
 	cmp #$20
-	bcc @E108
+	bcc _E108
 	cmp #$E0
-	bcs @E108
+	bcs _E108
 	_E149:
 	jmp Object_Erase_And_IfType3C_Set_42to00
 
@@ -4755,13 +4815,13 @@ Object_GeneringXYmovementEngine:
 	  lda ObjectCurrentActionType,x
 	and #$02
 	bne _loc_1E160
-	jmp @E105
+	jmp _E105
 
 	_E156:
 	   lda ObjectCurrentActionType,x
 	and #$02
 	bne _loc_1E160
-	jmp @E137
+	jmp _E137
 ;------------------------------------------
 _loc_1E160:
 	lda ObjectScreenYCoord,x
@@ -4940,6 +5000,7 @@ _func_1E28B:
 	 sta ObjectDialogStatusFlag,x
 	rts
 ;------------------------------------------
+	.export Object_GenericCollisionHelper_ParamAY_ReturnCarry_IfFrameOddThenDefaultSEC
 Object_GenericCollisionHelper_ParamAY_ReturnCarry_IfFrameOddThenDefaultSEC:
 	sta Temp93
 	sty Temp97
@@ -4948,6 +5009,7 @@ Object_GenericCollisionHelper_ParamAY_ReturnCarry_IfFrameOddThenDefaultSEC:
 	bne _loc_1E2FC
 	jmp _loc_1E2B9
 ;------------------------------------------
+	.export Object_GenericCollisionHelper_ParamAY_ReturnCarry_IfFrameOddThenDefaultCLC
 Object_GenericCollisionHelper_ParamAY_ReturnCarry_IfFrameOddThenDefaultCLC:
 	sta Temp93
 	sty Temp97
@@ -4998,8 +5060,11 @@ _loc_1E2FC:
 	sec
 	rts
 ;------------------------------------------
+	.export Object_CreateThreeWaterSplashes_AroundSimon
 Object_CreateThreeWaterSplashes_AroundSimon:
 	ldx #$00
+
+	.export Object_CreateThreeWaterSplashes_AroundObjectX
 Object_CreateThreeWaterSplashes_AroundObjectX:
                             ; First  object (#$11): Y speed = $FF.00, X speed = $FF.80:
                             ; Second object (#$10): Y speed = $FE.00, X speed = $00.80:
@@ -5071,6 +5136,7 @@ Math_div93by4:
 	lsr Temp93
 	rts
 ;------------------------------------------
+	.export Math_divAby16
 Math_divAby16:
 	lsr a
 	lsr a
@@ -5169,7 +5235,7 @@ _func_1E3B4:
 	sta Temp07
 	lda #$02
 	sta $98
-	@E3FB:
+	_E3FB:
 	 lda #$08
 	sta $0E
 _loc_1E3FF:
@@ -5280,7 +5346,7 @@ _loc_1E415:
 	jsr PPU_Text_PutFF
 	dec $98
 	beq _E4F2
-	jmp @E3FB
+	jmp _E3FB
 
 	@E4C4:
 	 ldx PPUsendQueueHead
@@ -5489,11 +5555,11 @@ _loc_1E603:
 _loc_1E608:
 	jsr Split_6A_into_10_11_and_12
 	jsr Convert_6A_13_14_into_NameTableAddress_and_AttributeTableAddress
-	@E60E:
+	_E60E:
 	   jsr LoadLevelDataScreensPointerLo_SomePointerIndexedBy12and14_StoreTo02
-	@E611:
+	_E611:
 	  jsr Load_MetaTile_ParticularTileStoreTo16_and_0F09
-	@E614:
+	_E614:
 	 jsr Load_MetaTile_ParticularRowPointerStoreTo16
 	lda #$00
 	sta $04
@@ -5574,7 +5640,7 @@ _loc_1E69B:
 	lda Unknown6A_ScrollingRelated
 	cmp CurrentYScrollingPosition_SomeOtherUnit
 	beq @E6BF
-	jmp @E614
+	jmp _E614
 
 	@E6AA:
 	lda #$00
@@ -5586,7 +5652,7 @@ _loc_1E69B:
 	lda Unknown6A_ScrollingRelated
 	cmp CurrentYScrollingPosition_SomeOtherUnit
 	beq @E6BF
-	jmp @E611
+	jmp _E611
 
 	@E6BF:
 	   jmp _loc_1E5FD
@@ -5598,7 +5664,7 @@ _loc_1E69B:
 	lda Unknown6A_ScrollingRelated
 	cmp CurrentYScrollingPosition_SomeOtherUnit
 	beq @E6BF
-	jmp @E60E
+	jmp _E60E
 ;------------------------------------------
 SubstituteBlockCheckFakeBlocks:
 	lda Temp93
@@ -5753,17 +5819,17 @@ _func_1E789:
 	clc
 	adc Current_WhatUnknown57
 	cmp #$04
-	bcs @E7C5
-	@E7BC:
+	bcs _E7C5
+	_E7BC:
 	 sta Current_WhatUnknown57
-	@E7BE:
+	_E7BE:
 	lda #$00
 	sta CurrentXScrollingPositionPixels
 	jmp _func_1E775
 
-	@E7C5:
+	_E7C5:
 	lda #$00
-	beq @E7BC
+	beq _E7BC
 ;------------------------------------------
 _func_1E7C9:
 	lda CurrentLevelSceneNumber
@@ -5775,7 +5841,7 @@ _func_1E7C9:
 	lda #$00
 	sta CurrentXScrollingPositionScreens
 	sta CurrentYScrollingPositionPixels_Mod240
-	jmp @E7BE
+	jmp _E7BE
 ;------------------------------------------
 _func_1E7DD:
 	lda CurrentXScrollingPositionPixels_BackupForExitRoom
@@ -5889,11 +5955,11 @@ _loc_1E877:
 	@E87E:
 	jsr Split_6A_into_10_11_and_12
 	jsr Convert_6A_13_14_into_NameTableAddress_and_AttributeTableAddress
-	@E884:
+	_E884:
 	   jsr LoadLevelDataScreensPointerLo_SomePointerIndexedBy12and14_StoreTo02
-	@E887:
+	_E887:
 	  jsr Load_MetaTile_ParticularTileStoreTo16_and_0F09
-	@E88A:
+	_E88A:
 	 jsr Load_MetaTile_ParticularRowPointerStoreTo16
 	lda #$00
 	sta $04
@@ -5981,7 +6047,7 @@ _loc_1E91F:
 	lda Unknown6A_ScrollingRelated
 	cmp CurrentYScrollingPosition_SomeOtherUnit
 	beq @E943
-	jmp @E88A
+	jmp _E88A
 
 	@E92E:
 	lda #$00
@@ -5993,7 +6059,7 @@ _loc_1E91F:
 	lda Unknown6A_ScrollingRelated
 	cmp CurrentYScrollingPosition_SomeOtherUnit
 	beq @E943
-	jmp @E887
+	jmp _E887
 
 	@E943:
 	   jmp _loc_1E877
@@ -6005,7 +6071,7 @@ _loc_1E91F:
 	lda Unknown6A_ScrollingRelated
 	cmp CurrentYScrollingPosition_SomeOtherUnit
 	beq @E943
-	jmp @E884
+	jmp _E884
 ;------------------------------------------
 _loc_1E955:
 	lda $66
@@ -7546,7 +7612,7 @@ DialogAction_ItemMenuPauseScreen_WaitForStatusScreenKeys:
 	lda Input_NewJoyButtonsWork
 	and #$10
 	beq @F2F6
-	jmp @F22A
+	jmp DialogAction_DetermineDialogBoxCoordinates
 
 	@F2F6:
 	lda Input_NewJoyButtonsWork
@@ -7719,7 +7785,7 @@ UndrawDialogBoxTiles:
 	lda #$10
 	sta Temp07
 	jsr PPU_Text_Put3bytes_01_and_NameTableAddress
-	@F426:
+	_F426:
 	 jsr LoadLevelDataScreensPointerLo_SomePointerIndexedBy12and14_StoreTo02
 	jsr Load_MetaTile_ParticularTileStoreTo16_and_0F09
 	jsr Load_MetaTile_ParticularRowPointerStoreTo16
@@ -7768,7 +7834,7 @@ _loc_1F449:
 	sty Unknown13_Horizontal_32pixelUnitForObject
 	lda #$00
 	sta $15
-	jmp @F426
+	jmp _F426
 
 	@F482:
 	 jsr DialogBox_NameTableWrapped_StartNewPPUtext_AndSaveNew_5Ebitand20_to_06
@@ -8244,68 +8310,98 @@ LevelData_Screens:
 	.word (LevelData_Screens_3_Wilderness) ;B29E (B29E) ([8:4][A:5])
 	.word (LevelData_Screens_4_Wastelands) ;AEDD (AEDD) ([8:4][A:5])
 	.word (LevelData_Screens_5_Ruins) ;BC46 (BC46) ([8:4][A:5])
+
+; -----------------------------------------------------------------------------
+	.export LevelData_Screen_Blank
 LevelData_Screen_Blank:
 	.byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
 	.byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
 	.byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
 	.byte $00,$00,$00,$00,$00,$00,$00,$00
+
+	.export LevelData_Screen_Map2_16_17_and_2_18_and_4_5_6
 LevelData_Screen_Map2_16_17_and_2_18_and_4_5_6:
 	.byte $3B,$3B,$3B,$3B,$3B,$3B,$3B,$3B,$1F,$1F,$1F,$1F,$1F,$1F,$1F,$1F
 	.byte $1F,$1F,$1E,$1F,$1F,$1F,$1E,$1F,$1A,$1B,$1C,$1D,$1A,$1B,$1C,$1D
 	.byte $00,$00,$00,$00,$00,$00,$00,$00,$35,$35,$35,$35,$35,$35,$35,$35
 	.byte $34,$34,$34,$34,$34,$34,$34,$34
+
+	.export LevelData_Screen_Map2_16_17_and_2_18_and_3_10_and_4_5_6
 LevelData_Screen_Map2_16_17_and_2_18_and_3_10_and_4_5_6:
 	.byte $3B,$3B,$3B,$3B,$3B,$3B,$3B,$3B,$1F,$1F,$1F,$1F,$1F,$1F,$1F,$1F
 	.byte $1F,$1F,$1E,$1F,$1F,$1F,$1E,$1F,$1A,$1B,$1C,$1D,$1A,$1B,$1C,$1D
 	.byte $00,$00,$00,$00,$00,$00,$00,$00,$39,$39,$3A,$3A,$3A,$3A,$39,$39
 	.byte $17,$17,$21,$21,$21,$21,$17,$17
+
+	.export LevelData_Screen_Map2_10_and_3_4
 LevelData_Screen_Map2_10_and_3_4:
 	.byte $3B,$3B,$3B,$3B,$3B,$3B,$3B,$3B,$1F,$1F,$1F,$1F,$1F,$1F,$1F,$1F
 	.byte $1F,$1F,$1E,$1F,$1F,$1F,$1E,$1F,$1A,$1B,$1C,$1D,$1A,$1B,$1C,$1D
 	.byte $00,$00,$00,$00,$00,$00,$00,$00,$35,$35,$35,$35,$35,$35,$35,$35
 	.byte $17,$34,$34,$34,$34,$34,$34,$17
+
+	.export LevelData_Screen_Map2_4_and_2_11_and_2_25
 LevelData_Screen_Map2_4_and_2_11_and_2_25:
 	.byte $3B,$3B,$3B,$3B,$3B,$3B,$3B,$3B,$1F,$1F,$1F,$1F,$1F,$1F,$1F,$1F
 	.byte $1F,$1F,$1E,$1F,$1F,$1F,$1E,$1F,$1A,$1B,$1C,$1D,$1A,$1B,$1C,$1D
 	.byte $00,$00,$39,$39,$38,$38,$38,$38,$39,$39,$17,$17,$32,$35,$35,$37
 	.byte $17,$17,$19,$19,$34,$34,$34,$34
+
+	.export LevelData_Screen_Map2_4_and_2_11_and_2_25_and_4_2
 LevelData_Screen_Map2_4_and_2_11_and_2_25_and_4_2:
 	.byte $3B,$3B,$3B,$3B,$3B,$3B,$3B,$3B,$1F,$1F,$1F,$1F,$1F,$1F,$1F,$1F
 	.byte $1F,$1F,$1E,$1F,$1F,$1F,$1E,$1F,$1A,$1B,$1C,$1D,$1A,$1B,$1C,$1D
 	.byte $38,$38,$38,$38,$39,$39,$00,$00,$37,$35,$35,$33,$17,$17,$39,$39
 	.byte $34,$34,$34,$34,$19,$19,$17,$17
+
+	.export LevelData_Screen_Map2_25_and_4_2
 LevelData_Screen_Map2_25_and_4_2:
 	.byte $3B,$3B,$3B,$3B,$3B,$3B,$3B,$3B,$1F,$1F,$1F,$1F,$1F,$1F,$1F,$1F
 	.byte $1F,$1F,$1E,$1F,$1F,$1F,$1E,$1F,$1A,$1B,$1C,$1D,$1A,$1B,$1C,$1D
 	.byte $38,$38,$38,$38,$38,$38,$38,$38,$35,$35,$37,$35,$35,$37,$35,$35
 	.byte $34,$34,$34,$34,$34,$34,$34,$34
+
+	.export LevelData_Screen_Map2_4
 LevelData_Screen_Map2_4:
 	.byte $3B,$3B,$3B,$3B,$3B,$3B,$3B,$3B,$1F,$1F,$1F,$1F,$1F,$1F,$1F,$1F
 	.byte $1F,$1F,$1E,$1F,$1F,$1F,$1E,$1F,$1A,$1B,$1C,$1D,$1A,$1B,$1C,$1D
 	.byte $38,$00,$38,$00,$38,$00,$00,$38,$35,$35,$37,$35,$35,$37,$35,$35
 	.byte $34,$34,$34,$34,$34,$34,$34,$34
+
+	.export LevelData_Screen_Map2_11
 LevelData_Screen_Map2_11:
 	.byte $3B,$3B,$3B,$3B,$3B,$3B,$3B,$3B,$1F,$1F,$1F,$1F,$1F,$1F,$1F,$1F
 	.byte $1F,$1F,$1E,$1F,$1F,$1F,$1E,$1F,$1A,$1B,$1C,$1D,$1A,$1B,$1C,$1D
 	.byte $38,$00,$00,$00,$00,$00,$00,$38,$35,$35,$37,$35,$35,$37,$35,$35
 	.byte $34,$34,$34,$34,$34,$34,$34,$34
+
+; -----------------------------------------------------------------------------
+	.export LevelData_ScreenNumbers_0_Towns_0aldra
 LevelData_ScreenNumbers_0_Towns_0aldra:
 	.word (LevelData_ScreenNumbers_0_Towns_0aldra_1FA3D) ;FA3D (1FA3D) ()
 	.byte $00,$FF,$02,$07,$FF,$02,$00
 	.word (LevelData_ScreenNumbers_0_Towns_0aldra_0) ;FA3A (1FA3A) ()
+; -----------------------------------------
+	.export LevelData_ScreenNumbers_0_Towns_3jova
 LevelData_ScreenNumbers_0_Towns_3jova:
 	.word (LevelData_ScreenNumbers_0_Towns_3jova_1FA3C) ;FA3C (1FA3C) ()
 	.byte $00,$FF,$03,$02,$FF,$02,$07
 	.word (LevelData_ScreenNumbers_0_Towns_3jova_0) ;FA3B (1FA3B) ()
+; -----------------------------------------
+	.export LevelData_ScreenNumbers_0_Towns_8_9
 LevelData_ScreenNumbers_0_Towns_8_9:
 	.word (LevelData_ScreenNumbers_0_Towns_5doina_80D2) ;80D2 (80D2) ()
 	.byte $00,$FB,$00,$00,$FB,$00,$00
 	.word (LevelData_ScreenNumbers_0_Towns_8_0_9_0_10_1_16_1_18_0_19_2_20_0_22_0_23_0) ;800C (800C) ()
+; -----------------------------------------
+	.export LevelData_ScreenNumbers_0_Towns_15
 LevelData_ScreenNumbers_0_Towns_15:
 	.word (LevelData_ScreenNumbers_0_Towns_5doina_80D2) ;80D2 (80D2) ()
 	.byte $01,$FB,$00,$00,$FB,$00,$00
 	.word (LevelData_ScreenNumbers_0_Towns_14_0_15_0) ;800F (800F) ()
 	.word (LevelData_ScreenNumbers_0_Towns_13_1_14_1_15_1_17_1) ;800E (800E) ()
+; -----------------------------------------
+	.export LevelData_ScreenNumbers_0_Towns_16
 LevelData_ScreenNumbers_0_Towns_16:
 	.word (LevelData_ScreenNumbers_0_Towns_5doina_80D2) ;80D2 (80D2) ()
 	.byte $01,$FB,$00,$00,$FB,$00,$00
@@ -8319,24 +8415,42 @@ LevelData_ScreenNumbers_0_Towns_3jova_1FA3C:
 	.byte $FE
 LevelData_ScreenNumbers_0_Towns_0aldra_1FA3D:
 	.byte $FF
+
+	.export LevelData_Palettes_0_Towns_0aldra_Day
 LevelData_Palettes_0_Towns_0aldra_Day:
 	.byte $16,$2E
+
+	.export LevelData_Palettes_0_Towns_3jova_Day
 LevelData_Palettes_0_Towns_3jova_Day:
 	.byte $19,$2E
+
+	.export LevelData_Palettes_0_Towns_8_9_15_Day
 LevelData_Palettes_0_Towns_8_9_15_Day:
 	.byte $15,$2E,$15,$2E,$15,$2E
+
+	.export LevelData_Palettes_0_Towns_15garlicvendor_Night
 LevelData_Palettes_0_Towns_15garlicvendor_Night:
 	.byte $16,$2E
+
+	.export LevelData_Palettes_0_Towns_0aldra_3jova_Night
 LevelData_Palettes_0_Towns_0aldra_3jova_Night:
 	.byte $14,$37
+
+	.export LevelData_Palettes_0_Towns_16laurelvendor_Day
 LevelData_Palettes_0_Towns_16laurelvendor_Day:
 	.byte $15,$2E,$15,$2E
+; -----------------------------------------
+	.export LevelData_Stairs_0_Towns_3jova
 LevelData_Stairs_0_Towns_3jova:
 	.byte $09,$16,$95,$22,$1B,$A2,$8B,$B2,$2D,$26,$B9,$32,$53,$A6,$C7,$B2
 	.byte $65,$16,$F1,$22,$65,$22,$F5,$32,$FF
+; -----------------------------------------
+	.export LevelData_Stairs_0_Towns_4ondol
 LevelData_Stairs_0_Towns_4ondol:
 	.byte $09,$32,$95,$3E,$1B,$BE,$8B,$CE,$53,$C2,$C7,$CE,$65,$16,$F1,$22
 	.byte $65,$22,$F5,$32,$65,$32,$F1,$3E,$65,$3E,$F5,$4E,$FF
+; -----------------------------------------
+	.export LevelData_Screens_0_Towns_3jova_A
 LevelData_Screens_0_Towns_3jova_A:
 	.byte $04,$02
 	.word (LevelData_Screen_Map0_3_and_0_4_and_0_5_two) ;8497 (8497) ([8:4][A:5])
@@ -8351,6 +8465,8 @@ LevelData_Screens_0_Towns_3jova_A:
 	.word (LevelData_Screen_Blank) ;F807 (1F807) ([8:4][A:5])
 	.word (LevelData_Screen_Blank) ;F807 (1F807) ([8:4][A:5])
 	.word (LevelData_Screen_Blank) ;F807 (1F807) ([8:4][A:5])
+; -----------------------------------------
+	.export LevelData_Screens_0_Towns_4ondol_A
 LevelData_Screens_0_Towns_4ondol_A:
 	.byte $04,$03
 	.word (LevelData_Screen_Map0_2_and_0_4_and_0_5) ;853F (853F) ([8:4][A:5])
@@ -8369,36 +8485,52 @@ LevelData_Screens_0_Towns_4ondol_A:
 	.word (LevelData_Screen_Blank) ;F807 (1F807) ([8:4][A:5])
 	.word (LevelData_Screen_Blank) ;F807 (1F807) ([8:4][A:5])
 	.word (LevelData_Screen_Blank) ;F807 (1F807) ([8:4][A:5])
+; -----------------------------------------
+	.export LevelData_ScreenNumbers_0_Towns_2aljiba
 LevelData_ScreenNumbers_0_Towns_2aljiba:
 	.word (LevelData_ScreenNumbers_0_Towns_2aljiba_1FB24) ;FB24 (1FB24) ()
 	.byte $00,$FF,$02,$02,$FF,$03,$00
 	.word (LevelData_ScreenNumbers_0_Towns_2aljiba_0) ;FB1E (1FB1E) ()
+
+	.export LevelData_ScreenNumbers_0_Towns_5doina
 LevelData_ScreenNumbers_0_Towns_5doina:
 	.word (LevelData_ScreenNumbers_0_Towns_5doina_80D2) ;80D2 (80D2) ()
 	.byte $00,$FF,$04,$02,$FF,$02,$08
 	.word (LevelData_ScreenNumbers_0_Towns_5doina_0) ;FB1F (1FB1F) ()
+
+	.export LevelData_ScreenNumbers_0_Towns_6yomi
 LevelData_ScreenNumbers_0_Towns_6yomi:
 	.word (LevelData_ScreenNumbers_0_Towns_5doina_80D2) ;80D2 (80D2) ()
 	.byte $00,$FC,$02,$08,$FF,$04,$03
 	.word (LevelData_ScreenNumbers_0_Towns_6yomi_0) ;FB20 (1FB20) ()
+
+	.export LevelData_ScreenNumbers_0_Towns_12
 LevelData_ScreenNumbers_0_Towns_12:
 	.word (LevelData_ScreenNumbers_0_Towns_5doina_80D2) ;80D2 (80D2) ()
 	.byte $00,$FB,$00,$00,$FB,$00,$00
 	.word (LevelData_ScreenNumbers_0_Towns_12_0) ;FB21 (1FB21) ()
+
+	.export LevelData_ScreenNumbers_0_Towns_13
 LevelData_ScreenNumbers_0_Towns_13:
 	.word (LevelData_ScreenNumbers_0_Towns_5doina_80D2) ;80D2 (80D2) ()
 	.byte $01,$FB,$00,$00,$FB,$00,$00
 	.word (LevelData_ScreenNumbers_0_Towns_13_0) ;FB22 (1FB22) ()
 	.word (LevelData_ScreenNumbers_0_Towns_13_1_14_1_15_1_17_1) ;800E (800E) ()
+
+	.export LevelData_ScreenNumbers_0_Towns_14
 LevelData_ScreenNumbers_0_Towns_14:
 	.word (LevelData_ScreenNumbers_0_Towns_5doina_80D2) ;80D2 (80D2) ()
 	.byte $01,$FB,$00,$00,$FB,$00,$00
 	.word (LevelData_ScreenNumbers_0_Towns_14_0_15_0) ;800F (800F) ()
 	.word (LevelData_ScreenNumbers_0_Towns_13_1_14_1_15_1_17_1) ;800E (800E) ()
+; -----------------------------------------
+	.export LevelData_ScreenNumbers_0_Towns_20_22_23
 LevelData_ScreenNumbers_0_Towns_20_22_23:
 	.word (LevelData_ScreenNumbers_0_Towns_5doina_80D2) ;80D2 (80D2) ()
 	.byte $00,$FB,$00,$00,$FB,$00,$00
 	.word (LevelData_ScreenNumbers_0_Towns_8_0_9_0_10_1_16_1_18_0_19_2_20_0_22_0_23_0) ;800C (800C) ()
+; -----------------------------------------
+	.export LevelData_ScreenNumbers_0_Towns_21
 LevelData_ScreenNumbers_0_Towns_21:
 	.word (LevelData_ScreenNumbers_0_Towns_5doina_80D2) ;80D2 (80D2) ()
 	.byte $00,$FB,$00,$00,$FB,$00,$00
@@ -8417,28 +8549,52 @@ LevelData_ScreenNumbers_0_Towns_21_0:
 	.byte $0E
 LevelData_ScreenNumbers_0_Towns_2aljiba_1FB24:
 	.byte $FF
+
+	.export LevelData_Palettes_0_Towns_2aljiba_Day
 LevelData_Palettes_0_Towns_2aljiba_Day:
 	.byte $18,$2E
+
+	.export LevelData_Palettes_0_Towns_5doina_Day
 LevelData_Palettes_0_Towns_5doina_Day:
 	.byte $1B,$2E
+
+	.export LevelData_Palettes_0_Towns_6yomi_Day
 LevelData_Palettes_0_Towns_6yomi_Day:
 	.byte $1C,$2E
+
+	.export LevelData_Palettes_0_Towns_12_13_14_20_21_22_23_Day__12_13_14_20_21_22_Night
 LevelData_Palettes_0_Towns_12_13_14_20_21_22_23_Day__12_13_14_20_21_22_Night:
 	.byte $15,$2E,$15,$2E,$15,$2E
+
+	.export LevelData_Palettes_0_Towns_23yomiguy_Night
 LevelData_Palettes_0_Towns_23yomiguy_Night:
 	.byte $16,$2E
+
+	.export LevelData_Palettes_0_Towns_2aljiba_5doina_6yomi_Night
 LevelData_Palettes_0_Towns_2aljiba_5doina_6yomi_Night:
 	.byte $14,$37
+; -----------------------------------------
+	.export LevelData_Stairs_0_Towns_0aldra
 LevelData_Stairs_0_Towns_0aldra:
 	.byte $33,$8A,$A7,$96,$69,$0E,$F1,$16,$FF
+; -----------------------------------------
+	.export LevelData_Stairs_0_Towns_2aljiba
 LevelData_Stairs_0_Towns_2aljiba:
 	.byte $65,$16,$F1,$22,$65,$22,$F5,$32,$FF
+; -----------------------------------------
+	.export LevelData_Stairs_0_Towns_6yomi
 LevelData_Stairs_0_Towns_6yomi:
 	.byte $33,$8A,$A7,$96,$69,$0E,$F1,$16,$FF
+; -----------------------------------------
+	.export LevelData_Stairs_0_Towns_10_14
 LevelData_Stairs_0_Towns_10_14:
 	.byte $05,$22,$8D,$2A,$05,$2A,$8D,$32,$1B,$A2,$93,$AA,$FF
+; -----------------------------------------
+	.export LevelData_Stairs_0_Towns_11
 LevelData_Stairs_0_Towns_11:
 	.byte $0D,$1A,$99,$26,$13,$A6,$87,$B2,$FF
+; -----------------------------------------
+	.export LevelData_Screens_0_Towns_0aldra_A
 LevelData_Screens_0_Towns_0aldra_A:
 	.byte $04,$01
 	.word (LevelData_Screen_Map0_0_and_0_1_and_0_2_and_0_6) ;8347 (8347) ([8:4][A:5])
@@ -8449,6 +8605,8 @@ LevelData_Screens_0_Towns_0aldra_A:
 	.word (LevelData_Screen_Blank) ;F807 (1F807) ([8:4][A:5])
 	.word (LevelData_Screen_Blank) ;F807 (1F807) ([8:4][A:5])
 	.word (LevelData_Screen_Blank) ;F807 (1F807) ([8:4][A:5])
+; -----------------------------------------
+	.export LevelData_Screens_0_Towns_2aljiba_A
 LevelData_Screens_0_Towns_2aljiba_A:
 	.byte $04,$02
 	.word (LevelData_Screen_Map0_2_and_0_4_and_0_5) ;853F (853F) ([8:4][A:5])
@@ -8463,6 +8621,8 @@ LevelData_Screens_0_Towns_2aljiba_A:
 	.word (LevelData_Screen_Blank) ;F807 (1F807) ([8:4][A:5])
 	.word (LevelData_Screen_Blank) ;F807 (1F807) ([8:4][A:5])
 	.word (LevelData_Screen_Blank) ;F807 (1F807) ([8:4][A:5])
+; -----------------------------------------
+	.export LevelData_Screens_0_Towns_6yomi_A
 LevelData_Screens_0_Towns_6yomi_A:
 	.byte $04,$01
 	.word (LevelData_Screen_Map0_0_and_0_1_and_0_2_and_0_6) ;8347 (8347) ([8:4][A:5])
@@ -8473,11 +8633,15 @@ LevelData_Screens_0_Towns_6yomi_A:
 	.word (LevelData_Screen_Blank) ;F807 (1F807) ([8:4][A:5])
 	.word (LevelData_Screen_Blank) ;F807 (1F807) ([8:4][A:5])
 	.word (LevelData_Screen_Blank) ;F807 (1F807) ([8:4][A:5])
+; -----------------------------------------
+	.export LevelData_Screens_0_Towns_10_A
 LevelData_Screens_0_Towns_10_A:
 	.byte $01,$02
 	.word (LevelData_Screen_Map0_10_and_0_13) ;8187 (8187) ([8:4][A:5])
 	.word (LevelData_Screen_Map0_9_and_0_10_and_0_14) ;822F (822F) ([8:4][A:5])
 	.word (LevelData_Screen_Blank) ;F807 (1F807) ([8:4][A:5])
+; -----------------------------------------
+	.export LevelData_Screens_0_Towns_11_A
 LevelData_Screens_0_Towns_11_A:
 	.byte $01,$02
 	.word (LevelData_Screen_Map0_9_and_0_11) ;81BF (81BF) ([8:4][A:5])
@@ -8487,6 +8651,8 @@ LevelData_Screens_0_Towns_11_A:
 	.word (LevelData_Screen_Blank) ;F807 (1F807) ([8:4][A:5])
 	.word (LevelData_Screen_Map0_7_and_0_12) ;8117 (8117) ([8:4][A:5])
 	.word (LevelData_Screen_Blank) ;F807 (1F807) ([8:4][A:5])
+; -----------------------------------------
+	.export LevelData_Screens_0_Towns_14_A
 LevelData_Screens_0_Towns_14_A:
 	.byte $01,$02
 	.word (LevelData_Screen_Map0_14_and_0_15) ;81F7 (81F7) ([8:4][A:5])
@@ -8497,6 +8663,8 @@ LevelData_Screens_0_Towns_14_A:
 	.export Sound_PCMsample5D_Config
 Sound_PCMsample5D_Config:
 	.byte $0E,$7F,$F3
+
+	.export DataTableEntry_1FBC7
 DataTableEntry_1FBC7:
 	.byte $17
 ; -----------------------------------------
@@ -8564,6 +8732,8 @@ Sound_PCMsample5F_Data:
 	.byte $94,$4A,$5B,$FD,$FF,$FF,$CD,$7A,$8B,$02,$01,$8A,$04,$22,$88,$76
 	.byte $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
 	.byte $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
+
+	.export DataTableEntry_1FF00
 DataTableEntry_1FF00:
 	.byte $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
 	.byte $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF

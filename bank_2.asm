@@ -14,12 +14,20 @@ LevelData_ScreenNumbers_0_Towns_7church:
 	.word (LevelData_ScreenNumbers_0_Towns_7church_0) ;800B (800B) ()
 LevelData_ScreenNumbers_0_Towns_7church_0:
 	.byte $10
+
+	.export LevelData_ScreenNumbers_0_Towns_8_0_9_0_10_1_16_1_18_0_19_2_20_0_22_0_23_0
 LevelData_ScreenNumbers_0_Towns_8_0_9_0_10_1_16_1_18_0_19_2_20_0_22_0_23_0:
 	.byte $07
+
+	.export LevelData_ScreenNumbers_0_Towns_10_0_16_0_19_0_19_1
 LevelData_ScreenNumbers_0_Towns_10_0_16_0_19_0_19_1:
 	.byte $08
+
+	.export LevelData_ScreenNumbers_0_Towns_13_1_14_1_15_1_17_1
 LevelData_ScreenNumbers_0_Towns_13_1_14_1_15_1_17_1:
 	.byte $0C
+
+	.export LevelData_ScreenNumbers_0_Towns_14_0_15_0
 LevelData_ScreenNumbers_0_Towns_14_0_15_0:
 	.byte $0D
 LevelData_Screens_0_Towns_16_A:
@@ -52,6 +60,9 @@ LevelData_Stairs_0_Towns_16:
 	.byte $0F,$8E,$87,$96
 LevelData_Stairs_0_Towns_7_8_12:
 	.byte $FF
+
+; -----------------------------------------------------------------------------
+	.export LevelData_ScreenNumbers_0_Towns
 LevelData_ScreenNumbers_0_Towns:
 	.word (LevelData_ScreenNumbers_0_Towns_0aldra) ;F9FF (1F9FF) ()
 	.word (LevelData_ScreenNumbers_0_Towns_1veros) ;8657 (8657) ()
@@ -77,6 +88,8 @@ LevelData_ScreenNumbers_0_Towns:
 	.word (LevelData_ScreenNumbers_0_Towns_21) ;FB13 (1FB13) ()
 	.word (LevelData_ScreenNumbers_0_Towns_20_22_23) ;FB08 (1FB08) ()
 	.word (LevelData_ScreenNumbers_0_Towns_20_22_23) ;FB08 (1FB08) ()
+; -----------------------------------------------------------------------------
+	.export LevelData_Palettes_0_Towns
 LevelData_Palettes_0_Towns:
 	.word (LevelData_Palettes_0_Towns_0aldra_Day) ;FA3E (1FA3E) ()
 	.word (LevelData_Palettes_0_Towns_0aldra_3jova_Night) ;FA4A (1FA4A) ()
@@ -126,8 +139,13 @@ LevelData_Palettes_0_Towns:
 	.word (LevelData_Palettes_0_Towns_12_13_14_20_21_22_23_Day__12_13_14_20_21_22_Night) ;FB2B (1FB2B) ()
 	.word (LevelData_Palettes_0_Towns_12_13_14_20_21_22_23_Day__12_13_14_20_21_22_Night) ;FB2B (1FB2B) ()
 	.word (LevelData_Palettes_0_Towns_23yomiguy_Night) ;FB31 (1FB31) ()
+
+; -----------------------------------------------------------------------------
+	.export LevelData_ScreenNumbers_0_Towns_5doina_80D2
 LevelData_ScreenNumbers_0_Towns_5doina_80D2:
 	.byte $00
+; -----------------------------------------
+	.export LevelData_Screens_0_Towns
 LevelData_Screens_0_Towns:
 	.word (LevelData_Screens_0_Towns_0aldra_A) ;FB66 (1FB66) ()
 	.word (LevelData_Stairs_0_Towns_0aldra) ;FB35 (1FB35) ()
@@ -163,6 +181,9 @@ LevelData_Screens_0_Towns:
 	.word (LevelData_Stairs_0_Towns_15) ;86EF (86EF) ()
 	.word (LevelData_Screens_0_Towns_16_A) ;8010 (8010) ()
 	.word (LevelData_Stairs_0_Towns_16) ;803D (803D) ()
+
+; -----------------------------------------------------------------------------
+	.export LevelData_Screen_Map0_7_and_0_12
 LevelData_Screen_Map0_7_and_0_12:
 	.byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
 	.byte $01,$01,$01,$01,$01,$01,$01,$01,$06,$2F,$15,$2F,$15,$2F,$15,$07
@@ -173,26 +194,36 @@ LevelData_Screen_Map0_8:
 	.byte $01,$01,$01,$01,$01,$01,$01,$01,$06,$2F,$15,$2F,$15,$2F,$15,$07
 	.byte $06,$35,$1F,$35,$1F,$35,$38,$07,$00,$32,$32,$32,$32,$32,$32,$09
 	.byte $01,$01,$01,$01,$01,$01,$01,$01
+
+	.export LevelData_Screen_Map0_10_and_0_13
 LevelData_Screen_Map0_10_and_0_13:
 	.byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
 	.byte $01,$01,$01,$01,$01,$01,$01,$01,$06,$2F,$15,$2F,$15,$2F,$15,$07
 	.byte $06,$35,$1F,$35,$1F,$35,$38,$07,$00,$32,$32,$32,$32,$32,$32,$07
 	.byte $01,$01,$01,$0C,$0C,$0C,$01,$01
+
+	.export LevelData_Screen_Map0_9_and_0_11
 LevelData_Screen_Map0_9_and_0_11:
 	.byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
 	.byte $01,$01,$01,$01,$01,$01,$01,$01,$06,$2F,$15,$2F,$15,$2F,$15,$07
 	.byte $06,$35,$1F,$35,$1F,$35,$38,$07,$00,$32,$32,$32,$32,$32,$32,$07
 	.byte $01,$01,$0C,$0C,$01,$01,$01,$01
+
+	.export LevelData_Screen_Map0_14_and_0_15
 LevelData_Screen_Map0_14_and_0_15:
 	.byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
 	.byte $01,$01,$01,$01,$01,$01,$01,$01,$06,$2F,$15,$2F,$15,$2F,$15,$07
 	.byte $06,$35,$1F,$35,$1F,$35,$38,$07,$00,$32,$32,$32,$32,$32,$32,$07
 	.byte $01,$01,$00,$00,$00,$01,$01,$01
+
+	.export LevelData_Screen_Map0_9_and_0_10_and_0_14
 LevelData_Screen_Map0_9_and_0_10_and_0_14:
 	.byte $06,$1F,$2E,$01,$01,$2E,$1F,$07,$06,$32,$01,$32,$32,$01,$32,$07
 	.byte $01,$02,$0A,$01,$01,$0B,$03,$01,$06,$29,$04,$26,$27,$05,$3B,$07
 	.byte $01,$02,$0A,$01,$01,$01,$0C,$01,$06,$29,$04,$26,$2E,$1F,$2E,$07
 	.byte $01,$01,$01,$01,$01,$01,$01,$01
+
+	.export LevelData_Screen_Map0_11_and_0_13_and_0_15
 LevelData_Screen_Map0_11_and_0_13_and_0_15:
 	.byte $06,$1F,$01,$02,$0A,$2E,$15,$07,$06,$15,$33,$29,$04,$26,$38,$07
 	.byte $06,$38,$2E,$1F,$29,$04,$26,$07,$01,$0C,$01,$0B,$03,$01,$01,$01
@@ -203,26 +234,36 @@ LevelData_Screen_Map0_16:
 	.byte $22,$31,$22,$19,$22,$31,$23,$07,$22,$31,$23,$38,$23,$31,$01,$01
 	.byte $22,$30,$0B,$03,$01,$30,$1F,$07,$23,$27,$05,$3B,$1F,$07,$42,$42
 	.byte $01,$01,$01,$01,$01,$01,$01,$01
+
+	.export LevelData_Screen_Map0_3
 LevelData_Screen_Map0_3:
 	.byte $12,$15,$1F,$21,$15,$1F,$21,$13,$12,$20,$37,$2C,$14,$37,$2C,$13
 	.byte $12,$2B,$1F,$38,$28,$1F,$38,$13,$12,$01,$01,$02,$0A,$01,$01,$01
 	.byte $12,$37,$20,$29,$04,$26,$1F,$13,$10,$25,$2B,$25,$1B,$04,$3A,$11
 	.byte $01,$01,$01,$01,$01,$01,$01,$01
+
+	.export LevelData_Screen_Map0_2_and_0_5
 LevelData_Screen_Map0_2_and_0_5:
 	.byte $12,$1F,$2E,$38,$2E,$1F,$2E,$13,$16,$1E,$1E,$1E,$1E,$1E,$1E,$17
 	.byte $12,$1F,$15,$1F,$33,$15,$33,$13,$12,$37,$14,$38,$2E,$38,$2D,$13
 	.byte $12,$1F,$28,$01,$01,$37,$2E,$13,$10,$01,$01,$00,$00,$01,$01,$11
 	.byte $01,$24,$24,$24,$24,$24,$24,$01
+
+	.export LevelData_Screen_Map0_0_and_0_1_and_0_2_and_0_6
 LevelData_Screen_Map0_0_and_0_1_and_0_2_and_0_6:
 	.byte $18,$12,$31,$15,$31,$15,$31,$13,$18,$12,$30,$38,$30,$1F,$30,$13
 	.byte $18,$16,$1E,$1E,$1E,$1E,$1E,$17,$18,$12,$21,$1F,$15,$1F,$21,$13
 	.byte $18,$12,$2C,$1F,$14,$37,$2C,$13,$18,$10,$25,$25,$28,$25,$0D,$11
 	.byte $01,$01,$01,$24,$01,$24,$01,$01
+
+	.export LevelData_Screen_Map0_0_and_0_1_and_0_6
 LevelData_Screen_Map0_0_and_0_1_and_0_6:
 	.byte $3C,$3D,$3D,$3D,$3D,$3D,$3E,$18,$12,$33,$1F,$15,$1F,$33,$13,$18
 	.byte $12,$2D,$37,$14,$38,$2D,$13,$18,$12,$2E,$1F,$28,$1F,$2E,$13,$18
 	.byte $12,$01,$02,$0A,$01,$1F,$13,$18,$10,$25,$1B,$04,$3A,$25,$11,$18
 	.byte $01,$01,$01,$01,$01,$01,$01,$01
+
+	.export LevelData_Screen_Map0_3_and_0_4_and_0_5_one
 LevelData_Screen_Map0_3_and_0_4_and_0_5_one:
 	.byte $18,$12,$29,$04,$26,$15,$20,$13,$18,$12,$33,$29,$04,$26,$2B,$13
 	.byte $18,$12,$2D,$1F,$01,$0B,$03,$01,$18,$12,$2E,$1F,$27,$05,$3B,$13
@@ -233,51 +274,71 @@ LevelData_Screen_Map0_5:
 	.byte $16,$1E,$1D,$1E,$1E,$1E,$1E,$17,$12,$1C,$21,$36,$15,$14,$15,$13
 	.byte $12,$2A,$2C,$3F,$37,$28,$1F,$13,$10,$25,$25,$25,$01,$01,$01,$11
 	.byte $01,$01,$01,$01,$01,$01,$01,$01
+
+	.export LevelData_Screen_Map0_4
 LevelData_Screen_Map0_4:
 	.byte $18,$12,$31,$1F,$31,$1F,$31,$13,$3C,$3D,$3D,$3D,$3D,$3E,$30,$13
 	.byte $12,$38,$1F,$38,$1F,$13,$1E,$17,$12,$21,$15,$21,$15,$13,$15,$13
 	.byte $12,$2C,$37,$2C,$14,$13,$20,$13,$10,$25,$25,$25,$28,$11,$2B,$11
 	.byte $01,$01,$01,$01,$01,$01,$01,$01
+
+	.export LevelData_Screen_Map0_2_and_0_3_and_0_4_and_0_5_one
 LevelData_Screen_Map0_2_and_0_3_and_0_4_and_0_5_one:
 	.byte $12,$29,$04,$26,$38,$14,$13,$41,$10,$25,$1B,$04,$3A,$28,$11,$42
 	.byte $01,$02,$0A,$01,$01,$01,$01,$01,$12,$29,$04,$26,$1F,$37,$13,$18
 	.byte $12,$37,$29,$04,$26,$15,$13,$18,$10,$25,$25,$1B,$04,$3A,$11,$18
 	.byte $24,$01,$24,$01,$01,$01,$01,$01
+
+	.export LevelData_Screen_Map0_3_and_0_4_and_0_5_two
 LevelData_Screen_Map0_3_and_0_4_and_0_5_two:
 	.byte $18,$3C,$3D,$3D,$3D,$3D,$3D,$3E,$18,$12,$21,$1F,$21,$1F,$21,$13
 	.byte $18,$12,$2C,$38,$2C,$38,$2C,$13,$40,$12,$21,$1F,$15,$38,$21,$13
 	.byte $40,$12,$2C,$1F,$20,$37,$2C,$13,$42,$10,$25,$25,$2B,$25,$25,$11
 	.byte $01,$01,$02,$0A,$01,$01,$01,$01
+
+	.export LevelData_Screen_Map0_4_and_0_5
 LevelData_Screen_Map0_4_and_0_5:
 	.byte $12,$29,$04,$26,$38,$38,$13,$18,$12,$38,$29,$04,$26,$33,$13,$18
 	.byte $01,$02,$0A,$01,$01,$2D,$13,$18,$12,$29,$04,$26,$1F,$2E,$13,$41
 	.byte $12,$20,$29,$04,$26,$37,$13,$41,$10,$2B,$25,$1B,$04,$3A,$11,$42
 	.byte $01,$02,$0A,$01,$01,$01,$01,$01
+
+	.export LevelData_Screen_Map0_2_and_0_3_and_0_4_and_0_5_two
 LevelData_Screen_Map0_2_and_0_3_and_0_4_and_0_5_two:
 	.byte $3C,$3D,$3D,$3D,$3D,$3D,$3E,$18,$12,$15,$1F,$15,$1F,$15,$13,$18
 	.byte $16,$1E,$1E,$1E,$1E,$1E,$17,$18,$12,$21,$15,$21,$38,$15,$13,$41
 	.byte $12,$2C,$38,$2C,$37,$20,$13,$41,$10,$25,$25,$25,$25,$2B,$11,$42
 	.byte $01,$02,$0A,$01,$01,$01,$01,$01
+
+	.export LevelData_Screen_Map0_2_and_0_4_and_0_5
 LevelData_Screen_Map0_2_and_0_4_and_0_5:
 	.byte $18,$12,$21,$1F,$21,$38,$21,$13,$18,$12,$2C,$1F,$2C,$1F,$2C,$13
 	.byte $18,$16,$1E,$1E,$1D,$1E,$1D,$17,$40,$12,$15,$1F,$21,$1F,$21,$13
 	.byte $40,$12,$20,$37,$2C,$38,$2C,$13,$42,$10,$2B,$25,$25,$25,$25,$11
 	.byte $01,$01,$01,$01,$01,$01,$01,$01
+
+	.export LevelData_Screen_Map0_0_and_0_1_and_0_3_and_0_4
 LevelData_Screen_Map0_0_and_0_1_and_0_3_and_0_4:
 	.byte $18,$12,$34,$31,$34,$13,$18,$18,$3D,$12,$31,$30,$31,$13,$3D,$3E
 	.byte $15,$12,$31,$19,$31,$13,$15,$13,$21,$12,$30,$15,$30,$13,$21,$13
 	.byte $2C,$12,$15,$14,$15,$13,$2C,$13,$25,$10,$25,$28,$25,$11,$25,$11
 	.byte $01,$01,$01,$01,$01,$01,$01,$01
+
+	.export LevelData_Screen_Map0_2_and_0_3_and_0_4_and_0_5_and_0_6
 LevelData_Screen_Map0_2_and_0_3_and_0_4_and_0_5_and_0_6:
 	.byte $12,$15,$21,$15,$21,$15,$21,$13,$3C,$3D,$3D,$3D,$3E,$1F,$2C,$13
 	.byte $12,$33,$1F,$33,$13,$1E,$1E,$17,$12,$2D,$15,$2D,$13,$1F,$15,$13
 	.byte $12,$2E,$20,$2E,$13,$37,$20,$13,$10,$25,$2B,$25,$11,$25,$2B,$11
 	.byte $01,$01,$01,$01,$01,$01,$01,$01
+
+	.export LevelData_Screen_Map0_1_and_0_2_and_0_4_and_0_5
 LevelData_Screen_Map0_1_and_0_2_and_0_4_and_0_5:
 	.byte $12,$1F,$21,$38,$21,$1F,$21,$13,$12,$37,$2C,$1F,$2C,$38,$2C,$13
 	.byte $16,$1E,$1E,$1E,$1E,$1E,$1E,$17,$12,$15,$21,$15,$21,$15,$21,$13
 	.byte $12,$20,$2C,$37,$2C,$20,$2C,$13,$10,$2B,$25,$25,$25,$2B,$25,$11
 	.byte $01,$01,$01,$01,$01,$01,$01,$01
+
+	.export LevelData_Screen_Map0_0_and_0_3_and_0_4_and_0_5_and_0_6
 LevelData_Screen_Map0_0_and_0_3_and_0_4_and_0_5_and_0_6:
 	.byte $12,$15,$1F,$21,$1F,$21,$1F,$13,$12,$20,$37,$2C,$1F,$2C,$1F,$13
 	.byte $12,$2B,$38,$1F,$38,$1F,$1F,$13,$01,$01,$01,$0B,$03,$01,$01,$13
@@ -384,6 +445,9 @@ LevelData_Screens_0_Towns_15_A:
 	.word (LevelData_Screen_Map0_14_and_0_15) ;81F7 (81F7) ([8:4][A:5])
 	.word (LevelData_Screen_Map0_11_and_0_13_and_0_15) ;8267 (8267) ([8:4][A:5])
 	.word (LevelData_Screen_Blank) ;F807 (1F807) ([8:4][A:5])
+
+; -----------------------------------------------------------------------------
+	.export LevelData_ScreenNumbers_1_Mansions
 LevelData_ScreenNumbers_1_Mansions:
 	.word (LevelData_ScreenNumbers_1_Mansions_0larubaEntrance) ;88C7 (88C7) ()
 	.word (LevelData_ScreenNumbers_1_Mansions_1_12_13_14_15_16_17) ;8D3A (8D3A) ()
@@ -404,6 +468,8 @@ LevelData_ScreenNumbers_1_Mansions:
 	.word (LevelData_ScreenNumbers_1_Mansions_1_12_13_14_15_16_17) ;8D3A (8D3A) ()
 	.word (LevelData_ScreenNumbers_1_Mansions_1_12_13_14_15_16_17) ;8D3A (8D3A) ()
 	.word (LevelData_ScreenNumbers_1_Mansions_18) ;8D52 (8D52) ()
+; -----------------------------------------------------------------------------
+	.export LevelData_Palettes_1_Mansions
 LevelData_Palettes_1_Mansions:
 	.word (LevelData_Palettes_1_Mansions_0larubaEntrance_Day_6) ;88E8 (88E8) ()
 	.word (LevelData_Palettes_1_Mansions_0larubaEntrance_Night) ;88F0 (88F0) ()
@@ -429,6 +495,8 @@ LevelData_Palettes_1_Mansions:
 	.word (LevelData_Palettes_1_Mansions_4bodleyEntrance_Day_10) ;9A6D (9A6D) ()
 	.word (TempPtr00_lo) ;0 (0) ()
 	.word (TempPtr00_lo) ;0 (0) ()
+; -----------------------------------------
+	.export LevelData_Screens_1_Mansions
 LevelData_Screens_1_Mansions:
 	.word (LevelData_Screens_1_Mansions_0larubaEntrance_A) ;8910 (8910) ()
 	.word (LevelData_Stairs_1_Mansions_0larubaEntrance) ;88F6 (88F6) ()
@@ -1256,6 +1324,9 @@ LevelData_Screen_Map1_14_nine:
 	.byte $1A,$39,$1A,$39,$1A,$39,$1A,$07,$01,$01,$01,$01,$01,$01,$01,$40
 	.byte $17,$1E,$21,$1E,$21,$1E,$17,$07,$1A,$39,$1A,$39,$1A,$39,$1A,$00
 	.byte $40,$40,$40,$40,$40,$40,$40,$40
+
+; -----------------------------------------------------------------------------
+	.export LevelData_ScreenNumbers_2_ForestsAndBridges
 LevelData_ScreenNumbers_2_ForestsAndBridges:
 	.word (LevelData_ScreenNumbers_2_ForestsAndBridges_0jovaFororest) ;A149 (A149) ()
 	.word (LevelData_ScreenNumbers_2_ForestsAndBridges_1verosForest) ;A15A (A15A) ()
@@ -1267,6 +1338,8 @@ LevelData_ScreenNumbers_2_ForestsAndBridges:
 	.word (LevelData_ScreenNumbers_2_ForestsAndBridges_7) ;A170 (A170) ()
 	.word (LevelData_ScreenNumbers_2_ForestsAndBridges_8) ;A17F (A17F) ()
 	.word (LevelData_ScreenNumbers_2_ForestsAndBridges_9) ;A18E (A18E) ()
+; -----------------------------------------
+	.export LevelData_Palettes_2_ForestsAndBridges
 LevelData_Palettes_2_ForestsAndBridges:
 	.word (LevelData_Palettes_2_ForestsAndBridges_0aldraRightsideVerosLeftside_Day) ;A1C0 (A1C0) ()
 	.word (LevelData_Palettes_2_ForestsAndBridges_0aldraRightsideVerosLeftside_Night) ;A1DC (A1DC) ()
@@ -1288,6 +1361,8 @@ LevelData_Palettes_2_ForestsAndBridges:
 	.word (LevelData_Palettes_2_ForestsAndBridges_8_Night) ;A1EC (A1EC) ()
 	.word (LevelData_Palettes_2_ForestsAndBridges_9_Day) ;A1D4 (A1D4) ()
 	.word (LevelData_Palettes_2_ForestsAndBridges_9_Night) ;A1F2 (A1F2) ()
+; -----------------------------------------
+	.export LevelData_Screens_2_ForestsAndBridges
 LevelData_Screens_2_ForestsAndBridges:
 	.word (LevelData_Screens_2_ForestsAndBridges_0aldraRightsideVerosLeftside_A) ;A22C (A22C) ()
 	.word (LevelData_Stairs_2_ForestsAndBridges_0_2_3_4_11_12_14_16_17_18_22_25) ;A221 (A221) ()
@@ -1937,6 +2012,9 @@ LevelData_Screen_Map2_8:
 	.byte $14,$14,$14,$14,$14,$14,$14,$14,$2B,$2D,$2D,$2D,$2D,$2D,$2D,$2C
 	.byte $29,$2B,$2D,$2C,$2B,$2C,$23,$2A,$00,$29,$23,$2A,$29,$2A,$00,$00
 	.byte $39,$3D,$24,$40,$24,$39,$39,$39,$31,$31,$31,$31,$31,$13,$17,$17
+
+; -----------------------------------------------------------------------------
+	.export LevelData_ScreenNumbers_4_Wastelands
 LevelData_ScreenNumbers_4_Wastelands:
 	.word (LevelData_ScreenNumbers_4_Wastelands_0) ;AE6C (AE6C) ()
 	.word (LevelData_ScreenNumbers_4_Wastelands_1) ;AE79 (AE79) ()
@@ -1983,6 +2061,9 @@ LevelData_ScreenNumbers_4_Wastelands_2_AEAA:
 	.byte $00
 LevelData_ScreenNumbers_4_Wastelands_3_AEAB:
 	.byte $00,$00
+
+; -----------------------------------------------------------------------------
+	.export LevelData_Palettes_4_Wastelands
 LevelData_Palettes_4_Wastelands:
 	.word (LevelData_Palettes_4_Wastelands_0_Day) ;AEBD (AEBD) ()
 	.word (LevelData_Palettes_4_Wastelands_0_Night) ;AECD (AECD) ()
@@ -2008,6 +2089,8 @@ LevelData_Palettes_4_Wastelands_2_Night:
 	.byte $41,$45
 LevelData_Palettes_4_Wastelands_3_Night:
 	.byte $43,$46,$21,$46
+; -----------------------------------------
+	.export LevelData_Screens_4_Wastelands
 LevelData_Screens_4_Wastelands:
 	.word (LevelData_Screens_4_Wastelands_0_A) ;AEFE (AEFE) ()
 	.word (LevelData_Stairs_4_Wastelands_0_1_2_3_4_5_6_7) ;AEFD (AEFD) ()
@@ -2161,12 +2244,17 @@ LevelData_Screen_Map4_2:
 	.byte $1F,$1F,$1E,$1F,$1F,$1F,$1E,$1F,$1A,$1B,$1C,$1D,$1A,$1B,$1C,$1D
 	.byte $00,$00,$0E,$38,$38,$38,$38,$38,$39,$39,$17,$17,$32,$35,$35,$37
 	.byte $17,$17,$19,$19,$34,$34,$34,$34
+
+; -----------------------------------------------------------------------------
+	.export LevelData_ScreenNumbers_3_Wilderness
 LevelData_ScreenNumbers_3_Wilderness:
 	.word (LevelData_ScreenNumbers_3_Wilderness_0carmillaCemetery) ;B372 (B372) ()
 	.word (LevelData_ScreenNumbers_3_Wildernesss_1) ;B37F (B37F) ()
 	.word (LevelData_ScreenNumbers_3_Wildernesss_2) ;B38A (B38A) ()
 	.word (LevelData_ScreenNumbers_3_Wildernesss_3) ;B7C7 (B7C7) ()
 	.word (LevelData_ScreenNumbers_3_Wildernesss_4) ;B397 (B397) ()
+; -----------------------------------------
+	.export LevelData_Palettes_3_Wilderness
 LevelData_Palettes_3_Wilderness:
 	.word (LevelData_Palettes_3_Wilderness_0carmillaCemetery_Day) ;B3B2 (B3B2) ()
 	.word (LevelData_Palettes_3_Wilderness_0carmillaCemetery_Night) ;B3C0 (B3C0) ()
@@ -2178,6 +2266,8 @@ LevelData_Palettes_3_Wilderness:
 	.word (LevelData_Palettes_3_Wildernesss_3_Night) ;B7EE (B7EE) ()
 	.word (LevelData_Palettes_3_Wildernesss_4_Day) ;B3BE (B3BE) ()
 	.word (LevelData_Palettes_3_Wildernesss_4_Night) ;B3CC (B3CC) ()
+; -----------------------------------------
+	.export LevelData_Screens_3_Wilderness
 LevelData_Screens_3_Wilderness:
 	.word (LevelData_Screens_3_Wilderness_0carmillaCemetery_A) ;B3EF (B3EF) ()
 	.word (LevelData_Stairs_3_Wilderness_0carmillaCemetery) ;B3EE (B3EE) ()
@@ -2579,16 +2669,22 @@ LevelData_Screen_Map3_3_three:
 	.byte $1F,$1F,$1E,$1F,$1F,$1F,$1E,$1F,$1A,$1B,$20,$1D,$1A,$1B,$20,$1D
 	.byte $15,$16,$12,$15,$14,$15,$12,$15,$40,$10,$11,$40,$41,$40,$11,$40
 	.byte $17,$3A,$17,$3A,$3A,$43,$3A,$17
+; -----------------------------------------
+	.export LevelData_Screens_5_Ruins
 LevelData_Screens_5_Ruins:
 	.word (LevelData_Screens_5_Ruins_0_A) ;BC82 (BC82) ()
 	.word (LevelData_Stairs_5_Ruins_0) ;BC68 (BC68) ()
 	.word (LevelData_Screens_5_Ruins_1_A) ;BCAC (BCAC) ()
 	.word (LevelData_Stairs_5_Ruins_1) ;BC81 (BC81) ()
+; -----------------------------------------
+	.export LevelData_Palettes_5_Ruins
 LevelData_Palettes_5_Ruins:
 	.word (LevelData_Palettes_5_Ruins_0_DayOrNight) ;BC52 (BC52) ()
 	.word (LevelData_Palettes_5_Ruins_0_DayOrNight) ;BC52 (BC52) ()
 LevelData_Palettes_5_Ruins_0_DayOrNight:
 	.byte $57,$4C,$57,$4C
+; -----------------------------------------
+	.export LevelData_ScreenNumbers_5_Ruins
 LevelData_ScreenNumbers_5_Ruins:
 	.word (LevelData_ScreenNumbers_5_Ruins_0) ;BC58 (BC58) ()
 LevelData_ScreenNumbers_5_Ruins_0:

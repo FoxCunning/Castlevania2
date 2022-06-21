@@ -11,6 +11,9 @@
 	_data_7020 = $7020
 	_data_1F0EF = $F0EF
 
+
+; -----------------------------------------------------------------------------
+	.export PPU_DirectToPPU_Data_ScreensList_1_title
 PPU_DirectToPPU_Data_ScreensList_1_title:
 	.byte $00,$20,$6B,$00,$8B,$21,$22,$23,$24,$25,$26,$27,$28,$29,$2A,$2B
 	.byte $14,$00,$8C,$30,$31,$32,$33,$34,$35,$2C,$2D,$2E,$2F,$42,$43,$14
@@ -61,6 +64,9 @@ PPU_DirectToPPU_Data_ScreensList_1_title:
 	.byte $00,$C1,$00,$C1,$00,$C1,$00,$C1,$45,$C1,$45,$C1,$45,$C1,$45,$C1
 	.byte $45,$C1,$45,$C1,$45,$C1,$45,$C1,$45,$C1,$45,$C1,$45,$C1,$45,$C1
 	.byte $45,$C1,$45,$C1,$45,$C1,$45,$40,$00,$40,$55,$FF
+
+; -----------------------------------------------------------------------------
+	.export PlotAction00_Continues
 PlotAction00_Continues:
 	jsr AnyBankTerminateSound
 	lda #$01
@@ -73,6 +79,7 @@ PlotAction00_Continues:
 	jsr PPU_Text_ExtractAndSend_With_01prefix
 	jmp _loc_1C247
 ;------------------------------------------
+	.export Display_PrologueTextPart2
 Display_PrologueTextPart2:
 	lda #$56
 	jsr PPU_Text_ExtractAndSend_With_01prefix
@@ -83,6 +90,7 @@ Display_PrologueTextPart2:
 	sta TimeRelated2A
 	rts
 ;------------------------------------------
+	.export PlotAction01_Continues
 PlotAction01_Continues:
 	ldy CurrentPlotAction_StateWithin
 	bne @8341
@@ -105,11 +113,14 @@ PlotAction01_Continues:
 	sta CurrentPlotAction_StateWithin
 	rts
 ;------------------------------------------
+	.export PPU_Text_StringsList_09_bank4_ProloguePart1
 PPU_Text_StringsList_09_bank4_ProloguePart1:
 	.byte $25,$6C,$10,$12,$0F,$0C,$0F,$07,$15,$05,$FD,$25,$A2,$13,$14,$05
 	.byte $10,$C1,$09,$0E,$14,$0F,$C1,$14,$08,$05,$C1,$13,$08,$01,$04,$0F
 	.byte $17,$13,$C1,$0F,$06,$C1,$14,$08,$05,$FD,$25,$E2,$08,$05,$0C,$0C
 	.byte $C1,$08,$0F,$15,$13,$05,$1D,$FD,$26,$05,$1E,$FE
+
+	.export PPU_Text_StringsList_56_bank4_ProloguePart2
 PPU_Text_StringsList_56_bank4_ProloguePart2:
 	.byte $25,$2C,$C1,$FD,$26,$22,$19,$0F,$15,$C1,$16,$05,$C1,$01,$12,$12
 	.byte $09,$16,$05,$04,$C1,$02,$01,$03,$0B,$C1,$08,$05,$12,$05,$C1,$01
@@ -119,9 +130,13 @@ PPU_Text_StringsList_56_bank4_ProloguePart2:
 	.byte $05,$12,$C1,$14,$08,$05,$C1,$03,$15,$12,$13,$05,$FD,$26,$E2,$0F
 	.byte $06,$C1,$14,$08,$05,$C1,$05,$16,$09,$0C,$C1,$03,$0F,$15,$0E,$14
 	.byte $1E,$04,$12,$01,$03,$15,$0C,$01,$1D,$FE
+
+	.export PPU_Text_StringsList_00_bank4_PushStartKey
 PPU_Text_StringsList_00_bank4_PushStartKey:
 	.byte $22,$69,$10,$15,$13,$08,$C1,$13,$14,$01,$12,$14,$C1,$0B,$05,$19
 	.byte $FE
+; -----------------------------------------------------------------------------
+	.export LevelData_MetaTiles_0_Towns
 LevelData_MetaTiles_0_Towns:
 	.byte $44,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
 	.byte $00,$06,$09,$66,$99,$55,$55,$62,$98,$AA,$55,$15,$45,$11,$50,$50
@@ -195,6 +210,8 @@ LevelData_MetaTiles_0_Towns:
 	.byte $F7,$F9,$A0,$A0,$A0,$A0,$F6,$F8,$A0,$A0,$F7,$F9,$A0,$A0,$F6,$F8
 	.byte $A0,$A0,$F7,$F9,$F6,$F8,$F6,$F8,$F7,$F9,$F7,$F9,$F6,$F8,$F6,$F8
 	.byte $F7,$F9,$F7,$F9
+; -----------------------------------------------------------------------------
+	.export LevelData_MetaTiles_1_Mansions
 LevelData_MetaTiles_1_Mansions:
 	.byte $43,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
 	.byte $00,$55,$55,$50,$00,$55,$55,$55,$51,$55,$00,$55,$AA,$01,$04,$00
@@ -271,6 +288,8 @@ _data_10B83_indexed:
 	.byte $00,$F6,$F8,$F6,$F8,$F7,$F9,$F7,$F9,$F6,$F8,$F6,$F8,$F7,$F9,$F7
 	.byte $F9,$F6,$F8,$F6,$F8,$F7,$F9,$F7,$F9,$E3,$E3,$E3,$E3,$00,$00,$00
 	.byte $00
+; -----------------------------------------------------------------------------
+	.export LevelData_MetaTiles_2_ForestsAndBridges
 LevelData_MetaTiles_2_ForestsAndBridges:
 	.byte $46,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
 	.byte $00,$AA,$AA,$AA,$55,$AA,$AA,$AA,$50,$55,$55,$AA,$AA,$AA,$AA,$AA
@@ -346,6 +365,8 @@ LevelData_MetaTiles_2_ForestsAndBridges:
 	.byte $76,$78,$77,$79,$77,$79,$A7,$A7,$A7,$A7,$00,$00,$00,$00,$00,$00
 	.byte $00,$00,$00,$00,$00,$00,$F6,$F8,$FB,$FD,$F7,$F9,$FC,$FE,$E4,$E4
 	.byte $E4,$E4,$EF,$F0,$ED,$EE
+; -----------------------------------------------------------------------------
+	.export LevelData_MetaTiles_3_Wilderness
 LevelData_MetaTiles_3_Wilderness:
 	.byte $46,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
 	.byte $00,$59,$55,$55,$00,$51,$A0,$80,$50,$55,$55,$AA,$AA,$AA,$AA,$AA
@@ -421,6 +442,8 @@ LevelData_MetaTiles_3_Wilderness:
 	.byte $00,$00,$00,$DF,$00,$00,$FB,$FD,$F6,$F8,$FC,$FE,$F7,$F9,$E7,$E7
 	.byte $E7,$E7,$EF,$F0,$ED,$EE,$D0,$D7,$D8,$00,$00,$DD,$DE,$CF,$D3,$D7
 	.byte $D8,$D4,$77,$D5,$D6,$79
+; -----------------------------------------------------------------------------
+	.export LevelData_MetaTiles_4_Wastelands
 LevelData_MetaTiles_4_Wastelands:
 	.byte $3F,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
 	.byte $00,$55,$65,$55,$55,$55,$56,$55,$50,$55,$55,$AA,$AA,$AA,$AA,$AA
@@ -488,6 +511,8 @@ LevelData_MetaTiles_4_Wastelands:
 	.byte $95,$95,$95,$95,$95,$95,$95,$8A,$8A,$8A,$8A,$8B,$8B,$8B,$8B,$00
 	.byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$8D,$8E,$00,$00,$FB
 	.byte $FD,$F6,$F8,$FC,$FE,$F7,$F9,$E8,$E8,$E8,$E8,$EF,$F0,$ED,$EE
+; -----------------------------------------------------------------------------
+	.export LevelData_MetaTiles_5_Ruins
 LevelData_MetaTiles_5_Ruins:
 	.byte $41,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
 	.byte $00,$55,$05,$05,$05,$05,$00,$00,$04,$00,$11,$44,$01,$AA,$00,$00
@@ -797,6 +822,8 @@ PPU_Text_StringsList_4C_bank4_palettesWithoutPrefix:
 	.byte $0F,$05,$35,$0F, $0F,$00,$20,$0F, $FE
 
 
+; -----------------------------------------------------------------------------
+	.export BeginEnding
 BeginEnding:
 	lda #$00
 	ldx #$10
@@ -836,6 +863,7 @@ BeginEnding:
 	lda #$59
 	jmp AnyBankPlayTracks
 ;------------------------------------------
+	.export Ending_ChoosePrimaryAction
 Ending_ChoosePrimaryAction:
 	lda Ending_PrimaryActionIndex
 	jsr JumpWithParams
@@ -1009,7 +1037,7 @@ EndingAction00_DecideNextEndingText:
 _JumpPointerTable_122F1:
 	.word (EndingAction00_SubAction00_BeginEndingText) ;A2F7 (122F7) ()
 	.word (EndingAction00_SubAction01_BeginToast) ;A30C (1230C) ()
-	.word @A31A
+	.word EndingAction00_SubAction02_DoNothing
 EndingAction00_SubAction00_BeginEndingText:
 	ldy Ending_TypeDependingOnDays
 	lda DifferentEndingTextsBeginIndexes,y
@@ -1384,36 +1412,56 @@ EndingStringTable_12790:
 	.byte $02
 EndingStringTable_127A1:
 	.byte $21,$6E,$D4,$D3,$01,$D9,$CD,$CE,$D8,$01,$D1,$C6,$D3,$C9,$EB,$04
+
+	.export PPU_Text_StringsList_4D_bank4_Palette3F00_16bytes
 PPU_Text_StringsList_4D_bank4_Palette3F00_16bytes:
 	.byte $3F,$00,$0F,$00,$20,$10,$0F,$00,$10,$10,$0F,$0F,$00,$10,$0F,$00
 	.byte $20,$10,$FE
+
+	.export PPU_Text_StringsList_4E_bank4_Palette3F00_32bytes
 PPU_Text_StringsList_4E_bank4_Palette3F00_32bytes:
 	.byte $3F,$00,$0F,$00,$20,$10,$0F,$18,$28,$10,$0F,$01,$11,$1A,$0F,$2C
 	.byte $20,$10,$0F,$12,$15,$37,$0F,$0F,$10,$20,$0F,$0F,$15,$27,$0F,$0F
 	.byte $15,$20,$FE
+
+	.export PPU_Text_StringsList_4F_bank4_Palette3F00_32bytes
 PPU_Text_StringsList_4F_bank4_Palette3F00_32bytes:
 	.byte $3F,$00,$0F,$00,$20,$10,$0F,$16,$26,$10,$0F,$07,$27,$18,$0F,$16
 	.byte $20,$10,$0F,$12,$15,$37,$0F,$0F,$10,$20,$0F,$0F,$15,$27,$0F,$0F
 	.byte $15,$20,$FE
+
+	.export PPU_Text_StringsList_50_bank4_Palette3F00_16bytes
 PPU_Text_StringsList_50_bank4_Palette3F00_16bytes:
 	.byte $3F,$00,$0F,$00,$10,$10,$0F,$16,$16,$10,$0F,$07,$17,$18,$0F,$16
 	.byte $10,$10,$FE
+
+	.export PPU_Text_StringsList_51_bank4_Palette3F00_16bytes
 PPU_Text_StringsList_51_bank4_Palette3F00_16bytes:
 	.byte $3F,$00,$0F,$00,$00,$00,$0F,$06,$06,$00,$0F,$07,$07,$08,$0F,$06
 	.byte $00,$00,$FE
+
+	.export PPU_Text_StringsList_52_bank4_Palette3F00_16bytes
 PPU_Text_StringsList_52_bank4_Palette3F00_16bytes:
 	.byte $3F,$00,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F,$0F
 	.byte $0F,$0F,$FE
+
+	.export PPU_Text_StringsList_53_bank4_Palette3F00_16bytes
 PPU_Text_StringsList_53_bank4_Palette3F00_16bytes:
 	.byte $3F,$00,$0F,$03,$03,$03,$0F,$03,$03,$03,$0F,$0F,$03,$01,$0F,$03
 	.byte $03,$03,$FE
+
+	.export PPU_Text_StringsList_54_bank4_Palette3F00_16bytes
 PPU_Text_StringsList_54_bank4_Palette3F00_16bytes:
 	.byte $3F,$00,$0F,$03,$13,$13,$0F,$03,$13,$13,$0F,$0F,$03,$11,$0F,$03
 	.byte $13,$13,$FE
+
+	.export PPU_Text_StringsList_55_bank4_Palette3F00_32bytes
 PPU_Text_StringsList_55_bank4_Palette3F00_32bytes:
 	.byte $3F,$00,$0F,$03,$13,$13,$0F,$03,$13,$13,$0F,$0F,$03,$11,$0F,$03
 	.byte $23,$13,$0F,$0F,$03,$13,$0F,$0F,$36,$15,$0F,$0F,$15,$27,$0F,$0F
 	.byte $15,$20,$FE
+
+	.export PPU_DirectToPPU_Data_ScreensList_2
 PPU_DirectToPPU_Data_ScreensList_2:
 	.byte $00,$20,$4D,$00,$86,$A2,$A3,$A4,$A5,$A6,$A7,$05,$01,$87,$A8,$A9
 	.byte $AA,$AB,$AC,$AD,$AE,$0A,$00,$87,$AF,$B0,$B1,$B2,$B3,$B4,$B5,$09
@@ -1539,7 +1587,7 @@ DecodePassword_DealWithInput_80_A_Pressed:
 	bcs @AB4F
 	jsr _func_12BA3
 	jsr PasswordEntry_EntersCharacter
-	jmp @ABBD
+	jmp _ABBD
 
 	@AB4F:
 	cmp #$24
@@ -1552,18 +1600,18 @@ _loc_12B5A:
 
 	_AB5B:
 	dec Password_CurrentCharacterPosition
-	jmp @ABBD
+	jmp _ABBD
 
 	_AB61:
 	 inc Password_CurrentCharacterPosition
-	jmp @ABBD
+	jmp _ABBD
 ;------------------------------------------
 DecodePassword_DealWithInput_40_B_Pressed:
 	lda #$26
 	jsr AnyBankPlayTracks
 	jsr _func_12BA3
 	jsr PasswordEntry_ClearsCharacter
-	jmp @ABBD
+	jmp _ABBD
 ;------------------------------------------
 PasswordEntry_RenderCharacterOrBlank:
 	ldx PPUsendQueueHead
@@ -1599,7 +1647,7 @@ _func_12BA3:
 ;------------------------------------------
 _data_12BAD_indexed:
 	.byte $8C,$8D,$8E,$8F,$91,$92,$93,$94,$CC,$CD,$CE,$CF,$D1,$D2,$D3,$D4
-	@ABBD:
+	_ABBD:
 	  lda #$26
 	jsr AnyBankPlayTracks
 	lda Password_CurrentCharacterPosition
@@ -2500,6 +2548,8 @@ Password_XorringTable_1330C:
 	.byte $03,$05,$0A,$02,$04,$0D,$08,$0F,$1E,$0B,$12,$16,$11,$04
 Password_XorringTable_1331A:
 	.byte $1E,$05,$0A,$1A,$07,$0D,$1A,$1F,$17,$00,$1A,$16,$16,$15
+
+	.export PPU_DirectToPPU_Data_ScreensList_3_passwordentry
 PPU_DirectToPPU_Data_ScreensList_3_passwordentry:
 	.byte $00,$20,$E5,$3C,$3D,$3C,$3D,$3C,$3D,$3C,$3D,$3C,$3D,$3C,$3D,$3C
 	.byte $3D,$3C,$3D,$3C,$3D,$3C,$3D,$3C,$3D,$3C,$3D,$3C,$3D,$3C,$3D,$3C
@@ -2549,6 +2599,8 @@ PPU_DirectToPPU_Data_ScreensList_3_passwordentry:
 	.byte $55,$AF,$67,$50,$50,$54,$AF,$67,$55,$0A,$46,$00,$00,$44,$5A,$56
 	.byte $55,$15,$04,$05,$84,$45,$55,$55,$95,$04,$A5,$84,$65,$55,$55,$5D
 	.byte $03,$5F,$83,$53,$54,$55,$08,$05,$FF
+
+	.export PPU_DirectToPPU_Data_ScreensList_4_yourpassword
 PPU_DirectToPPU_Data_ScreensList_4_yourpassword:
 	.byte $00,$20,$20,$00,$A4,$2D,$2C,$2D,$2C,$2D,$2C,$2D,$2C,$2D,$2C,$2D
 	.byte $2C,$2D,$2C,$2D,$2C,$2D,$2C,$2D,$2C,$2D,$2C,$2D,$2C,$2D,$2C,$2D
@@ -2595,6 +2647,8 @@ PPU_DirectToPPU_Data_ScreensList_4_yourpassword:
 	.byte $55,$55,$99,$04,$AA,$8C,$66,$55,$55,$19,$0A,$8A,$2A,$0A,$46,$55
 	.byte $55,$11,$04,$5F,$8C,$57,$55,$55,$11,$11,$00,$00,$44,$44,$55,$55
 	.byte $11,$04,$05,$82,$44,$55,$08,$05,$FF
+
+	.export PPU_DirectToPPU_Data_ScreensList_5_mainmenu
 PPU_DirectToPPU_Data_ScreensList_5_mainmenu:
 	.byte $00,$20,$60,$00,$DF,$27,$30,$27,$30,$27,$30,$27,$30,$27,$30,$27
 	.byte $30,$27,$30,$27,$30,$27,$30,$27,$30,$27,$30,$27,$30,$27,$30,$27

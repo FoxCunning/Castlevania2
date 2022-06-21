@@ -8,6 +8,8 @@
 .include "globals.inc"
 
 
+; -----------------------------------------------------------------------------
+	.export Refresh_CurrentLevelData_Actors_Pointer
 Refresh_CurrentLevelData_Actors_Pointer:
 	lda CurrentLevelMapType
 	asl a
@@ -55,23 +57,23 @@ _func_4029:
 	inx
 	lda (CurrentLevelData_Actors_PointerLo),y
 	cmp #$FF
-	beq @807A
+	beq _807A
 	cmp Unknown39_From_XscrollingPositionDividedBy16
 	bcc @803A
 	iny
 	lda (CurrentLevelData_Actors_PointerLo),y
 	dey
 	cmp #$FF
-	beq @807A
+	beq _807A
 	cmp Unknown3B_From_8C8D_dividedBy16
 	bcc @803A
-	@8055:
+	_8055:
 	  lda #$00
 	sta TempPtr00_lo
 	sta TempPtr08_lo
 	lda (CurrentLevelData_Actors_PointerLo),y
 	cmp #$FF
-	beq @807A
+	beq _807A
 	asl a
 	rol TempPtr00_lo
 	asl a
@@ -85,22 +87,22 @@ _func_4029:
 	sta TempPtr00_hi
 	lda TempPtr00_lo
 	sbc CurrentXScrollingPositionScreens
-	beq @8082
-	bmi @807F
-	@807A:
+	beq _8082
+	bmi _807F
+	_807A:
 	  lda #$00
 	sta ActorSpawnControlUnknown3C
 	rts
 
-	@807F:
+	_807F:
 	 jmp _loc_4185
 
-	@8082:
+	_8082:
 	  iny
 	lda (CurrentLevelData_Actors_PointerLo),y
 	dey
 	cmp #$FF
-	beq @807A
+	beq _807A
 	asl a
 	rol TempPtr08_lo
 	asl a
@@ -253,7 +255,7 @@ _loc_4187:
 _loc_4188:
 	iny
 	inx
-	jmp @8055
+	jmp _8055
 ;------------------------------------------
 _loc_418D:
 	stx TempPtr00_lo
@@ -393,7 +395,7 @@ ObjectAI_object36_MonsterDiedFlame:
 	sta ObjectCurrentActionType,x
 	lda #$37
 	sta ObjectType,x
-	jmp @82A0
+	jmp _82A0
 
 	@8297:
 	inc ObjectAIvar1,x
@@ -403,7 +405,7 @@ ObjectAI_object00_23:
 ObjectAI_object37_Heart:
 	lda ObjectCurrentActionType,x
 	bne _82E0
-	@82A0:
+	_82A0:
 	 lda #$04
 	sta ObjectCurrentActionType,x
 	lda RandomSeed
@@ -909,7 +911,7 @@ Run_Maybe_CheckDialogActivation:
 	lda #$07
 	@865C:
 	 tax
-	@865D:
+	_865D:
 	 lda ObjectType,x
 	bmi @8664
 	bne @8667
@@ -1206,7 +1208,7 @@ _loc_4855:
 	inx
 	cpx #$12
 	bcs @885E
-	jmp @865D
+	jmp _865D
 
 	@885E:
 	clc
@@ -1226,6 +1228,9 @@ ClampHeartCounterAt256:
 ;------------------------------------------
 NPC_VendorTextIndexTable:
 	.byte $30,$01,$2F,$37,$36,$10,$1D,$32,$33,$34,$35
+
+; -----------------------------------------------------------------------------
+	.export NPCtalkAction_Do
 NPCtalkAction_Do:
 	jsr JumpWithParams
 _JumpPointerTable_487F:
@@ -1269,7 +1274,7 @@ _loc_488D:
 _loc_48C1:
 	lda ObjectType,x
 	bpl @88C9
-	jmp @895F
+	jmp _895F
 
 	@88C9:
 	lda ObjectStunCounter,x
@@ -1280,7 +1285,7 @@ _loc_48C1:
 	cmp #$37
 	bne @88DC
 	@88D9:
-	  jmp @895F
+	  jmp _895F
 
 	@88DC:
 	 lda ObjectCurrentActionType,x
@@ -1299,7 +1304,7 @@ _loc_48C1:
 	sbc ObstaclePointerLo
 	sec
 	sbc Unknown12_CollisionAndScrollingTemp
-	bpl @895F
+	bpl _895F
 	lda ObjectScreenYCoord,x
 	clc
 	adc TempPtr08_lo
@@ -1314,14 +1319,14 @@ _loc_48C1:
 	sbc TempPtr08_hi
 	sec
 	sbc #$04
-	bpl @895F
+	bpl _895F
 	lda ObjectEnemyRemainingHP,x
 	beq _loc_4971
 	sec
 	sbc Unknown13_Horizontal_32pixelUnitForObject
 	sta ObjectEnemyRemainingHP,x
 	bcc @8927
-	bne @8967
+	bne _8967
 	@8927:
 	lda ObjectType,x
 	cmp #$42
@@ -1337,8 +1342,8 @@ _loc_48C1:
 	jsr AnyBankPlayTracks
 	lda ObjectCurrentActionType,x
 	and #$02
-	bne @895C
-	@8945:
+	bne _895C
+	_8945:
 	   lda ObjectType,x
 	sta ObjectAIvar2,x
 	jsr Object_SetXandYVelocity16bit_ToZero
@@ -1349,16 +1354,16 @@ _loc_48C1:
 	sta ObjectType,x
 	rts
 
-	@895C:
+	_895C:
 	jmp Object_Erase_And_IfType3C_Set_42to00
 
-	@895F:
+	_895F:
 	  inx
 	cpx #$12
 	beq _loc_4971
 	jmp _loc_48C1
 
-	@8967:
+	_8967:
 	   lda #$18
 	jsr AnyBankPlayTracks
 	lda #$10
@@ -1375,7 +1380,7 @@ _loc_4972:
 ;------------------------------------------
 Run_Actions_For_Weapons:
 	ldx #$03
-	@8981:
+	_8981:
 	  lda ObjectType,x
 	beq @898B
 	lda ObjectDialogStatusFlag,x
@@ -1516,7 +1521,7 @@ Run_Actions_For_Weapons:
 	jsr AnyBankPlayTracks
 	tya
 	tax
-	jmp @8945
+	jmp _8945
 
 	@8A81:
 	   iny
@@ -1528,7 +1533,7 @@ _loc_4A89:
 	inx
 	cpx #$06
 	beq _loc_4A9B
-	jmp @8981
+	jmp _8981
 ;------------------------------------------
 _loc_4A91:
 	lda #$18
@@ -1843,6 +1848,7 @@ Object_ComparePositionToSimonPosition:
 	lda TempPtr02_hi
 	rts
 ;------------------------------------------
+	.export Object_SetCarry_If_OnRightSideOfSimon
 Object_SetCarry_If_OnRightSideOfSimon:
 	lda ObjectScreenXCoord,x
 	cmp ObjectScreenXCoord
@@ -1990,7 +1996,7 @@ Math_MultiplyOrDivideDependingOnA:
 	sta TempPtr08_hi
 	jmp (TempPtr08_lo)
 _JumpPointerTable_4DFD:
-	.word @8E0D
+	.word Math_ShiftNothing
 	.word (Math_div00by4) ;8E09 (4E09) ()
 	.word (Math_div00by2) ;8E0B (4E0B) ()
 	.word (Math_0001mulby1p5_RoundUp) ;8E0E (4E0E) ()
@@ -2301,19 +2307,19 @@ ObjectAI_object01_actions_4FE8:
 	jsr Object_GravityDecelerateBy_Var08
 	lda ObjectYSpeed,x
 	cmp #$FD
-	beq @900F
+	beq _900F
 	lda ObjectYSpeed,x
-	bmi @900E
+	bmi _900E
 	lda ObjectScreenYCoord,x
 	cmp ObjectScreenYCoord
-	bcc @900E
-	@9009:
+	bcc _900E
+	_9009:
 	  lda #$00
 	sta ObjectYSpeed,x
-	@900E:
+	_900E:
 	   rts
 
-	@900F:
+	_900F:
 	 inc ObjectAIvar1,x
 	lda #$40
 	jsr _func_1DE6F
@@ -2333,7 +2339,7 @@ ObjectAI_object01_actions_501D:
 	lda ObjectScreenYCoord,x
 	cmp #$10
 	bcs _loc_501C
-	jmp @9009
+	jmp _9009
 
 	@9039:
 	lda ObjectScreenYCoord
@@ -3368,9 +3374,9 @@ ObjectAI_object1F_actions_5870:
 	lda ObjectAIvar2,x
 	cmp #$08
 	bmi _loc_5860
-	jmp @98CF
+	jmp _98CF
 
-	@9887:
+	_9887:
 	 lda #$88
 	bne _988D
 ;------------------------------------------
@@ -3383,7 +3389,7 @@ _loc_588B:
 	jsr _func_1D3F6
 	lda #$0B
 	jsr AnyBankPlayTracks
-	jmp @9931
+	jmp _loc_5931	; -> rts
 ;------------------------------------------
 _loc_58A0:
 	lda ObjectCurrentPose1,x
@@ -3406,7 +3412,7 @@ ObjectAI_object1F_actions_58BC:
 	jsr _func_1DE8B
 	lda ObjectYSpeed,x
 	bmi _loc_5860
-	@98CF:
+	_98CF:
 	 lda ObjectFacingLeft,x
 	bne @98D8
 	lda #$FA
@@ -3458,7 +3464,7 @@ _loc_5924:
 	ldy #$F8
 	jsr Object_GenericCollisionHelper_ParamAY_ReturnCarry_IfFrameOddThenDefaultSEC
 	bcs _9930
-	jmp @9887
+	jmp _9887
 
 	_9930:
 	 rts
@@ -3716,7 +3722,7 @@ ObjectAI_object42_actions_5D3B:
 	lda ObjectDialogTextIndex,x
 	cmp #$20
 	bne @9D4F
-	jmp @9D9D
+	jmp _9D9D
 
 	@9D4F:
 	inc ObjectDialogTextIndex,x
@@ -3757,7 +3763,7 @@ ObjectAI_object42_actions_5D61:
 	sta ObjectAIvar1,x
 	jmp Object_SetXandYVelocity16bit_ToZero
 
-	@9D9D:
+	_9D9D:
 	  stx Unknown10_CollisionAndScrollingTemp
 	lda ObjectAIvar3,x
 	cmp #$20
@@ -4273,7 +4279,7 @@ ObjectAI_object04_actions_6302:
 
 	@A332:
 	inc ObjectDialogTextIndex,x
-	jmp @A639
+	jmp _A639
 
 	@A338:
 	 inc ObjectAIvar1,x
@@ -4435,7 +4441,7 @@ ObjectAI_object3C_Ferryman_Part1:
 	jsr JumpWithParams
 ObjectAI_object3C_actions:
 	.word (ObjectAI_object3C_actions_645C) ;A45C (645C) ()
-	.word @A4AB
+	.word ObjectAI_object3C_actions_64AB
 	.word (ObjectAI_object3C_actions_64AC) ;A4AC (64AC) ()
 ObjectAI_object3C_actions_645C:
 	stx Unknown10_CollisionAndScrollingTemp
@@ -4614,7 +4620,7 @@ UnusedObjectAI_6558_actions_6586:
 	jmp Object_SetXandYVelocity16bit_ToZero
 
 	@A591:
-	jmp @A639
+	jmp _A639
 ;------------------------------------------
 UnusedObjectAI_6558_actions_6594:
 	jsr Object_SetFacing_FaceTowardsSimon
@@ -4711,7 +4717,7 @@ UnusedObjectAI_65C7_actions_660E:
 	@A636:
 	  jmp Object_Erase_And_IfType3C_Set_42to00
 
-	@A639:
+	_A639:
 	   jsr _func_1DE8B
 	jsr _func_1DEA1
 	jmp Object_GeneringXYmovementEngine
@@ -4784,6 +4790,7 @@ InhibitScrollingIf_Scene_02_05_01_YubaLake:
 	stx ScrollingIsLocked
 	rts
 ;------------------------------------------
+	.export CheckKneelingWithBlueCrystal_EnableScroll_YubaLake
 CheckKneelingWithBlueCrystal_EnableScroll_YubaLake:
 	jsr _func_67B8
 	lda Unknown195_PossiblyScrollingRelated
@@ -4934,6 +4941,7 @@ WestBridge_TestInventoryContents_AllBodyParts_BlueCrystal_AndCross:
 	@A913:
 	 rts
 ;------------------------------------------
+	.export CheckKneelingWithRedCrystal
 CheckKneelingWithRedCrystal:
 	lda ObjectCurrentActionType
 	cmp #$0B
@@ -5504,7 +5512,7 @@ ObjectAI_object3A_actions_6D47:
 	lda RandomSeed
 	and #$01
 	bne @AD59
-	jmp @AD8A
+	jmp _AD8A
 
 	@AD59:
 	lda #$02
@@ -5528,11 +5536,11 @@ ObjectAI_object3A_actions_6D66:
 ObjectAI_object3A_actions_6D7E:
 	jsr ObjectLoadAutomaticSpriteNumber
 	lda ObjectAIvar3,x
-	beq @AD8A
+	beq _AD8A
 	dec ObjectAIvar3,x
 	rts
 
-	@AD8A:
+	_AD8A:
 	 jmp _loc_1DF7F
 ;------------------------------------------
 _func_6D8D:
@@ -5559,6 +5567,7 @@ InhibitScrollingIf_Scene_03_03_03_UtaLake:
 	stx ScrollingIsLocked
 	rts
 ;------------------------------------------
+	.export CheckKneelingWithBlueCrystal_EnableScroll_UtaLake
 CheckKneelingWithBlueCrystal_EnableScroll_UtaLake:
 	jsr _func_6DE7
 	lda Unknown195_PossiblyScrollingRelated

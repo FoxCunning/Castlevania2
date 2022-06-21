@@ -455,33 +455,33 @@ SoundData5B_EndingSong_ch2:
 	.byte $01,$31,$81,$E4,$81,$E3,$01,$31,$81,$E4,$51,$81
 _DataPointerTable_0AC0:
 	.word ($11E3) ;11E3 (0) ([8:0][A:1][C:E][E:F])
-	.word (DataTableEntry_1E451) ;E451 (1E451) ([8:0][A:1][C:E][E:F])
-	.word (DataTableEntry_0151) ;8151 (151) ([8:0][A:1][C:E][E:F])
+	.word ($E451) ;E451 (1E451) ([8:0][A:1][C:E][E:F])
+	.word ($8151) ;8151 (151) ([8:0][A:1][C:E][E:F])
 	.word ($11E3) ;11E3 (0) ([8:0][A:1][C:E][E:F])
-	.word (DataTableEntry_1E451) ;E451 (1E451) ([8:0][A:1][C:E][E:F])
-	.word (DataTableEntry_1E371) ;E371 (1E371) ([8:0][A:1][C:E][E:F])
+	.word ($E451) ;E451 (1E451) ([8:0][A:1][C:E][E:F])
+	.word ($E371) ;E371 (1E371) ([8:0][A:1][C:E][E:F])
 	.word ($2101) ;2101 (0) ([8:0][A:1][C:E][E:F])
 	.word ($7151) ;7151 (0) ([8:0][A:1][C:E][E:F])
 	.word ($01E2) ;1E2 (0) ([8:0][A:1][C:E][E:F])
 	.word ($5121) ;5121 (0) ([8:0][A:1][C:E][E:F])
 	.word ($77E3) ;77E3 (0) ([8:0][A:1][C:E][E:F])
-	.word (DataTableEntry_1FBC7) ;FBC7 (1FBC7) ([8:0][A:1][C:E][E:F])
+	.word ($FBC7) ;FBC7 (1FBC7) ([8:0][A:1][C:E][E:F])
 	.word ($1AD8) ;1AD8 (0) ([8:0][A:1][C:E][E:F])
 	.word ($01E3) ;1E3 (0) ([8:0][A:1][C:E][E:F])
-	.word (Mapper1reg_reg1) ;101 (0) ([8:0][A:1][C:E][E:F])
-	.word (DataTableEntry_1E401) ;E401 (1E401) ([8:0][A:1][C:E][E:F])
-	.word (DataTableEntry_21A1) ;A1A1 (21A1) ([8:0][A:1][C:E][E:F])
-	.word (DataTableEntry_21A1) ;A1A1 (21A1) ([8:0][A:1][C:E][E:F])
-	.word (DataTableEntry_0181) ;8181 (181) ([8:0][A:1][C:E][E:F])
-	.word (DataTableEntry_0181) ;8181 (181) ([8:0][A:1][C:E][E:F])
-	.word (DataTableEntry_21A1) ;A1A1 (21A1) ([8:0][A:1][C:E][E:F])
-	.word (DataTableEntry_21A1) ;A1A1 (21A1) ([8:0][A:1][C:E][E:F])
+	.word ($0101) ;101 (0) ([8:0][A:1][C:E][E:F])
+	.word ($E401) ;E401 (1E401) ([8:0][A:1][C:E][E:F])
+	.word ($A1A1) ;A1A1 (21A1) ([8:0][A:1][C:E][E:F])
+	.word ($A1A1) ;A1A1 (21A1) ([8:0][A:1][C:E][E:F])
+	.word ($8181) ;8181 (181) ([8:0][A:1][C:E][E:F])
+	.word ($8181) ;8181 (181) ([8:0][A:1][C:E][E:F])
+	.word ($A1A1) ;A1A1 (21A1) ([8:0][A:1][C:E][E:F])
+	.word ($A1A1) ;A1A1 (21A1) ([8:0][A:1][C:E][E:F])
 	.word ($02FE) ;2FE (0) ([8:0][A:1][C:E][E:F])
-	.word (DataTableEntry_10D9) ;90D9 (10D9) ([8:0][A:1][C:E][E:F])
+	.word ($90D9) ;90D9 (10D9) ([8:0][A:1][C:E][E:F])
 	.word ($03E3) ;3E3 (0) ([8:0][A:1][C:E][E:F])
-	.word (DataTableEntry_1DA03) ;DA03 (1DA03) ([8:0][A:1][C:E][E:F])
+	.word ($DA03) ;DA03 (1DA03) ([8:0][A:1][C:E][E:F])
 	.word ($031F) ;31F (0) ([8:0][A:1][C:E][E:F])
-	.word (DataTableEntry_1DC03) ;DC03 (1DC03) ([8:0][A:1][C:E][E:F])
+	.word ($DC03) ;DC03 (1DC03) ([8:0][A:1][C:E][E:F])
 	.word ($0F90) ;F90 (0) ([8:0][A:1][C:E][E:F])
 	.byte $FF
 SoundData5C_EndingSong_ch5:
@@ -1127,7 +1127,7 @@ Sound_TrackCommand10toFA:
 Sound_TrackCommand00to0F_for_LogicalChannel0_or_1_or_3:
 	lda (SoundTrackPtrLo),y
 	bne @985D
-	jmp @989F
+	jmp _989F
 
 	@985D:
 	sta Sound_ChannelTempoPossibly_Channel0_square0,x
@@ -1169,7 +1169,7 @@ Sound_TrackCommand00to0F_for_LogicalChannel4:
 	sta Sound_CacheAPUreg0and1_twonibbles,x
 	jmp SoundCode_ReadNextCommand_From_TrackPtr_ypp
 
-	@989F:
+	_989F:
 	 iny
 Sound_TrackCommand00to0F_followedBy00_or_10toFA_for_LogicalChannelNot4:
 	lda Sound_ChannelTempoPossibly_Channel0_square0,x
@@ -2126,6 +2126,9 @@ SoundData4C_RuinsSong_ch5:
 	.byte $B0,$A2,$B0,$A0,$A0,$B0,$A0,$A0,$FE,$FF,$6D,$A2
 Sound_Records_Locator:
 	.word (Sound_Records -3) ;813A (13A) ()
+
+; -----------------------------------------
+	.export Bank0PlayTracks
 Bank0PlayTracks:
 	sta Sound_StartSong_LatestSongIndex
 	beq Bank0TerminateSound
@@ -2138,6 +2141,8 @@ Bank0PlayTracks:
 StartTracks:
 	cmp #$61
 	bne Sound_StartTracks
+
+	.export Bank0TerminateSound
 Bank0TerminateSound:
 	lda #$00
 	ldx #$06
@@ -2473,7 +2478,7 @@ SpriteConstructionProcess:
 	sta $15
 	ldx $04
 	lda $0F
-	bpl @AB02
+	bpl _AB02
 	lda (TempPtr08_lo),y
 	sta $0D
 	iny
@@ -2483,7 +2488,7 @@ SpriteConstructionProcess:
 	sty $0C
 	ldy #$01
 	lda ($0D),y
-	@AB02:
+	_AB02:
 	    jsr LoadFrom08_or_0D__if0Fnegative
 	clc
 	bpl @AB09
@@ -2538,7 +2543,7 @@ _loc_2B36:
 	iny
 	dec TempPtr02_hi
 	beq @AB5D
-	jmp @AB02
+	jmp _AB02
 
 	@AB5D:
 	stx $04
@@ -2611,6 +2616,7 @@ SpriteConstructionInit:
 	sta TempPtr08_hi
 	rts
 ;------------------------------------------
+	.export NMI_RenderSprites
 NMI_RenderSprites:
 	lda #$00
 	sta $15
@@ -3052,6 +3058,8 @@ SpriteData_Poses_06_B3_Simon_ClimbAnim2:
 SpriteData_Poses_08_B7_Simon_ClimbAnim1:
 	.byte $84
 	.word (SpriteData_Poses_06_B3_Simon_ClimbAnim2) ;B19F (319F) ()
+
+	.export DataTableEntry_31B0
 DataTableEntry_31B0:
 	.byte $13,$15,$21,$23
 SpriteData_PoseB0_Simon_Stairs_Pose1_WhipAnim1:
@@ -3233,6 +3241,8 @@ SpriteData_PoseBA_Weapon_Diamond_Anim3:
 	.byte $02,$EE,$6A,$C0, $01,$EF,$67,$F9
 SpriteData_PoseBB_Weapon_Diamond_Anim4:
 	.byte $02
+
+	.export DataTableEntry_33B2
 DataTableEntry_33B2:
 	.byte $F0,$6A,$40,$01,$F1,$67,$F9
 SpriteData_Pose30_ClueBook:
@@ -3388,6 +3398,8 @@ SpriteData_Pose44_DeathBoss_Anim1:
 	.byte $D1,$D1,$EC
 SpriteData_Pose45_DeathBoss_Anim2:
 	.byte $0A,$D0,$EB
+
+	.export DataTableEntry_35B4
 DataTableEntry_35B4:
 	.byte $03,$F4,$D1,$ED,$FC,$D1,$EF,$04,$F1,$F1,$F4,$F1,$F3,$FC,$F1,$F5
 	.byte $04,$F1,$F7,$0C,$11,$E5,$F4,$11,$E7,$FC,$11,$E9,$04
@@ -3541,6 +3553,8 @@ SpriteData_PoseE2:
 	.byte $04,$DA,$69,$03, $F0,$DB,$7F,$F8, $FB,$D9,$F8,$FB, $DB,$00
 SpriteData_Poses_E3_E5:
 	.byte $04,$DA,$D9,$03, $F4,$DB,$DB,$FC
+
+	.export DataTableEntry_37B6
 DataTableEntry_37B6:
 	.byte $FB,$69,$F8,$FB,$7F,$00
 SpriteData_PoseE4:

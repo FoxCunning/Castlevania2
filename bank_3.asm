@@ -372,7 +372,7 @@ _loc_C27C:
 _loc_C280:
 	rts
 
-	@8281:
+	_8281:
 	 lda $68
 	and #$03
 	cmp #$01
@@ -393,7 +393,7 @@ _loc_C280:
 	lda ObjectScreenYCoord
 	adc Temp93
 	sta ObjectScreenYCoord
-	jmp @832E
+	jmp _832E
 
 	@82AD:
 	lda ObjectYSpeed
@@ -424,7 +424,7 @@ _loc_C280:
 	clc
 	adc TempPtr00_lo
 	sta CurrentYScrollingPositionPixels_Mod240
-	jmp @832E
+	jmp _832E
 ;------------------------------------------
 _func_C2DE:
 	lda ObjectScreenYCoord
@@ -454,10 +454,10 @@ _func_C2DE:
 
 	@830F:
 	asl a
-	bcs @8373
+	bcs _8373
 	asl a
 	bcc @8318
-	jmp @8281
+	jmp _8281
 
 	@8318:
 	asl a
@@ -470,7 +470,7 @@ _func_C2DE:
 	sta CurrentYScrollingPositionPixels_Mod240
 	lda ObjectYSpeed
 	sta TempPtr00_lo
-	@832E:
+	_832E:
 	  lda CurrentYScrollingPositionPixels_Mod240
 	cmp #$E0
 	bcc @834C
@@ -513,7 +513,7 @@ _func_C2DE:
 	@8370:
 	jmp _loc_C378
 
-	@8373:
+	_8373:
 	   ldx #$00
 	jsr Object_IncreaseYPositionByYVelocity
 _loc_C378:
@@ -651,6 +651,7 @@ _func_C449:
 	bcs @845A
 	cmp #$10
 	bcc @845E
+	@return:
 	rts
 
 	@845A:
@@ -687,7 +688,7 @@ _func_C449:
 	 lda #$08
 	@848E:
 	sta PlotAction05_GameLoop_WhichAction
-	jmp @D40B
+	jmp @return ; -> rts
 
 	@8493:
 	  cmp #$01
@@ -836,13 +837,13 @@ _func_C510:
 
 	_8575:
 	lda ObjectXSpeed
-	jmp @8582
+	jmp _8582
 ;------------------------------------------
 _func_C57B:
 	lda ObjectCurrentActionType
 	cmp #$04
 	beq _8575
-	@8582:
+	_8582:
 	ldy #$00
 	cmp #$07
 	bcs _8574
@@ -953,15 +954,15 @@ _loc_C632:
 	ldy #$10
 	jsr Simon_CheckMapCollision_LeftAndRight
 	cmp #$01
-	beq @8655
+	beq _8655
 	cmp #$02
-	beq @8655
+	beq _8655
 	lda $04
 	cmp #$01
-	beq @8655
+	beq _8655
 	cmp #$02
 	bne _loc_C67E
-	@8655:
+	_8655:
 	   jsr _func_C4F3
 _loc_C658:
 	lda UnknownFlag0446
@@ -1057,7 +1058,7 @@ _func_C6FF:
 	jsr Simon_CheckMapCollision_LeftAndRight
 	cmp #$03
 	bne _8722
-	jmp @8655
+	jmp _8655
 ;------------------------------------------
 _func_C711:
 	lda TimeFlag8F_TimeIsStopped
@@ -1238,7 +1239,7 @@ _func_C83B:
 _func_C851:
 	ldy $76
 	lda $75
-	jmp @8860
+	jmp _8860
 
 	_8858:
 	ldy #$00
@@ -1247,7 +1248,7 @@ _func_C851:
 _func_C85C:
 	ldy Current_WhatUnknown57
 	lda CurrentYScrollingPositionPixels_Mod240
-	@8860:
+	_8860:
 	sec
 	sbc #$0D
 	bcs _886B
@@ -1258,7 +1259,7 @@ _func_C85C:
 	_886B:
 	 sta TempPtr00_lo
 	sty TempPtr00_hi
-	jmp @8886
+	jmp _8886
 
 	_8872:
 	lda #$00
@@ -1273,7 +1274,7 @@ _func_C879:
 	bcc _8872
 	sta TempPtr00_lo
 	jsr _func_C83B
-	@8886:
+	_8886:
 	ldy TempPtr00_hi
 	lda #$00
 	sta TempPtr00_hi
@@ -1378,7 +1379,7 @@ UnknownContextCAD9_JoyButtons_80_A_pressed_Jump_maybe:
 ;------------------------------------------
 UnknownContextCAD9_JoyButtons_40_B_pressed_UseWeapon:
 	jsr Clear_Unknown6Cand6D
-	@892E:
+	_892E:
 	   lda ObjectCurrentActionType
 	cmp #$04
 	beq @8938
@@ -1483,7 +1484,7 @@ SimonExecuteCurrentAction2_Jumping_5_Falling:
 	lda Input_NewJoyButtonsWork
 	and #$40
 	beq UnknownContextCAD9_JoyButtons_80_A_pressed_Jump
-	jmp @892E
+	jmp _892E
 ;------------------------------------------
 UnknownContextCAD9_JoyButtons_80_A_pressed_Jump:
 	lda ObjectYSpeed
@@ -1721,6 +1722,9 @@ _data_CB76_indexed:
 	.byte $06
 _data_CB77_indexed:
 	.byte $04,$07,$08,$06,$FF,$08,$04,$09,$08,$08,$FF
+
+; -----------------------------------------------------------------------------
+	.export DialogTextTable
 DialogTextTable:
 	.word (DialogTextTable_CC74) ;8C74 (CC74) ([8:6][A:7])
 	.word (DialogTextTable_CC9B) ;8C9B (CC9B) ([8:6][A:7])

@@ -22,7 +22,6 @@
 	ScreenBlankingCounter = $21							; $21
 	PPUsendQueueHead = $22								; $22
 	MainMenuOptionIndex = $23							; $23
-	MainMenuOptionInde = $23							; $23
 	GamePaused = $26									; $26
 	GameInDeathState = $27								; $27
 	MerchantDealCost0011 = $28							; $28
@@ -81,10 +80,10 @@
 	DialogText_Xcoord = $78				; $78
 	DialogText_Saved_ID = $79				; $79
 	DialogActionState = $7A				; $7A
-	DialogText_RemainingPerCharacterDela = $7B				; $7B
-	DialogText_CharacterInde = $7C				; $7C
-	DialogText_Begin = $7D				; $7D
-	DialogText_Saved_CharacterInde = $7E				; $7E
+	DialogText_RemainingPerCharacterDelay = $7B				; $7B
+	DialogText_CharacterIndex = $7C				; $7C
+	DialogText_BeginX = $7D				; $7D
+	DialogText_Saved_CharacterIndex = $7E				; $7E
 	DialogTextID = $7F				; $7F
 	CurrentHP = $80				; $80
 	CurrentMaxHP = $81				; $81
@@ -161,7 +160,6 @@
 	Sound_TabUnknown0131 = $0131				; $0131
 	Sound_TabUnknown0134 = $0134				; $0134
 	Sound_EffectTableIndex = $0136				; $0136
-	Sound_EffectTableInde = $0136				; $0136
 	Sound_TabUnknown0138 = $0138				; $0138
 	Sound_TabUnknown013A_squarewavesonly = $013A				; $013A
 	Sound_TabUnknown013A_squarewavesonl = $013A				; $013A
@@ -172,7 +170,6 @@
 	Sound_TabUnknown0146 = $0146				; $0146
 	Sound_TabUnknown0148 = $0148				; $0148
 	Sound_EffectRelated_Index = $014A				; $014A
-	Sound_EffectRelated_Inde = $014A				; $014A
 	Sound_EffectTableResultHiNibble = $014C				; $014C
 	Sound_TabUnknown014E = $014E				; $014E
 	Sound_EffectRelatedBytesRead = $0150				; $0150
@@ -187,11 +184,11 @@
 	Sound_CurrentLogicalChannel = $0164				; $0164
 	Sound_StartSong_MainPtrOffset = $0168				; $0168
 	Sound_StartSong_LatestSongIndex = $0169				; $0169
-	Sound_StartSong_LatestSongInde = $0169				; $0169
 	Sound_StartSong_NumTracksRemaining = $016A				; $016A
 	Sound_StartSong_CurrentLogicalChannel = $016B				; $016B
 	Sound_PCMsampleActive = $016C				; $016C
-	ClearedFakeBlockList = $0171				; $0171
+	ClearedFakeBlockListY = $0171				; $0171
+	ClearedFakeBlockListX = $0172				; $0172
 	ClearedFakeBlockListLength = $0185				; $0185
 	CurrentXScrollingPositionPixels_BackupForDeath = $0186				; $0186
 	CurrentXScrollingPositionScreens_BackupForDeath = $0187				; $0187
@@ -207,7 +204,6 @@
 	RemainingLaurelPower = $0197				; $0197
 	ObjectCurrentPose1 = $0300				; $0300
 	ObjectPaletteIndex = $0312				; $0312
-	ObjectPaletteInde = $0312				; $0312
 	ObjectScreenYCoord = $0324				; $0324
 	ObjectScreenYCoordFrac = $0336				; $0336
 	ObjectScreenXCoord = $0348				; $0348
@@ -232,12 +228,11 @@
 	ObjectAIvar3 = $0468				; $0468
 	CurrentXScrollingPositionScreens_BackupForExitRoom = $046A				; $046A
 	Ending_PrimaryActionIndex = $047A				; $047A
-	Ending_PrimaryActionInde = $047A				; $047A
 	Ending_TypeDependingOnDays = $047B				; $047B
 	CurrentYScrollingPositionPixels_Mod240_BackupForExitRoom = $047C				; $047C
 	Ending_CurrentActionType = $047D				; $047D
-	EndingStringCurrentStringInde = $047E				; $047E
-	EndingStringCurrentCharacterInde = $047F				; $047F
+	EndingStringCurrentStringIndex = $047E				; $047E
+	EndingStringCurrentCharacterIndex = $047F				; $047F
 	Ending_RemainingDelayBeforeNextEndingActionIstaken = $0480				; $0480
 	Ending_Action00_NextSubAction = $0481				; $0481
 	Ending_RemainingDelayBeforeDraculaHandScene = $0482				; $0482
@@ -251,9 +246,9 @@
 	SimonScreenYCoord_BackupForExitRoom = $04B2				; $04B2
 	ObjectEnemyRemainingHP = $04C2				; $04C2
 	SwampFlashCounter = $04C4				; $04C4
-	ObjectDialogTextInde = $04D4				; $04D4
+	ObjectDialogTextIndex = $04D4				; $04D4
 	UnknownFlag04D6 = $04D6				; $04D6
-	ObjectDialogTextIndex = $04D7				; $04D7
+	;ObjectDialogTextIndex = $04D7				; $04D7
 	KneelingCounter = $04EA				; $04EA
 	Unknown04EC = $04EC				; $04EC
 	Unknown04ED_finalConfrontationRelated = $04ED				; $04ED
