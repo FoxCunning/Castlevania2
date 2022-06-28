@@ -694,11 +694,7 @@ SoundEffectRelatedTable_0DEB:
 	.byte $FB,$17,$15,$13,$12,$21,$F0,$FF
 SoundEffectRelatedTable_0DF3:
 	.byte $FB,$8F,$FB,$2F,$2E,$2F,$20,$FE,$04,$FB
-_DataPointerTable_0DFD:
-	.word ($2D2F) ;2D2F (0) ([8:0][A:1][C:E][E:F])
-	.word ($212F) ;212F (0) ([8:0][A:1][C:E][E:F])
-	.word ($0FFE) ;FFE (0) ([8:0][A:1][C:E][E:F])
-	.byte $FF
+	.byte $2F,$2D,$2F,$21,$FE,$0F,$FF
 SoundEffectRelatedTable_0E04:
 	.byte $FB,$80,$FB,$20,$2F,$20,$21,$FE,$04,$FB,$20,$2E,$20,$22,$FE,$0F
 	.byte $FF
@@ -864,13 +860,16 @@ SoundCode_NMIcallback:
 	inc Sound_FadeCounter
 	lda Sound_FadeMode
 	beq @96B6
+
 	lda Sound_FadeCounter
 	and #$3F
 	bne @96B6
+
 	inc Sound_FadeMode
 	lda Sound_FadeMode
 	cmp #$04
 	bne @96A3
+
 	jsr Bank0TerminateSound
 	jmp @96B6
 
@@ -885,9 +884,11 @@ SoundCode_NMIcallback:
 	lda #$00
 	sta Sound_CurrentSongNumber_Channel2_triangle
 	sta APU_HW__4008_Reg0_channel2
+
 	@96B6:
-	 ldx #$00
+	ldx #$00
 	ldy #$00
+	
 	@96BA:
 	stx Sound_CurrentLogicalChannel
 	lda Sound_CurrentSongNumber_Channel0_square0,x
@@ -897,7 +898,7 @@ SoundCode_NMIcallback:
 	inx
 	cpx #$06
 	bcc @96BA
-_loc_16C9:
+	_loc_16C9:
 	rts
 ;------------------------------------------
 SoundCode_ExecuteTickForLogicalChannelX:
@@ -982,6 +983,8 @@ Sound_TrackCommandFBtoFF:
 	sec
 	sbc #$FB
 	jsr Sound_JumpWithParams
+; -----------------------------------------
+; Sound_JumpWithParams will read a pointer from this table
 _JumpPointerTable_1760:
 	.word (Sound_TrackCommandFBtoFC_LoopBegin) ;976A (176A) ()
 	.word (Sound_TrackCommandFBtoFC_LoopBegin) ;976A (176A) ()
@@ -1147,7 +1150,7 @@ Sound_TrackCommand00to0F_for_LogicalChannel0_or_1_or_3:
 	lda Sound_FlagsC3_Channel0_square0,x
 	and #$F7
 	sta Sound_FlagsC3_Channel0_square0,x
-_loc_187C:
+	_loc_187C:
 	lda (SoundTrackPtrLo),y
 	jsr Sound_SetCarry_If_X_is_00_and_B4_is_nonzero
 	bcs @9886
@@ -1190,7 +1193,7 @@ Sound_TrackCommand00to0F_followedBy00_or_10toFA_for_LogicalChannelNot4:
 	iny
 	lda (SoundTrackPtrLo),y
 	sta Sound_CurrentPeriodLo,x
-_loc_18C2:
+	_loc_18C2:
 	jsr _func_1B92
 	jmp Sound_Set_TrackDataPointer1_From_TrackPtr_y
 
@@ -1270,7 +1273,7 @@ Sound_TrackCommandD0toDF:
 	@9943:
 	iny
 	lda (SoundTrackPtrLo),y
-_loc_1946:
+	_loc_1946:
 	sta Sound_TabUnknown0138,x
 	and #$F0
 	bne @9955
@@ -1314,7 +1317,7 @@ Sound_TrackCommandF0toFA_savesLoNibbleTo13E:
 	sta Sound_TabUnknown013E,x
 	jmp _loc_1991
 ;------------------------------------------
-_loc_1991:
+	_loc_1991:
 	iny
 	lda (SoundTrackPtrLo),y
 	and #$F0
@@ -1407,7 +1410,7 @@ Sound_TrackCommandECtoEF_flag_and_likeEB:
 	iny
 	jmp Sound_TrackCommandD0toDF
 ;------------------------------------------
-_loc_1A24:
+	_loc_1A24:
 	lda (SoundTrackPtrLo),y
 	lsr a
 	lsr a
@@ -1578,9 +1581,9 @@ Sound_TrackCommand00toCF_or_10toCF:
 	jsr _func_1CED
 	jsr Sound_SetCarry_If_X_is_00_and_B4_is_nonzero
 	bcs _loc_1B61
-_loc_1B5E:
+	_loc_1B5E:
 	jsr Sound_PokeChannelSoundRegister0_preserveAX
-_loc_1B61:
+	_loc_1B61:
 	lda (SoundTrackPtrLo),y
 	lsr a
 	lsr a
@@ -1656,12 +1659,12 @@ _func_1BB7:
 	beq _9BF7
 	@9BEA:
 	sta Sound_CacheAPUreg3,x
-_9BED:
+	_9BED:
 	  lda Sound_PeriodTemp_Unknown9B_hi
 	jsr Sound_SetCarry_If_X_is_00_and_B4_is_nonzero
 	bcs _9BF7
 	jsr Sound_PokeChannelSoundRegister3_preserveAX
-_9BF7:
+	_9BF7:
 	   lda Sound_PeriodTemp_Unknown9B_lo
 	sta Sound_CacheAPUreg2,x
 	jsr Sound_SetCarry_If_X_is_00_and_B4_is_nonzero
@@ -1800,7 +1803,7 @@ Sound_CalculateMomentaryVolume:
 	lda #$01
 	@9D19:
 	 sta SoundEffectRelatedPtrLo
-_loc_1D1B:
+	_loc_1D1B:
 	lda SoundEffectRelatedPtrHi
 	ora SoundEffectRelatedPtrLo
 	rts
@@ -1994,7 +1997,7 @@ SoundCode_MuteAllChannelsButDontDisableThem:
 	sta APU_HW__400B_Reg3_channel2_WaveLengthHi
 	rts
 ;------------------------------------------
-_loc_1E41:
+	_loc_1E41:
 	ldx #$00
 	lda Sound_CacheAPUreg0and1_twonibbles,x
 	sta SoundEffectRelatedPtrHi
@@ -2146,12 +2149,13 @@ StartTracks:
 Bank0TerminateSound:
 	lda #$00
 	ldx #$06
-	@A2B3:
+	@mute_loop:
 	dex
 	sta Sound_CurrentSongNumber_Channel0_square0,x
 	sta Sound_CacheAPUreg3,x
 	sta Sound_FlagsC3_Channel0_square0,x
-	bne @A2B3
+	bne @mute_loop
+
 	sta Sound_FadeMode
 	jmp SoundCode_MuteAllChannelsButDontDisableThem
 ;------------------------------------------
@@ -2194,7 +2198,7 @@ Unused22FB:
 	_A2FE:
 	 jmp _loc_23B1
 ;------------------------------------------
-_loc_2301:
+	_loc_2301:
 	ldy Sound_StartSong_MainPtrOffset
 	lda (Sound_RecordPtrLo),y
 	and #$1F
@@ -2281,7 +2285,7 @@ _loc_2301:
 	@A39B:
 	 lda Sound_StartSong_LatestSongIndex
 	sta Sound_CurrentSongNumber_Channel0_square0,x
-_loc_23A0:
+	_loc_23A0:
 	dec Sound_StartSong_NumTracksRemaining
 	bmi _loc_23B1
 	ldy Sound_StartSong_MainPtrOffset
@@ -2291,7 +2295,7 @@ _loc_23A0:
 	sty Sound_StartSong_MainPtrOffset
 	jmp _loc_2301
 ;------------------------------------------
-_loc_23B1:
+	_loc_23B1:
 	lda #$00
 	sta Sound_RecordPtrHi
 	ldx Sound_CurrentLogicalChannel
@@ -2388,20 +2392,14 @@ SoundData47_MansionSong_ch2:
 	.byte $FF,$8D,$A6
 SoundData48_MansionSong_ch5:
 	.byte $D7,$FB,$B1,$B0,$A1,$B0,$FE,$02,$B1,$B0,$A0,$A0,$A0,$B2,$B0,$A0
-	.byte $A0,$FB,$B1,$B0,$A1,$B0,$FE
-
-; -----------------------------------------------------------------------------
-	.export _loc_2767
-_loc_2767:
-	.byte $02	; TempPtr02_lo
-
-	.byte $B1,$B0,$A1,$A0,$B0,$A0,$A0,$A0,$A0,$A0,$B2,$A2,$B2,$A0,$A0,$A0
-	.byte $B1,$B0,$B0,$A0,$A0,$B0,$B0,$B0,$A0,$A0,$A0,$FB,$B1,$B0,$A1,$B0
-	.byte $FE,$03,$B0,$A0,$A0,$B2,$FB,$B1,$B0,$A1,$B0,$FE,$03,$B1,$B0,$A0
-	.byte $A0,$A0,$FB,$B1,$B0,$A1,$B0,$FE,$03,$B0,$A0,$A0,$B2,$FB,$B1,$B0
-	.byte $A1,$B0,$FE,$03,$B1,$B0,$A0,$A0,$A0,$FB,$B1,$A2,$A0,$B1,$A0,$A0
-	.byte $A0,$A0,$FE,$02,$FB,$B1,$B0,$A1,$B0,$FE,$02,$B1,$A0,$B0,$A0,$A0
-	.byte $B0,$A0,$A0,$A0,$A0,$A0,$FE,$FF,$50,$A7
+	.byte $A0,$FB,$B1,$B0,$A1,$B0,$FE,$02,$B1,$B0,$A1,$A0,$B0,$A0,$A0,$A0
+	.byte $A0,$A0,$B2,$A2,$B2,$A0,$A0,$A0,$B1,$B0,$B0,$A0,$A0,$B0,$B0,$B0
+	.byte $A0,$A0,$A0,$FB,$B1,$B0,$A1,$B0,$FE,$03,$B0,$A0,$A0,$B2,$FB,$B1
+	.byte $B0,$A1,$B0,$FE,$03,$B1,$B0,$A0,$A0,$A0,$FB,$B1,$B0,$A1,$B0,$FE
+	.byte $03,$B0,$A0,$A0,$B2,$FB,$B1,$B0,$A1,$B0,$FE,$03,$B1,$B0,$A0,$A0
+	.byte $A0,$FB,$B1,$A2,$A0,$B1,$A0,$A0,$A0,$A0,$FE,$02,$FB,$B1,$B0,$A1
+	.byte $B0,$FE,$02,$B1,$A0,$B0,$A0,$A0,$B0,$A0,$A0,$A0,$A0,$A0,$FE,$FF
+	.byte $50,$A7
 SoundData41_NightSong_ch1:
 	.byte $EB,$73,$04,$E9,$34,$FB,$D1,$B1,$10,$00,$E3,$40,$E2,$46,$E3,$10
 	.byte $E2,$16,$E3,$20,$E2,$26,$E3,$40,$E2,$4E,$E3,$00,$E2,$0E,$E8,$42
@@ -2456,7 +2454,7 @@ SoundData44_NightSong_ch5:
 	.byte $A3,$B1,$A1,$A1,$B1,$A1,$B1,$A3,$B1,$A1,$A1,$B1,$B1,$A1,$A3,$B1
 	.byte $A1,$A1,$B1,$A1,$A1,$A1,$B1,$B1,$A1,$A1,$B1,$A1,$A1,$A0,$A0,$FE
 	.byte $FF,$7B,$AA
-_loc_2ACE:
+	_loc_2ACE:
 	clc
 	adc TempPtr00_hi
 	sta $0200,x
@@ -2519,7 +2517,7 @@ SpriteConstructionProcess:
 	lda $96
 	eor #$40
 	sta $96
-_loc_2B36:
+	_loc_2B36:
 	sta $0202,x
 	_AB39:
 	lda Unknown10_CollisionAndScrollingTemp
@@ -2861,13 +2859,6 @@ SpriteConstructionData:
 	.word (SpriteData_PoseB0_Simon_Stairs_Pose1_WhipAnim1) ;B1B4 (31B4) ()
 	.word (SpriteData_PoseB1_Simon_Stairs_Pose1_WhipAnim2) ;B1BA (31BA) ()
 	.word (SpriteData_PoseB2_Simon_Stairs_Pose1_WhipAnim3) ;B1C0 (31C0) ()
-
-; -----------------------------------------------------------------------------
-	.export _loc_2D96
-_loc_2D96:
-	;.byte $9F
-
-	;.byte > (SpriteData_Poses_06_B3_Simon_ClimbAnim2)
 	.word (SpriteData_Poses_06_B3_Simon_ClimbAnim2)	;B19F
 	.word (SpriteData_PoseB4_Simon_Stairs_Pose2_WhipAnim1) ;B1D1 (31D1) ()
 	.word (SpriteData_PoseB5_Simon_Stairs_Pose2_WhipAnim2) ;B1D7 (31D7) ()
@@ -3058,9 +3049,6 @@ SpriteData_Poses_06_B3_Simon_ClimbAnim2:
 SpriteData_Poses_08_B7_Simon_ClimbAnim1:
 	.byte $84
 	.word (SpriteData_Poses_06_B3_Simon_ClimbAnim2) ;B19F (319F) ()
-
-	.export DataTableEntry_31B0
-DataTableEntry_31B0:
 	.byte $13,$15,$21,$23
 SpriteData_PoseB0_Simon_Stairs_Pose1_WhipAnim1:
 	.byte $83
@@ -3240,11 +3228,7 @@ SpriteData_PoseB9_Weapon_Diamond_Anim2:
 SpriteData_PoseBA_Weapon_Diamond_Anim3:
 	.byte $02,$EE,$6A,$C0, $01,$EF,$67,$F9
 SpriteData_PoseBB_Weapon_Diamond_Anim4:
-	.byte $02
-
-	.export DataTableEntry_33B2
-DataTableEntry_33B2:
-	.byte $F0,$6A,$40,$01,$F1,$67,$F9
+	.byte $02,$F0,$6A,$40,$01,$F1,$67,$F9
 SpriteData_Pose30_ClueBook:
 	.byte $82
 	.word (SpriteData_PoseAD_Weapon_AllKnives) ;B279 (3279) ()
@@ -3398,9 +3382,6 @@ SpriteData_Pose44_DeathBoss_Anim1:
 	.byte $D1,$D1,$EC
 SpriteData_Pose45_DeathBoss_Anim2:
 	.byte $0A,$D0,$EB
-
-	.export DataTableEntry_35B4
-DataTableEntry_35B4:
 	.byte $03,$F4,$D1,$ED,$FC,$D1,$EF,$04,$F1,$F1,$F4,$F1,$F3,$FC,$F1,$F5
 	.byte $04,$F1,$F7,$0C,$11,$E5,$F4,$11,$E7,$FC,$11,$E9,$04
 SpriteData_PoseCF_Death_SickleAnim1:
@@ -3553,9 +3534,6 @@ SpriteData_PoseE2:
 	.byte $04,$DA,$69,$03, $F0,$DB,$7F,$F8, $FB,$D9,$F8,$FB, $DB,$00
 SpriteData_Poses_E3_E5:
 	.byte $04,$DA,$D9,$03, $F4,$DB,$DB,$FC
-
-	.export DataTableEntry_37B6
-DataTableEntry_37B6:
 	.byte $FB,$69,$F8,$FB,$7F,$00
 SpriteData_PoseE4:
 	.byte $84

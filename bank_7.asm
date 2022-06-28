@@ -1802,12 +1802,12 @@ _loc_1CD63:
 	bcc @CD9A
 	cmp #$06
 	bcs @CD9A
-	jmp _loc_2767
+	jmp InhibitScrollingIf_Scene_02_05_01_YubaLake
 
 	@CD7F:
 	cmp #$03
 	bne @CD86
-	jmp _loc_2D96
+	jmp InhibitScrollingIf_Scene_03_03_03_UtaLake
 
 	@CD86:
 	cmp #$05
@@ -4186,14 +4186,10 @@ _DataPointerTable_1DCD9:
 	.word (DataTableEntry_1DD14) ;DD14 (1DD14) ([8:0][A:1][C:E][E:F])
 	.word (DataTableEntry_1DD1F) ;DD1F (1DD1F) ([8:0][A:1][C:E][E:F])
 _data_1DCE3_indexed:
-	.word ($0B0A) ;B0A (0) ([8:0][A:1][C:E][E:F])
-	.word ($0D0C) ;D0C (0) ([8:0][A:1][C:E][E:F])
-	.word ($2B2A) ;2B2A (0) ([8:0][A:1][C:E][E:F])
-	.word ($2D2C) ;2D2C (0) ([8:0][A:1][C:E][E:F])
-	.word (DataTableEntry_35B4) ;B5B4 (35B4) ([8:0][A:1][C:E][E:F])
-	.word (DataTableEntry_37B6) ;B7B6 (37B6) ([8:0][A:1][C:E][E:F])
-	.word (DataTableEntry_31B0) ;B1B0 (31B0) ([8:0][A:1][C:E][E:F])
-	.word (DataTableEntry_33B2) ;B3B2 (33B2) ([8:0][A:1][C:E][E:F])
+	.byte $0A, $0B, $0C, $0D
+	.byte $2A, $2B, $2C, $2D
+	.byte $B4, $B5, $B6, $B7
+	.byte $B0, $B1, $B2, $B3
 DataTableEntry_1DCF3:
 	.byte $10,$52,$04,$10,$53,$04,$EA,$54,$08,$E2,$55
 DataTableEntry_1DCFE:
