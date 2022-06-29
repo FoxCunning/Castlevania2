@@ -90,8 +90,8 @@ echo [0m
 if "%emulator%" equ "" goto End
 if not exist "%emulator%" goto End
 
-set /p ask=Launch emulator (Y/[N])? 
-if /i "%ask%" neq "Y" goto End
+choice /C YN /M "Launch emulator"
+if "%errorlevel%"=="2" goto End
 
 start "" %emulator% "out\Castlevania2.nes"
 exit /b
