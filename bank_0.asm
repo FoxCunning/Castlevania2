@@ -413,11 +413,7 @@ SoundData5A_EndingSong_ch0:
 	.byte $57,$E2,$51,$F2,$20,$00,$E3,$B1,$F4,$E2,$20,$00,$E3,$B1,$F0,$EA
 	.byte $89,$E3,$71,$91,$B1,$EA,$89,$F2,$E2,$0B,$73,$25,$E7,$23,$E2,$70
 	.byte $50,$77,$E7,$26,$E3,$B7,$E2,$23,$83,$75,$E7,$23,$F2,$E1,$00,$E2
-	.byte $B0,$E1,$07,$E7,$26,$E2,$47,$77,$73
-_func_08A2:
-	sta Sound_LoopBeginPointerHi_Channel0_square0
-	.byte $23	; MainMenuOptionIndex
-
+	.byte $B0,$E1,$07,$E7,$26,$E2,$47,$77,$73,$85,$E7,$23
 	.byte $E2,$A1,$E1,$01,$E2,$81,$E7,$26,$E2,$27,$57,$53,$75,$E7,$23,$E2
 	.byte $81,$A1,$71,$E7,$26,$E2,$89,$E7,$23,$E1,$71,$51,$31,$E7,$26,$E2
 	.byte $79,$E7,$23,$E1,$51,$41,$51,$E2,$77,$57,$E1,$51,$F2,$20,$00,$E2
@@ -909,27 +905,33 @@ SoundCode_ExecuteTickForLogicalChannelX:
 
 	@96D4:
 	cpx #$05
-	beq _loc_16C9		; $96C9 @96C9
+	beq _loc_16C9		; $96C9 -> rts
+
 	cpx #$02
-	beq _loc_16C9		; $96C9 @96C9
+	beq _loc_16C9		; $96C9 -> rts
+
 	cpx #$04
-	beq _loc_16C9		; $96C9 @96C9
+	beq _loc_16C9		; $96C9 -> rts
+
 SoundCode_TickForSquareWaveChannel:
 	lda #$41
 	sta Sound_TempPtr015C_lo
 	lda Sound_FlagsC3_Channel0_square0,x
 	bit Sound_TempPtr015C_lo
 	beq @96EE
-	bne _loc_16C9		; $96C9 @96C9
+	bne _loc_16C9		; $96C9 -> rts
+
 	@96EE:
 	lda #$00
 	sta SoundEffectRelatedPtrLo
 	dec Sound_TabUnknown014E,x
 	bne @9703
 	inc Sound_TabUnknown0152,x
+
 	jsr _func_1C64
 	jsr _func_1CBB
 	jsr _func_1BB7
+
 	@9703:
 	lda Sound_EffectTableIndex,x
 	and #$80
@@ -945,14 +947,17 @@ SoundCode_TickForSquareWaveChannel:
 	bne @9723
 	inc Sound_EffectRelatedBytesRead,x
 	jsr _func_1CC6
+
 	@9723:
-	 lda Sound_CacheAPUreg0and1_twonibbles,x
+	lda Sound_CacheAPUreg0and1_twonibbles,x
 	sta SoundEffectRelatedPtrHi
 	lda Sound_SongPausedFlag_Channel0_square0,x
 	cmp Sound_TabUnknown013A_squarewavesonly,x
 	bcs @9744
+
 	dec Sound_TabUnknown013C_squarewavesonly,x
 	bne @9741
+
 	lda Sound_TabUnknown0138,x
 	lsr a
 	lsr a
@@ -960,13 +965,17 @@ SoundCode_TickForSquareWaveChannel:
 	lsr a
 	sta Sound_TabUnknown013C_squarewavesonly,x
 	inc Sound_TabUnknown0140,x
+
 	@9741:
 	jsr _func_1D20
+
 	@9744:
-	 jsr _func_1CED
+	jsr _func_1CED
+
 	jsr Sound_SetCarry_If_X_is_00_and_B4_is_nonzero
 	bcs @974F
-	jmp Sound_PokeChannelSoundRegister0_preserveAX
+
+		jmp Sound_PokeChannelSoundRegister0_preserveAX
 
 	@974F:
 	rts
@@ -1688,14 +1697,15 @@ _func_1C4D:
 	sta Sound_TempPtr015C_lo
 	lda Sound_TabUnknown0131,x
 	bit Sound_TempPtr015C_lo
-	beq @9C63
-	and #$0F
-	sta SoundEffectRelatedPtrHi
-	lda #$00
-	sec
-	sbc SoundEffectRelatedPtrHi
-	@9C63:
-	rts
+	beq :+
+
+		and #$0F
+		sta SoundEffectRelatedPtrHi
+		lda #$00
+		sec
+		sbc SoundEffectRelatedPtrHi
+
+:	rts
 ;------------------------------------------
 _func_1C64:
 	lda #$00
@@ -1811,12 +1821,13 @@ Sound_CalculateMomentaryVolume:
 _func_1D20:
 	lda Sound_TabUnknown0134,x
 	and #$02
-	beq @9D2E
-	lda Sound_TabUnknown0134,x
-	and #$F0
-	sta SoundEffectRelatedPtrHi
-	@9D2E:
-	rts
+	beq :+
+
+		lda Sound_TabUnknown0134,x
+		and #$F0
+		sta SoundEffectRelatedPtrHi
+
+:	rts
 ;------------------------------------------
 _func_1D2F:
 	lda Sound_CacheAPUreg0and1_twonibbles,x
@@ -1826,8 +1837,10 @@ _func_1D2F:
 	lda Sound_TabUnknown0134,x
 	bit Sound_TempPtr015C_lo
 	beq _loc_1D1B
-	and #$F0
-	sta SoundEffectRelatedPtrHi
+
+		and #$F0
+		sta SoundEffectRelatedPtrHi
+
 	jmp _loc_1D1B
 ;------------------------------------------
 Sound_EffectRelatedCommandReadNext:
@@ -1900,12 +1913,13 @@ Sound_Set_TrackDataPointer1_From_TrackPtr_y:
 	clc
 	adc SoundTrackPtrLo
 	sta Sound_TrackDataPointer1Lo_Channel0_square0,x
-	bcc @9DB6
-	lda SoundTrackPtrHi
-	adc #$00
-	sta Sound_TrackDataPointer1Hi_Channel0_square0,x
-	@9DB6:
-	rts
+	bcc :+
+
+		lda SoundTrackPtrHi
+		adc #$00
+		sta Sound_TrackDataPointer1Hi_Channel0_square0,x
+
+:	rts
 ;------------------------------------------
 Sound_Fetch_TrackDataPointer1:
 	iny
@@ -2775,8 +2789,8 @@ SpriteConstructionData:
 	.word (SpriteData_Pose5C_SplashEffectWhenSimonDies) ;B285 (3285) ()
 	.word (SpriteData_Pose5D_TwoHeadedCreature_Anim1) ;B622 (3622) ()
 	.word (SpriteData_Pose5E_TwoHeadedCreature_Anim2) ;B633 (3633) ()
-	.word (TempPtr00_lo) ;0 (0) ()
-	.word (TempPtr00_lo) ;0 (0) ()
+	.word $0000 ;0 (0) ()
+	.word $0000 ;0 (0) ()
 	.word (SpriteData_Pose61_Leech_Anim1) ;B63B (363B) ()
 	.word (SpriteData_Pose62_Leech_Anim2) ;B643 (3643) ()
 	.word (SpriteData_Pose63_Wolf_Anim1) ;B648 (3648) ()
