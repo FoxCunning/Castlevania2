@@ -28,15 +28,16 @@ SoundData4F_DraculaSong_ch2:
 	.byte $FB,$D8,$20,$E4,$45,$B0,$E3,$40,$37,$E4,$75,$E3,$20,$70,$87,$E4
 	.byte $92,$E3,$42,$91,$E4,$A2,$E3,$62,$A1,$E4,$B0,$B0,$C3,$D1,$90,$E4
 	.byte $40,$70,$90,$E3,$B1,$90,$70,$40,$21,$12,$02,$D8,$20,$E4,$B0,$90
-	.byte $70,$60,$40,$30,$40,$60,$FE,$FF,$CA,$80
+	.byte $70,$60,$40,$30,$40,$60,$FE,$FF
+	.word (SoundData4F_DraculaSong_ch2)		; $CA,$80
 SoundData50_DraculaSong_ch5:
 	.byte $FB,$D8,$B1,$A1,$B0,$B0,$A0,$B1,$B0,$A1,$B0,$B0,$A0,$B0,$B1,$A1
 	.byte $B0,$B0,$A0,$B1,$B0,$A1,$B0,$B0,$A0,$A0,$B1,$A0,$B0,$B0,$B0,$A0
 	.byte $B0,$B1,$A0,$B0,$B0,$B0,$A0,$B0,$A0,$A3,$B0,$A1,$B1,$A1,$B0,$A0
-	.byte $A0,$A0,$FE,$FF,$04,$81
+	.byte $A0,$A0,$FE,$FF
+	.word (SoundData50_DraculaSong_ch5) 	; $04,$81
 Sound_Records:
 	.byte $04
-Sound_Ptrs:
 	.word (SoundData01_SFX_ch4) ;8278 (278) ()
 	.byte $04
 	.word (SoundData02_SFX_ch4) ;828A (28A) ()
@@ -2149,10 +2150,12 @@ Sound_Records_Locator:
 Bank0PlayTracks:
 	sta Sound_StartSong_LatestSongIndex
 	beq Bank0TerminateSound
+
 	cmp #$5D
 	bcc StartTracks
 	cmp #$60
 	bcs StartTracks
+
 	jmp StartPCMsound
 ;------------------------------------------
 StartTracks:
