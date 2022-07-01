@@ -2209,10 +2209,10 @@ Bank0TerminateSound:
 	sta Sound_FadeMode
 	jmp SoundCode_MuteAllChannelsButDontDisableThem
 ;------------------------------------------
-_func_22C2:
+_func_22C2_square_channels:
 	sta Sound_TabUnknown0134,x
 	sta Sound_TabUnknown0146,x
-_func_22C8:
+_func_22C8_triangle_channel:
 	sta Sound_TabUnknown0131,x
 	rts
 ;------------------------------------------
@@ -2243,7 +2243,7 @@ Sound_StartTracks:
 	rol a
 	and #$03
 	sta Sound_StartSong_NumTracksRemaining
-	jmp @loc_2301
+	jmp @next_channel_track
 
 	; ---------------
 	@Unused22FB:
@@ -2253,9 +2253,9 @@ Sound_StartTracks:
 	 jmp @loc_23B1
 
 	; ---------------
-	@loc_2301:
+	@next_channel_track:
 	ldy Sound_StartSong_MainPtrOffset
-	lda (Sound_RecordPtrLo),y
+	lda (Sound_RecordPtrLo),y	; Read logical channel number
 	and #$1F
 	sta Sound_StartSong_CurrentLogicalChannel
 	tax
@@ -2269,65 +2269,79 @@ Sound_StartTracks:
 	@A315:
 	lda #$00
 	sta Sound_CurrentSongNumber_Channel0_square0,x
-	cpx #$02
-	beq @A325
-	bcs @A328
-	jsr _func_22C2
-	jmp @A328
 
-	@A325:
-	jsr _func_22C8
-	@A328:
+	cpx #$02	; 2 (triangle channel?)
+	beq @A325_triangle_channel
+
+	bcs @read_track_ptr	; 3-6
+
+		jsr _func_22C2_square_channels
+		jmp @read_track_ptr
+
+	@A325_triangle_channel:
+	jsr _func_22C8_triangle_channel
+
+	@read_track_ptr:
 	ldy Sound_StartSong_MainPtrOffset
 	iny
 	lda (Sound_RecordPtrLo),y
 	sta Sound_TrackDataPointer1Lo_Channel0_square0,x
 	sta Sound_LoopBeginPointerLo_Channel0_square0,x
 	sta Sound_StartSong_TrackDataPtr_Lo
+
 	iny
 	lda (Sound_RecordPtrLo),y
 	sta Sound_TrackDataPointer1Hi_Channel0_square0,x
 	sta Sound_LoopBeginPointerHi_Channel0_square0,x
 	sta Sound_StartSong_TrackDataPtr_Hi
+
 	lda #$01
 	sta Sound_SongPausedFlag_Channel0_square0,x
 	lda #$00
 	sta Sound_LoopCounter_Channel0_square0,x
 	cpx #$02
 	beq @A350
-	sta Sound_CacheAPUreg3,x
-	cpx #$04
-	beq @A361
+
+		sta Sound_CacheAPUreg3,x
+		cpx #$04
+		beq @A361
+	
 	@A350:
 	ldy #$00
 	lda (Sound_StartSong_TrackDataPtr_Lo),y
 	bne @A35D
+
 	sta Sound_StartSong_LatestSongIndex
-	cpx #$04
+	cpx #$04	; Should never been 4 if we got here?
 	beq @A361
+	
 	@A35D:
 	and #$F0
 	bne @A365
+	
 	@A361:
-	 lda #$01
+	lda #$01
 	bne @A367
 
 	@A365:
-	  lda #$00
+	lda #$00
 	@A367:
-	   sta Sound_FlagsC3_Channel0_square0,x
+	sta Sound_FlagsC3_Channel0_square0,x
 	lda Sound_StartSong_CurrentLogicalChannel
 	tay
 	lda Sound_ChannelRegisterOffsetTable,y
 	tay
 	cpx #$00
 	bne @A379
+
 	lda Sound_CurrentSongNumber_Channel3_effectsquare
 	bne @A39B
+
 	@A379:
 	lda #$00
 	cpx #$02
 	bne @A38B
+
 	sta APU_HW__4008_Reg0_channel2
 	jsr SoundCode_JustDoEightNOPs_28cyclesOfDelay
 	sta APU_HW__400B_Reg3_channel2_WaveLengthHi
@@ -2340,6 +2354,7 @@ Sound_StartTracks:
 	lda #$7F
 	sta APU_HW__4001_Reg1_SweepControl,y
 	jsr SoundCode_JustDoEightNOPs_28cyclesOfDelay
+	
 	@A39B:
 	 lda Sound_StartSong_LatestSongIndex
 	sta Sound_CurrentSongNumber_Channel0_square0,x
@@ -2351,7 +2366,7 @@ Sound_StartTracks:
 	iny
 	iny
 	sty Sound_StartSong_MainPtrOffset
-	jmp @loc_2301
+	jmp @next_channel_track
 
 	; ---------------
 	@loc_23B1:
