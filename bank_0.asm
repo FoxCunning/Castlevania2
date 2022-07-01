@@ -38,6 +38,14 @@ SoundData50_DraculaSong_ch5:
 	.byte $B0,$B1,$A0,$B0,$B0,$B0,$A0,$B0,$A0,$A3,$B0,$A1,$B1,$A1,$B0,$A0
 	.byte $A0,$A0,$FE,$FF
 	.word (SoundData50_DraculaSong_ch5) 	; $04,$81
+
+; -----------------------------------------------------------------------------
+
+; 3 bytes per entry
+; -----------------
+; Bits 6-7: Number of channels for this song/sfx
+; Bits 0-5: Next pointer's channel number
+; Word: Pointer to channel data
 Sound_Records:
 	.byte $04
 	.word (SoundData01_SFX_ch4) ;8278 (278) ()
@@ -2214,7 +2222,9 @@ Sound_StartTracks:
 	sta Sound_RecordPtrLo
 	lda Sound_Records_Locator+1
 	sta Sound_RecordPtrHi
-	@A2D8:
+
+	; Calculate the offset to this song's entry in the table
+	@calc_entry_offset:
 	lda Sound_StartSong_LatestSongIndex
 	clc
 	adc Sound_RecordPtrLo
@@ -2223,7 +2233,8 @@ Sound_StartTracks:
 	adc Sound_RecordPtrHi
 	sta Sound_RecordPtrHi
 	dex
-	bne @A2D8
+	bne @calc_entry_offset
+
 	ldy #$00
 	sty Sound_StartSong_MainPtrOffset
 	lda (Sound_RecordPtrLo),y
@@ -2232,24 +2243,29 @@ Sound_StartTracks:
 	rol a
 	and #$03
 	sta Sound_StartSong_NumTracksRemaining
-	jmp _loc_2301
-;------------------------------------------
-Unused22FB:
-	jmp _loc_23A0
+	jmp @loc_2301
 
-	_A2FE:
-	 jmp _loc_23B1
-;------------------------------------------
-	_loc_2301:
+	; ---------------
+	@Unused22FB:
+	jmp @loc_23A0
+
+	@A2FE:
+	 jmp @loc_23B1
+
+	; ---------------
+	@loc_2301:
 	ldy Sound_StartSong_MainPtrOffset
 	lda (Sound_RecordPtrLo),y
 	and #$1F
 	sta Sound_StartSong_CurrentLogicalChannel
 	tax
+
 	lda Sound_StartSong_LatestSongIndex
 	beq @A315
-	cmp Sound_CurrentSongNumber_Channel0_square0,x
-	bcc _A2FE
+
+		cmp Sound_CurrentSongNumber_Channel0_square0,x
+		bcc @A2FE
+
 	@A315:
 	lda #$00
 	sta Sound_CurrentSongNumber_Channel0_square0,x
@@ -2262,7 +2278,7 @@ Unused22FB:
 	@A325:
 	jsr _func_22C8
 	@A328:
-	 ldy Sound_StartSong_MainPtrOffset
+	ldy Sound_StartSong_MainPtrOffset
 	iny
 	lda (Sound_RecordPtrLo),y
 	sta Sound_TrackDataPointer1Lo_Channel0_square0,x
@@ -2327,22 +2343,25 @@ Unused22FB:
 	@A39B:
 	 lda Sound_StartSong_LatestSongIndex
 	sta Sound_CurrentSongNumber_Channel0_square0,x
-	_loc_23A0:
+	@loc_23A0:
 	dec Sound_StartSong_NumTracksRemaining
-	bmi _loc_23B1
+	bmi @loc_23B1
 	ldy Sound_StartSong_MainPtrOffset
 	iny
 	iny
 	iny
 	sty Sound_StartSong_MainPtrOffset
-	jmp _loc_2301
-;------------------------------------------
-	_loc_23B1:
+	jmp @loc_2301
+
+	; ---------------
+	@loc_23B1:
 	lda #$00
 	sta Sound_RecordPtrHi
 	ldx Sound_CurrentLogicalChannel
 	rts
+
 ;------------------------------------------
+
 StartPCMsound:
 	lda Sound_StartSong_LatestSongIndex
 	cmp Sound_PCMsampleActive

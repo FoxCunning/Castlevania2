@@ -120,20 +120,22 @@
 	Sound_TempPtrA7_hi = $A8				; $A8
 	Sound_FadeCounter = $A9				; $A9
 	Sound_FadeMode = $AA				; $AA
-	Sound_SongPausedFlag_Channel0_square0 = $AB				; $AB
-	Sound_CurrentSongNumber_Channel0_square0 = $B1				; $B1
-	Sound_CurrentSongNumber_Channel2_triangle = $B3				; $B3
-	Sound_CurrentSongNumber_Channel3_effectsquare = $B4				; $B4
-	Sound_CUrrentSongNumber_Channel5_Percussion = $B6				; $B6
-	Sound_TrackDataPointer1Lo_Channel0_square0 = $B7				; $B7
-	Sound_TrackDataPointer1Hi_Channel0_square0 = $BD				; $BD
+
+	Sound_SongPausedFlag_Channel0_square0 = $AB			; $AB
+	Sound_CurrentSongNumber_Channel0_square0 = $B1		; $B1 sq0, $B2 sq1
+	Sound_CurrentSongNumber_Channel2_triangle = $B3		; $B3
+	Sound_CurrentSongNumber_Channel3_effectsquare = $B4	; $B4
+	Sound_CUrrentSongNumber_Channel5_Percussion = $B6	; $B6
+	Sound_TrackDataPointer1Lo_Channel0_square0 = $B7	; $B7
+	Sound_TrackDataPointer1Hi_Channel0_square0 = $BD	; $BD
 	Sound_FlagsC3_Channel0_square0 = $C3				; $C3
-	Sound_ChannelTempoPossibly_Channel0_square0 = $C9				; $C9
-	Sound_ReturnPointerLo_Channel0_square0 = $CF				; $CF
-	Sound_ReturnPointerHi_Channel0_square0 = $D5				; $D5
-	Sound_LoopCounter_Channel0_square0 = $DB				; $DB
-	Sound_LoopBeginPointerLo_Channel0_square0 = $E1				; $E1
-	Sound_LoopBeginPointerHi_Channel0_square0 = $E7				; $E7
+	Sound_ChannelTempoPossibly_Channel0_square0 = $C9	; $C9
+	Sound_ReturnPointerLo_Channel0_square0 = $CF		; $CF
+	Sound_ReturnPointerHi_Channel0_square0 = $D5		; $D5
+	Sound_LoopCounter_Channel0_square0 = $DB			; $DB
+	Sound_LoopBeginPointerLo_Channel0_square0 = $E1		; $E1
+	Sound_LoopBeginPointerHi_Channel0_square0 = $E7		; $E7
+
 	Input_CurrentJoyButtonsOrig = $F1				; $F1
 	Input_NewJoyButtonsOrig = $F3				; $F3
 	Input_NewJoyButtonsOrig_Player2 = $F4				; $F4
