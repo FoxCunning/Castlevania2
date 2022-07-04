@@ -43,8 +43,8 @@ SoundData50_DraculaSong_ch5:
 
 ; 3 bytes per entry
 ; -----------------
-; Bits 6-7: Number of channels for this song/sfx
-; Bits 0-5: Next pointer's channel number
+; Bits 5-7: Number of channels for this song/sfx - 1
+; Bits 0-4: Next pointer's channel number (0 to 6)
 ; Word: Pointer to channel data
 Sound_Records:
 	.byte $04
@@ -1022,6 +1022,7 @@ Sound_TrackCommandFBtoFF:
 	jsr Sound_JumpWithParams
 ; -----------------------------------------
 ; Sound_JumpWithParams will read a pointer from this table
+; by manipulating the stack
 _JumpPointerTable_1760:
 	.word (Sound_TrackCommandFBtoFC_LoopBegin) ;976A (176A) ()
 	.word (Sound_TrackCommandFBtoFC_LoopBegin) ;976A (176A) ()
@@ -1051,12 +1052,14 @@ Sound_TrackCommandFE_LoopEnd_FollowedByLoopCount_Or_FF_and_gotoAddress:
 	lda (SoundTrackPtrLo),y
 	cmp #$FF
 	beq @97B2
+
 	lda Sound_LoopCounter_Channel0_square0,x
 	clc
 	adc #$01
 	cmp (SoundTrackPtrLo),y
 	beq @97BB
 	bmi @97A2
+
 	sec
 	sbc #$01
 	@97A2:
@@ -1069,12 +1072,12 @@ Sound_TrackCommandFE_LoopEnd_FollowedByLoopCount_Or_FF_and_gotoAddress:
 	jmp SoundCode_ReadNextCommand_From_TrackPtr_y
 
 	@97B2:
-	 jsr Sound_Fetch_TrackDataPointer1
+	jsr Sound_Fetch_TrackDataPointer1
 	jsr Sound_Set_TrackPtr_From_TrackDataPointer1
 	jmp SoundCode_ReadNextCommand_From_TrackPtr_y
 
 	@97BB:
-	  lda #$00
+	lda #$00
 	sta Sound_LoopCounter_Channel0_square0,x
 	iny
 	tya
@@ -1087,10 +1090,12 @@ Sound_TrackCommandFE_LoopEnd_FollowedByLoopCount_Or_FF_and_gotoAddress:
 	jsr Sound_Set_TrackPtr_From_TrackDataPointer1
 	jmp SoundCode_ReadNextCommand_From_TrackPtr_y
 ;------------------------------------------
+
 Sound_TrackCommandFF_Return:
 	lda Sound_FlagsC3_Channel0_square0,x
 	and #$02
 	beq @97EC
+
 	lda Sound_FlagsC3_Channel0_square0,x
 	and #$FD
 	sta Sound_FlagsC3_Channel0_square0,x
@@ -1111,18 +1116,21 @@ Sound_TrackCommandFF_Return:
 	lda SoundEffectRelatedPtrLo
 	cmp #$2F
 	bne @9807
+
 	jsr Bank0TerminateSound
 	lda #$45
 	jmp Bank0PlayTracks
 
 	@9807:
 	cpx #$05
-	beq @982B
+	beq @982B	; -> rts
 	cpx #$03
 	bne @9816
+
 	lda Sound_CurrentSongNumber_Channel0_square0
 	beq @9816
-	jmp _loc_1E41
+
+		jmp _loc_1E41
 
 	@9816:
 	lda #$00
@@ -1130,27 +1138,34 @@ Sound_TrackCommandFF_Return:
 	sta Sound_FlagsC3_Channel0_square0,x
 	cpx #$02
 	beq @9823
-	lda #$30
+
+		lda #$30
+
 	@9823:
 	jsr Sound_SetCarry_If_X_is_00_and_B4_is_nonzero
-	bcs @982B
-	jmp Sound_PokeChannelSoundRegister0_preserveAX
+	bcs @982B	; -> rts
+
+		jmp Sound_PokeChannelSoundRegister0_preserveAX
 
 	@982B:
-	 rts
+	rts
 ;------------------------------------------
+
 Sound_TrackCommand00toFA:
 	lda Sound_FlagsC3_Channel0_square0,x
 	and #$01
 	bne Sound_TrackCommand00toFA_for_NoiseChannel_maybe
-	jmp Sound_TrackCommand00toFA_for_NotNoiseChannel_maybe
+
+		jmp Sound_TrackCommand00toFA_for_NotNoiseChannel_maybe
 ;------------------------------------------
+
 Sound_TrackCommand00toFA_for_NoiseChannel_maybe:
 	lda (SoundTrackPtrLo),y
 	and #$F0
 	bne Sound_TrackCommand10toFA
-	lda Sound_CurrentLogicalChannel
-	jsr Sound_JumpWithParams
+
+		lda Sound_CurrentLogicalChannel
+		jsr Sound_JumpWithParams
 _JumpPointerTable_1841:
 	.word (Sound_TrackCommand00to0F_for_LogicalChannel0_or_1_or_3) ;9856 (1856) ()
 	.word (Sound_TrackCommand00to0F_for_LogicalChannel0_or_1_or_3) ;9856 (1856) ()
@@ -1162,12 +1177,14 @@ Sound_TrackCommand10toFA:
 	sta Sound_SongPausedFlag_Channel0_square0,x
 	cpx #$04
 	bne Sound_TrackCommand00to0F_followedBy00_or_10toFA_for_LogicalChannelNot4
-	jmp Sound_TrackCommand00to0F_followedBy00_or_10toFA_for_LogicalChannel4
+
+		jmp Sound_TrackCommand00to0F_followedBy00_or_10toFA_for_LogicalChannel4
 ;------------------------------------------
+
 Sound_TrackCommand00to0F_for_LogicalChannel0_or_1_or_3:
 	lda (SoundTrackPtrLo),y
 	bne @985D
-	jmp _989F
+		jmp _989F
 
 	@985D:
 	sta Sound_ChannelTempoPossibly_Channel0_square0,x
@@ -1181,8 +1198,10 @@ Sound_TrackCommand00to0F_for_LogicalChannel0_or_1_or_3:
 	sta Sound_FlagsC3_Channel0_square0,x
 	lda (SoundTrackPtrLo),y
 	beq @9876
+
 	cmp #$88
 	bne _loc_187C
+
 	@9876:
 	lda Sound_FlagsC3_Channel0_square0,x
 	and #$F7
@@ -1191,19 +1210,23 @@ Sound_TrackCommand00to0F_for_LogicalChannel0_or_1_or_3:
 	lda (SoundTrackPtrLo),y
 	jsr Sound_SetCarry_If_X_is_00_and_B4_is_nonzero
 	bcs @9886
+
 	jsr Sound_PokeChannelSoundRegister1_preserveAX
 	@9886:
 	jmp SoundCode_ReadNextCommand_From_TrackPtr_ypp
 ;------------------------------------------
+
 Sound_TrackCommand00to0F_for_LogicalChannel2:
 	lda (SoundTrackPtrLo),y
 	sta Sound_ChannelTempoPossibly_Channel0_square0,x
 	iny
 	jmp _loc_187C
 ;------------------------------------------
+
 Sound_TrackCommand00to0F_for_LogicalChannel4:
 	lda (SoundTrackPtrLo),y
 	beq _98C8
+
 	sta Sound_ChannelTempoPossibly_Channel0_square0,x
 	lda #$30
 	sta Sound_CacheAPUreg0and1_twonibbles,x
@@ -1222,6 +1245,7 @@ Sound_TrackCommand00to0F_followedBy00_or_10toFA_for_LogicalChannelNot4:
 	ora Sound_CacheAPUreg0and1_twonibbles,x
 	jsr Sound_SetCarry_If_X_is_00_and_B4_is_nonzero
 	bcs @98B5
+
 	jsr Sound_PokeChannelSoundRegister0_preserveAX
 	@98B5:
 	lda (SoundTrackPtrLo),y
@@ -1235,7 +1259,7 @@ Sound_TrackCommand00to0F_followedBy00_or_10toFA_for_LogicalChannelNot4:
 	jmp Sound_Set_TrackDataPointer1_From_TrackPtr_y
 
 	_98C8:
-	  iny
+	iny
 Sound_TrackCommand00to0F_followedBy00_or_10toFA_for_LogicalChannel4:
 	lda Sound_ChannelTempoPossibly_Channel0_square0,x
 	sta Sound_SongPausedFlag_Channel0_square0,x
@@ -1257,6 +1281,7 @@ Sound_TrackCommand00toFA_for_NotNoiseChannel_maybe:
 	lda (SoundTrackPtrLo),y
 	cmp #$D0
 	bcs Sound_TrackCommandD0toFA
+
 	jmp Sound_TrackCommand00toCF_or_10toCF
 ;------------------------------------------
 Sound_TrackCommandD0toFA:
@@ -1278,6 +1303,7 @@ Sound_TrackCommandD0toDF:
 	iny
 	cpx #$05
 	bne @990F
+
 	jmp SoundCode_ReadNextCommand_From_TrackPtr_y
 
 	@990F:
@@ -1297,6 +1323,7 @@ Sound_TrackCommandD0toDF:
 	iny
 	cpx #$02
 	bne @9933
+
 	jmp SoundCode_ReadNextCommand_From_TrackPtr_ypp
 
 	@9933:
@@ -1304,12 +1331,15 @@ Sound_TrackCommandD0toDF:
 	sta Sound_EffectTableIndex,x
 	and #$80
 	beq @9943
+
 	lda (SoundTrackPtrLo),y
 	and #$0F
 	sta Sound_EffectRelatedBytesRead,x
+
 	@9943:
 	iny
 	lda (SoundTrackPtrLo),y
+
 	_loc_1946:
 	sta Sound_TabUnknown0138,x
 	and #$F0
@@ -1317,6 +1347,7 @@ Sound_TrackCommandD0toDF:
 	lda Sound_TabUnknown0138,x
 	ora #$10
 	sta Sound_TabUnknown0138,x
+
 	@9955:
 	lsr a
 	lsr a
@@ -1325,6 +1356,7 @@ Sound_TrackCommandD0toDF:
 	sta Sound_TabUnknown013C_squarewavesonly,x
 	jmp _loc_1991
 ;------------------------------------------
+
 Sound_TrackCommandE0toEF:
 	lda (SoundTrackPtrLo),y
 	and #$0F
@@ -1344,24 +1376,29 @@ _JumpPointerTable_196D:
 	.word (Sound_TrackCommandECtoEF_flag_and_likeEB) ;99F1 (19F1) ()
 	.word (Sound_TrackCommandECtoEF_flag_and_likeEB) ;99F1 (19F1) ()
 	.word (Sound_TrackCommandECtoEF_flag_and_likeEB) ;99F1 (19F1) ()
+
 Sound_TrackCommandE0toE5_savesThisByteTo12E:
 	sta Sound_CurrentOctavePossibly,x
 	jmp _loc_1991
 ;------------------------------------------
+
 Sound_TrackCommandF0toFA_savesLoNibbleTo13E:
 	lda (SoundTrackPtrLo),y
 	and #$0F
 	sta Sound_TabUnknown013E,x
 	jmp _loc_1991
 ;------------------------------------------
-	_loc_1991:
+
+_loc_1991:
 	iny
 	lda (SoundTrackPtrLo),y
 	and #$F0
 	cmp #$E0
 	beq Sound_TrackCommandE0toEF
-	jmp SoundCode_ReadNextCommand_From_TrackPtr_y
+
+		jmp SoundCode_ReadNextCommand_From_TrackPtr_y
 ;------------------------------------------
+
 Sound_TrackCommandE6_savesNextByteToC9:
 	iny
 	lda (SoundTrackPtrLo),y
@@ -1373,11 +1410,13 @@ Sound_TrackCommandE7_savesNextByteTo136:
 	sta Sound_EffectTableIndex,x
 	jmp _loc_1991
 ;------------------------------------------
+
 Sound_TrackCommandE8_savesNextTwoNibblesTo138and13C:
 	iny
 	lda (SoundTrackPtrLo),y
 	jmp _loc_1946
 ;------------------------------------------
+
 Sound_TrackCommandE9_savesNextByteTo134or129:
 	lda #$0F
 	sta Sound_TempPtr015C_lo
@@ -1394,12 +1433,14 @@ Sound_TrackCommandE9_savesNextByteTo134or129:
 	 sta Sound_CacheAPUreg0and1_twonibbles,x
 	jmp _loc_1991
 ;------------------------------------------
+
 Sound_TrackCommandEA_savesNextByteTo131:
 	iny
 	lda (SoundTrackPtrLo),y
 	sta Sound_TabUnknown0131,x
 	jmp _loc_1991
 ;------------------------------------------
+
 Sound_TrackCommandEB_savesNextTwoNibblesTo146and148_andNextByteTo14A:
 	iny
 	lda (SoundTrackPtrLo),y
@@ -1416,6 +1457,7 @@ Sound_TrackCommandEB_savesNextTwoNibblesTo146and148_andNextByteTo14A:
 	sta Sound_EffectRelated_Index,x
 	jmp _loc_1991
 ;------------------------------------------
+
 Sound_TrackCommandECtoEF_flag_and_likeEB:
 	lda #$0F
 	sta Sound_TempPtr015C_lo
@@ -1447,30 +1489,37 @@ Sound_TrackCommandECtoEF_flag_and_likeEB:
 	iny
 	jmp Sound_TrackCommandD0toDF
 ;------------------------------------------
-	_loc_1A24:
+
+_loc_1A24:
 	lda (SoundTrackPtrLo),y
 	lsr a
 	lsr a
 	lsr a
 	lsr a
 	cmp #$0C
-	beq @9A46
+	beq @9A46	; -> rts
+
 	tax
 	cmp #$0A
 	bne @9A3A
-	lda #$03
-	jsr Bank0PlayTracks
-	ldx #$0A
+
+		lda #$03
+		jsr Bank0PlayTracks
+		ldx #$0A
+
 	@9A3A:
-	lda _data_1A47_indexed,x
+	lda @data_1A47_indexed,x
 	sta Sound_StartSong_LatestSongIndex
 	jsr Bank0PlayTracks
 	ldx Sound_CurrentLogicalChannel
+
 	@9A46:
-	 rts
-;------------------------------------------
-_data_1A47_indexed:
+	rts
+
+	@data_1A47_indexed:
 	.byte $02,$02,$02,$02,$03,$03,$03,$03,$03,$04,$5D,$5E
+; -----------------------------------------
+
 Sound_TrackCommand00toCF_or_10toCF:
 	jsr Sound_Set_TrackDataPointer1_From_TrackPtr_y
 	dey
@@ -1478,6 +1527,7 @@ Sound_TrackCommand00toCF_or_10toCF:
 	and #$0F
 	sta SoundEffectRelatedPtrLo
 	beq @9A6A
+
 	lda Sound_ChannelTempoPossibly_Channel0_square0,x
 	clc
 	@9A62:
@@ -1485,12 +1535,15 @@ Sound_TrackCommand00toCF_or_10toCF:
 	dec SoundEffectRelatedPtrLo
 	bne @9A62
 	beq @9A6C
+
 	@9A6A:
 	lda Sound_ChannelTempoPossibly_Channel0_square0,x
+
 	@9A6C:
-	 sta Sound_SongPausedFlag_Channel0_square0,x
+	sta Sound_SongPausedFlag_Channel0_square0,x
 	cpx #$05
 	bne @9A75
+
 	jmp _loc_1A24
 
 	@9A75:
@@ -1498,61 +1551,70 @@ Sound_TrackCommand00toCF_or_10toCF:
 	and #$F0
 	cmp #$C0
 	bne @9AA2
+
 	lda #$40
 	ora Sound_FlagsC3_Channel0_square0,x
 	sta Sound_FlagsC3_Channel0_square0,x
 	cpx #$02
 	beq @9A95
+
 	lda #$30
 	ora Sound_CacheAPUreg0and1_twonibbles,x
 	jsr Sound_SetCarry_If_X_is_00_and_B4_is_nonzero
 	bcs @9A94
+
 	jmp Sound_PokeChannelSoundRegister0_preserveAX
 
 	@9A94:
 	rts
 
 	@9A95:
-	 lda #$00
+	lda #$00
 	jsr Sound_PokeChannelSoundRegister0_preserveAX
 	lda #$FF
 	sta Sound_CacheAPUreg3_Channel2_Triangle
 	jmp Sound_PokeChannelSoundRegister3_preserveAX
 
 	@9AA2:
-	  lda Sound_FlagsC3_Channel0_square0,x
+	lda Sound_FlagsC3_Channel0_square0,x
 	and #$BF
 	sta Sound_FlagsC3_Channel0_square0,x
 	cpx #$02
 	bne @9AEE
+
 	lda Sound_EffectTableResultLoNibble,x
 	cmp #$81
 	bcs @9AD2
+
 	lda (SoundTrackPtrLo),y
 	and #$0F
 	sta SoundEffectRelatedPtrLo
 	sta Sound_PeriodTemp_Unknown9B_lo
 	beq @9AD2
+
 	lda Sound_EffectTableResultLoNibble,x
 	clc
 	@9AC1:
 	adc Sound_EffectTableResultLoNibble,x
 	cmp #$81
 	bcs @9ACC
+
 	dec SoundEffectRelatedPtrLo
 	bne @9AC1
+
 	@9ACC:
 	clc
 	adc Sound_PeriodTemp_Unknown9B_lo
 	jmp @9AD5
 
 	@9AD2:
-	 lda Sound_EffectTableResultLoNibble,x
+	lda Sound_EffectTableResultLoNibble,x
 	@9AD5:
-	  sta Sound_PeriodTemp_Unknown9B_lo
+	sta Sound_PeriodTemp_Unknown9B_lo
 	lda Sound_FlagsC3_Channel0_square0,x
 	and #$80
 	beq @9AE9
+
 	lda #$FF
 	sta Sound_CacheAPUreg3_Channel2_Triangle
 	jsr Sound_PokeChannelSoundRegister3_preserveAX
@@ -1562,34 +1624,40 @@ Sound_TrackCommand00toCF_or_10toCF:
 	@9AE9:
 	lda Sound_PeriodTemp_Unknown9B_lo
 	@9AEB:
-	 jmp _loc_1B5E
+	jmp _loc_1B5E
 
 	@9AEE:
-	   lda Sound_TabUnknown0138,x
+	lda Sound_TabUnknown0138,x
 	and #$0F
 	sta SoundEffectRelatedPtrLo
 	beq @9B16
+
 	lda #$00
 	sta SoundEffectRelatedPtrHi
+
 	@9AFB:
 	clc
 	adc Sound_SongPausedFlag_Channel0_square0,x
 	bcc @9B02
+
 	inc SoundEffectRelatedPtrHi
 	@9B02:
 	dec SoundEffectRelatedPtrLo
 	bne @9AFB
+
 	sta SoundEffectRelatedPtrLo
 	lda #$04
 	sta Sound_PeriodTemp_Unknown9B_lo
+
 	@9B0C:
 	lsr SoundEffectRelatedPtrHi
 	ror SoundEffectRelatedPtrLo
 	dec Sound_PeriodTemp_Unknown9B_lo
 	bne @9B0C
+
 	lda SoundEffectRelatedPtrLo
 	@9B16:
-	 sta Sound_TabUnknown013A_squarewavesonly,x
+	sta Sound_TabUnknown013A_squarewavesonly,x
 	lda #$00
 	sta Sound_EffectRelatedBytesRead,x
 	sta Sound_EffectRelatedBytesRead_Copy,x
@@ -1607,17 +1675,20 @@ Sound_TrackCommand00toCF_or_10toCF:
 	lda Sound_EffectTableIndex,x
 	bit Sound_TempPtr015C_lo
 	bne @9B4E
+
 	jsr _func_1CC6
 	jmp @9B53
 
 	@9B4E:
 	and #$0F
 	sta Sound_EffectRelatedBytesRead,x
+
 	@9B53:
-	 jsr _func_1D2F
+	jsr _func_1D2F
 	jsr _func_1CED
 	jsr Sound_SetCarry_If_X_is_00_and_B4_is_nonzero
 	bcs _loc_1B61
+
 	_loc_1B5E:
 	jsr Sound_PokeChannelSoundRegister0_preserveAX
 	_loc_1B61:
@@ -1639,15 +1710,18 @@ Sound_TrackCommand00toCF_or_10toCF:
 	lda SoundPeriodTableHi,y
 	sta Sound_CurrentPeriodHi,x
 	ldy Sound_CurrentOctavePossibly,x
+
 	@9B83:
 	tya
 	cmp #$05
 	beq _func_1B92
+
 	lsr Sound_CurrentPeriodHi,x
 	ror Sound_CurrentPeriodLo,x
 	iny
 	jmp @9B83
 ;------------------------------------------
+
 _func_1B92:
 	lda Sound_CurrentPeriodHi,x
 	ora #$08
@@ -1665,14 +1739,17 @@ _func_1B92:
 	lda Sound_TabUnknown014E,x
 	bne _func_1BB7
 	jsr _func_1C64
+
 _func_1BB7:
 	lda SoundEffectRelatedPtrLo
 	bmi @9BC9
+
 	lda Sound_PeriodTemp_Unknown9B_lo
 	clc
 	adc SoundEffectRelatedPtrLo
 	sta Sound_PeriodTemp_Unknown9B_lo
 	bcc @9BD4
+
 	inc Sound_PeriodTemp_Unknown9B_hi
 	jmp @9BD4
 
@@ -1682,34 +1759,42 @@ _func_1BB7:
 	adc SoundEffectRelatedPtrLo
 	sta Sound_PeriodTemp_Unknown9B_lo
 	bcs @9BD4
+
 	dec Sound_PeriodTemp_Unknown9B_hi
 	@9BD4:
-	 lda Sound_PeriodTemp_Unknown9B_hi
+	lda Sound_PeriodTemp_Unknown9B_hi
 	cmp Sound_CacheAPUreg3,x
 	bne @9BEA
+
 	lda Sound_CacheAPUreg0and1_twonibbles,x
 	and #$10
 	beq _9BED
+
 	lda Sound_FlagsC3_Channel0_square0,x
 	and #$08
 	bne _9BED
 	beq _9BF7
+
 	@9BEA:
 	sta Sound_CacheAPUreg3,x
+
 	_9BED:
-	  lda Sound_PeriodTemp_Unknown9B_hi
+	lda Sound_PeriodTemp_Unknown9B_hi
 	jsr Sound_SetCarry_If_X_is_00_and_B4_is_nonzero
 	bcs _9BF7
+
 	jsr Sound_PokeChannelSoundRegister3_preserveAX
 	_9BF7:
-	   lda Sound_PeriodTemp_Unknown9B_lo
+	lda Sound_PeriodTemp_Unknown9B_lo
 	sta Sound_CacheAPUreg2,x
 	jsr Sound_SetCarry_If_X_is_00_and_B4_is_nonzero
-	bcs @9C04
+	bcs :+	; -> rts
+
 	jsr Sound_PokeChannelSoundRegister2_preserveAX
-	@9C04:
-	rts
+
+:	rts
 ;------------------------------------------
+
 SoundPeriodTable:
 	.byte $5C
 SoundPeriodTableHi:
@@ -1720,6 +1805,8 @@ SoundPeriodTable2:
 	.word $0501,$04B9,$0475,$0435,$03F9,$03C0,$038A,$0357
 	.word $0327,$02FA,$02CF,$02A7,$0281,$025D,$023B,$021B
 	.word $01FC,$01E0,$01C5
+;------------------------------------------
+
 _func_1C4D:
 	lda #$80
 	sta Sound_TempPtr015C_lo
@@ -1735,6 +1822,7 @@ _func_1C4D:
 
 :	rts
 ;------------------------------------------
+
 _func_1C64:
 	lda #$00
 	sta SoundEffectRelatedPtrLo
@@ -1815,6 +1903,7 @@ _func_1CC6:
 	ldy Sound_TempA5
 	rts
 ;------------------------------------------
+
 _func_1CED:
 	lda Sound_TabUnknown0134,x
 	and #$04
@@ -1824,28 +1913,36 @@ _func_1CED:
 	lda Sound_SongPausedFlag_Channel0_square0,x
 	cmp Sound_TabUnknown013A_squarewavesonly,x
 	bcc _loc_1D1B
+
 Sound_CalculateMomentaryVolume:
 	lda Sound_EffectTableResultLoNibble,x
 	beq @9D19
+
 	sec
 	sbc Sound_TabUnknown013E,x
 	bcc @9D17
+
 	sec
 	sbc Sound_TabUnknown0140,x
 	bcc @9D17
+
 	sec
 	sbc Sound_FadeMode
 	beq @9D17
 	bcs @9D19
+
 	@9D17:
 	lda #$01
+
 	@9D19:
-	 sta SoundEffectRelatedPtrLo
+	sta SoundEffectRelatedPtrLo
+
 	_loc_1D1B:
 	lda SoundEffectRelatedPtrHi
 	ora SoundEffectRelatedPtrLo
 	rts
 ;------------------------------------------
+
 _func_1D20:
 	lda Sound_TabUnknown0134,x
 	and #$02
@@ -1857,6 +1954,7 @@ _func_1D20:
 
 :	rts
 ;------------------------------------------
+
 _func_1D2F:
 	lda Sound_CacheAPUreg0and1_twonibbles,x
 	sta SoundEffectRelatedPtrHi
@@ -1871,11 +1969,13 @@ _func_1D2F:
 
 	jmp _loc_1D1B
 ;------------------------------------------
+
 Sound_EffectRelatedCommandReadNext:
 	ldy Sound_EffectRelatedBytesRead,x
 	lda (SoundEffectRelatedPtrLo),y
 	cmp #$FB
 	bcc Sound_EffectRelatedCommand00toFA_ReturnWithA
+
 	sec
 	sbc #$FB
 	jsr Sound_JumpWithParams
@@ -1885,16 +1985,19 @@ _JumpPointerTable_1D57:
 	.word (Sound_EffectRelatedCommandFBtoFD_BeginLoop) ;9D64 (1D64) ()
 	.word (Sound_EffectRelatedCommandFE_LoopUntil) ;9D70 (1D70) ()
 	.word (Sound_EffectRelatedCommandFF_End_ReturnWithPreviousA) ;9D8D (1D8D) ()
+
 Sound_EffectRelatedCommand00toFA_ReturnWithA:
 	sta SoundEffectRelatedPtrLo
 	rts
 ;------------------------------------------
+
 Sound_EffectRelatedCommandFBtoFD_BeginLoop:
 	inc Sound_EffectRelatedBytesRead,x
 	lda Sound_EffectRelatedBytesRead,x
 	sta Sound_EffectRelatedBytesRead_Copy,x
 	jmp Sound_EffectRelatedCommandReadNext
 ;------------------------------------------
+
 Sound_EffectRelatedCommandFE_LoopUntil:
 	iny
 	lda (SoundEffectRelatedPtrLo),y
@@ -1910,10 +2013,12 @@ Sound_EffectRelatedCommandFE_LoopUntil:
 	inc Sound_EffectRelatedBytesRead,x
 	jmp Sound_EffectRelatedCommandReadNext
 ;------------------------------------------
+
 Sound_EffectRelatedCommandFF_End_ReturnWithPreviousA:
 	dec Sound_EffectRelatedBytesRead,x
 	jmp Sound_EffectRelatedCommandReadNext
 ;------------------------------------------
+
 SoundCode_JustDoEightNOPs_28cyclesOfDelay:
                             ; Delay loop begin: 16 cycles (2.0 cycles per byte); ends at $1D9B:
 	nop
@@ -1927,6 +2032,7 @@ SoundCode_JustDoEightNOPs_28cyclesOfDelay:
                             ; End of delay loop (8 bytes):
 	rts
 ;------------------------------------------
+
 Sound_Set_TrackPtr_From_TrackDataPointer1:
 	ldy #$00
 	lda Sound_TrackDataPointer1Lo_Channel0_square0,x
@@ -1935,6 +2041,7 @@ Sound_Set_TrackPtr_From_TrackDataPointer1:
 	sta SoundTrackPtrHi
 	rts
 ;------------------------------------------
+
 Sound_Set_TrackDataPointer1_From_TrackPtr_y:
 	iny
 	tya
@@ -1949,6 +2056,7 @@ Sound_Set_TrackDataPointer1_From_TrackPtr_y:
 
 :	rts
 ;------------------------------------------
+
 Sound_Fetch_TrackDataPointer1:
 	iny
 	lda (SoundTrackPtrLo),y
@@ -1958,6 +2066,7 @@ Sound_Fetch_TrackDataPointer1:
 	sta Sound_TrackDataPointer1Hi_Channel0_square0,x
 	rts
 ;------------------------------------------
+
 Sound_Set_ReturnPointer_From_TrackPtr_y:
 	iny
 	tya
@@ -1969,37 +2078,46 @@ Sound_Set_ReturnPointer_From_TrackPtr_y:
 	sta Sound_ReturnPointerHi_Channel0_square0,x
 	rts
 ;------------------------------------------
+
 Sound_PokeChannelSoundRegister0_preserveAX:
 	jsr Sound_TranslateChannelToRegisterOffset_PreserveA
 	sta APU_HW__4000_Reg0,x
 	jmp Sound_PokeChannel_Common_RestoreX
 ;------------------------------------------
+
 Sound_PokeChannelSoundRegister1_preserveAX:
 	jsr Sound_TranslateChannelToRegisterOffset_PreserveA
 	sta APU_HW__4001_Reg1_SweepControl,x
 	jmp Sound_PokeChannel_Common_RestoreX
 ;------------------------------------------
+
 Sound_PokeChannelSoundRegister2_preserveAX:
 	jsr Sound_TranslateChannelToRegisterOffset_PreserveA
 	sta APU_HW__4002_Reg2_WaveLengthLo,x
 	jmp Sound_PokeChannel_Common_RestoreX
 ;------------------------------------------
+
 Sound_PokeChannelSoundRegister3_preserveAX:
 	jsr Sound_TranslateChannelToRegisterOffset_PreserveA
 	sta APU_HW__4003_Reg3_WaveLengthHi,x
 	jmp Sound_PokeChannel_Common_RestoreX
 ;------------------------------------------
+
 Sound_TranslateChannelToRegisterOffset_PreserveA:
 	sta SoundEffectRelatedPtrLo
 	jsr Sound_TranslateChannelToRegisterOffset
 	lda SoundEffectRelatedPtrLo
 	rts
 ;------------------------------------------
+
 Sound_PokeChannel_Common_RestoreX:
 	jsr SoundCode_JustDoEightNOPs_28cyclesOfDelay
 	ldx Sound_CurrentLogicalChannel
 	rts
 ;------------------------------------------
+
+; Translates logical channel index to offset to its first register, from $4000
+; 0 = Square0, 1 = Square1, 2 = Triangle, 3 = Square0, 4 = Noise, 5 = Noise
 Sound_ChannelRegisterOffsetTable:
 	.byte $00,$04,$08,$00,$0C,$0C
 Sound_TranslateChannelToRegisterOffset:
@@ -2007,13 +2125,16 @@ Sound_TranslateChannelToRegisterOffset:
 	tax
 	rts
 ;------------------------------------------
+
 Sound_SetCarry_If_X_is_00_and_B4_is_nonzero:
 	pha
 	 cpx #$00
 	 bne @9E1C
+
 	 lda Sound_CurrentSongNumber_Channel3_effectsquare
 	 beq @9E1C
 	 bne @9E19
+
 	@9E19:
 	 sec
 	pla
@@ -2024,6 +2145,7 @@ Sound_SetCarry_If_X_is_00_and_B4_is_nonzero:
 	pla
 	rts
 ;------------------------------------------
+
 SoundCode_MuteAllChannelsButDontDisableThem:
 	lda #$30
 	sta APU_HW__4000_Reg0
@@ -2039,7 +2161,8 @@ SoundCode_MuteAllChannelsButDontDisableThem:
 	sta APU_HW__400B_Reg3_channel2_WaveLengthHi
 	rts
 ;------------------------------------------
-	_loc_1E41:
+
+_loc_1E41:
 	ldx #$00
 	lda Sound_CacheAPUreg0and1_twonibbles,x
 	sta SoundEffectRelatedPtrHi
@@ -2056,10 +2179,13 @@ SoundCode_MuteAllChannelsButDontDisableThem:
 	jsr SoundCode_JustDoEightNOPs_28cyclesOfDelay
 	lda Sound_CurrentSongNumber_Channel0_square0
 	beq @9E73
+
 	lda Sound_FlagsC3_Channel0_square0
 	and #$40
 	bne @9E73
-	jsr Sound_CalculateMomentaryVolume
+
+		jsr Sound_CalculateMomentaryVolume
+
 	@9E73:
 	lda SoundEffectRelatedPtrHi
 	ora SoundEffectRelatedPtrLo
@@ -2067,6 +2193,7 @@ SoundCode_MuteAllChannelsButDontDisableThem:
 	ldx Sound_CurrentLogicalChannel
 	rts
 ;------------------------------------------
+
 Sound_JumpWithParams:
 	asl a
 	stx Sound_TempPtr015C_hi
@@ -2086,6 +2213,8 @@ Sound_JumpWithParams:
 	ldy Sound_TempPtr015C_lo
 	ldx Sound_TempPtr015C_hi
 	jmp (Sound_TempPtrA7_lo)
+; -----------------------------------------------------------------------------
+
 	.byte $FF
 SoundData55_PasswordSong_ch1:
 	.byte $DA,$70,$20,$17,$FB,$E3,$00,$10,$20,$30,$20,$10,$FE,$06,$F1,$EA
@@ -2177,9 +2306,11 @@ SoundData4C_RuinsSong_ch5:
 	.word (SoundData4C_RuinsSong_ch5)	; $6D,$A2
 Sound_Records_Locator:
 	.word (Sound_Records -3) ;813A (13A) ()
-
 ; -----------------------------------------
+
 	.export Bank0PlayTracks
+; Parameters:
+; A = Song / SFX index ($5E, $5F and $60 are PCM sound effects)
 Bank0PlayTracks:
 	sta Sound_StartSong_LatestSongIndex
 	beq Bank0TerminateSound
@@ -2191,6 +2322,7 @@ Bank0PlayTracks:
 
 	jmp StartPCMsound
 ;------------------------------------------
+
 StartTracks:
 	cmp #$61
 	bne Sound_StartTracks
@@ -2209,6 +2341,7 @@ Bank0TerminateSound:
 	sta Sound_FadeMode
 	jmp SoundCode_MuteAllChannelsButDontDisableThem
 ;------------------------------------------
+
 _func_22C2_square_channels:
 	sta Sound_TabUnknown0134,x
 	sta Sound_TabUnknown0146,x
@@ -2216,8 +2349,9 @@ _func_22C8_triangle_channel:
 	sta Sound_TabUnknown0131,x
 	rts
 ;------------------------------------------
+
 Sound_StartTracks:
-	ldx #$03
+	ldx #$03	; Three bytes per entry in the records table
 	lda Sound_Records_Locator
 	sta Sound_RecordPtrLo
 	lda Sound_Records_Locator+1
@@ -2235,6 +2369,7 @@ Sound_StartTracks:
 	dex
 	bne @calc_entry_offset
 
+	; Bits 5-7 = number of channels used - 1
 	ldy #$00
 	sty Sound_StartSong_MainPtrOffset
 	lda (Sound_RecordPtrLo),y
@@ -2250,7 +2385,7 @@ Sound_StartTracks:
 	jmp @loc_23A0
 
 	@A2FE:
-	 jmp @loc_23B1
+	jmp @loc_23B1	; -> RecordPtrHi = 0, restore X and return
 
 	; ---------------
 	@next_channel_track:
@@ -2258,7 +2393,7 @@ Sound_StartTracks:
 	lda (Sound_RecordPtrLo),y	; Read logical channel number
 	and #$1F
 	sta Sound_StartSong_CurrentLogicalChannel
-	tax
+	tax	; X = channel number (0-6), until end of routine
 
 	lda Sound_StartSong_LatestSongIndex
 	beq @A315
@@ -2267,14 +2402,17 @@ Sound_StartTracks:
 		bcc @A2FE
 
 	@A315:
+	; Latest song index == 0 or < current channel's song number
+
 	lda #$00
 	sta Sound_CurrentSongNumber_Channel0_square0,x
 
-	cpx #$02	; 2 (triangle channel?)
+	cpx #$02	; X == 2 (triangle channel)
 	beq @A325_triangle_channel
 
-	bcs @read_track_ptr	; 3-6
+	bcs @read_track_ptr	; Skip if X > 2 (noise and DPCM)
 
+		; This is only for X == 0 or 1 (square channels)
 		jsr _func_22C2_square_channels
 		jmp @read_track_ptr
 
@@ -2300,19 +2438,18 @@ Sound_StartTracks:
 	lda #$00
 	sta Sound_LoopCounter_Channel0_square0,x
 	cpx #$02
-	beq @A350
+	beq :+
 
 		sta Sound_CacheAPUreg3,x
 		cpx #$04
 		beq @A361
 	
-	@A350:
-	ldy #$00
+:	ldy #$00
 	lda (Sound_StartSong_TrackDataPtr_Lo),y
 	bne @A35D
 
 	sta Sound_StartSong_LatestSongIndex
-	cpx #$04	; Should never been 4 if we got here?
+	cpx #$04	; Should never be 4 if we got here?
 	beq @A361
 	
 	@A35D:
@@ -2342,12 +2479,14 @@ Sound_StartTracks:
 	cpx #$02
 	bne @A38B
 
+	; Mute Triangle channel
 	sta APU_HW__4008_Reg0_channel2
 	jsr SoundCode_JustDoEightNOPs_28cyclesOfDelay
 	sta APU_HW__400B_Reg3_channel2_WaveLengthHi
 	jmp @A39B
 
 	@A38B:
+	; Mute other channels
 	lda #$30
 	sta APU_HW__4000_Reg0,y
 	jsr SoundCode_JustDoEightNOPs_28cyclesOfDelay
@@ -2356,11 +2495,13 @@ Sound_StartTracks:
 	jsr SoundCode_JustDoEightNOPs_28cyclesOfDelay
 	
 	@A39B:
-	 lda Sound_StartSong_LatestSongIndex
+	lda Sound_StartSong_LatestSongIndex
 	sta Sound_CurrentSongNumber_Channel0_square0,x
 	@loc_23A0:
 	dec Sound_StartSong_NumTracksRemaining
 	bmi @loc_23B1
+
+	; Advance song pointer offset (3 bytes)
 	ldy Sound_StartSong_MainPtrOffset
 	iny
 	iny
@@ -2374,13 +2515,13 @@ Sound_StartTracks:
 	sta Sound_RecordPtrHi
 	ldx Sound_CurrentLogicalChannel
 	rts
-
 ;------------------------------------------
 
 StartPCMsound:
 	lda Sound_StartSong_LatestSongIndex
 	cmp Sound_PCMsampleActive
 	bcc @A3E7
+
 	sta Sound_PCMsampleActive
 	sec
 	sbc #$5D
@@ -2393,18 +2534,22 @@ StartPCMsound:
 	sta APU_HW__4015_EnableChannelsMask
 	sty Sound_TempA5
 	ldy #$03
+	
 	@A3D6:
 	lda Sound_PCMsample5D_Config,x
 	sta APU_HW__4010_PCM_IRQenableAndWaveLength,y
 	dex
 	dey
 	bpl @A3D6
+
 	ldy Sound_TempA5
 	lda #$1F
 	sta APU_HW__4015_EnableChannelsMask
+
 	@A3E7:
 	ldx Sound_CurrentLogicalChannel
 	rts
+; -----------------------------------------------------------------------------
 
 	.byte $FF
 SoundData45_MansionSong_ch1:

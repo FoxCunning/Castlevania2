@@ -8651,24 +8651,34 @@ LevelData_Screens_0_Towns_14_A:
 	.word (LevelData_Screen_Blank) ;F807 (1F807) ([8:4][A:5])
 
 ; -----------------------------------------------------------------------------
+
 	.export Sound_PCMsample5D_Config
 Sound_PCMsample5D_Config:
-	.byte $0E,$7F,$F3
-
-	.export DataTableEntry_1FBC7
-DataTableEntry_1FBC7:
-	.byte $17
+	.byte $0E,$7F	;,$F3,$17
+	.byte >(Sound_PCMsample5D_Data<<2)
 ; -----------------------------------------
+
 	.export Sound_PCMsample5E_Config
 Sound_PCMsample5E_Config:
-	.byte $0F,$00,$F0,$0B
+	.byte $0F,$00	;,$F0,$0B
+	.byte >(Sound_PCMsample5E_Data<<2)
 ; -----------------------------------------
+
 	.export Sound_PCMsample5F_Config_DamageOuchSoundMaybe
 Sound_PCMsample5F_Config_DamageOuchSoundMaybe:
-	.byte $0F,$00,$F9,$0A,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
+	.byte $0F,$00	;,$F9,$0A
+	.byte >(Sound_PCMsample5F_Data<<2)
+	.byte $0A
+; -----------------------------------------
+	
+	.byte $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
 	.byte $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
 	.byte $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
 	.byte $FF,$FF,$FF,$FF
+
+; -----------------------------------------------------------------------------
+
+.segment "PCM_DATA"
 Sound_PCMsample5E_Data:
                             ; Length: $0B0+1 bytes:
 	.byte $AA,$AA,$AA,$AA,$AA,$AF,$F0,$9E,$9F,$F0,$06,$AE,$7C,$1B,$98,$F0
@@ -8682,7 +8692,9 @@ Sound_PCMsample5E_Data:
 	.byte $A5,$54,$A9,$54,$AA,$95,$2A,$AA,$94,$95,$2A,$AA,$55,$55,$2A,$56
 	.byte $66,$AA,$9A,$AA,$B5,$5A,$AD,$AB,$5A,$B5,$6B,$6B,$6B,$5A,$B5,$AA
 	.byte $B5,$56,$AA,$D5,$55,$56,$AA,$AA,$AA,$AA,$AA,$AA,$AA,$95,$55,$55
+	
 	.byte $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
+
 Sound_PCMsample5D_Data:
                             ; Length: $170+1 bytes:
 	.byte $FE,$FF,$DE,$FF,$E3,$EF,$8C,$44,$40,$31,$37,$09,$80,$18,$60,$00
@@ -8708,7 +8720,10 @@ Sound_PCMsample5D_Data:
 	.byte $B1,$31,$E0,$E5,$95,$2A,$CC,$B2,$9C,$AC,$AB,$39,$66,$6A,$CC,$AB
 	.byte $8B,$55,$A6,$A6,$AA,$3C,$5A,$39,$38,$B9,$54,$AA,$95,$AA,$65,$5A
 	.byte $9C,$C7,$59,$B2,$AE,$D4,$B1,$D4,$63,$C5,$34,$6A,$65,$69,$65,$4C
-	.byte $E3,$54,$D6,$33,$4D,$71,$92,$EA,$9A,$AB,$56,$55,$5A,$FF,$FF,$FF
+	.byte $E3,$54,$D6,$33,$4D,$71,$92,$EA,$9A,$AB,$56,$55,$5A
+	
+	.byte $FF,$FF,$FF
+
 Sound_PCMsample5F_Data:
                             ; Length: $0A0+1 bytes:
 	.byte $55,$AB,$D5,$AA,$5A,$4B,$95,$4A,$55,$A9,$54,$D5,$D6,$AA,$A4,$35
@@ -8721,6 +8736,7 @@ Sound_PCMsample5F_Data:
 	.byte $8C,$DA,$FF,$FF,$BF,$D6,$B5,$08,$08,$20,$29,$82,$90,$D6,$56,$25
 	.byte $A9,$A6,$DD,$FF,$FF,$AF,$DA,$35,$22,$80,$A0,$A2,$80,$A0,$5A,$A7
 	.byte $94,$4A,$5B,$FD,$FF,$FF,$CD,$7A,$8B,$02,$01,$8A,$04,$22,$88,$76
+
 	.byte $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
 	.byte $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
 
