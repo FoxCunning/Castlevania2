@@ -878,8 +878,10 @@ SoundCode_NMIcallback:
 	lda APU_HW__4015_EnableChannelsMask
 	and #$10
 	bne @9689
-	lda #$00
-	sta Sound_PCMsampleActive
+
+		lda #$00
+		sta Sound_PCMsampleActive
+
 	@9689:
 	inc Sound_FadeCounter
 	lda Sound_FadeMode
@@ -892,47 +894,54 @@ SoundCode_NMIcallback:
 	inc Sound_FadeMode
 	lda Sound_FadeMode
 	cmp #$04
-	bne @96A3
+	bne :+
 
-	jsr Bank0TerminateSound
-	jmp @96B6
+		jsr Bank0TerminateSound
+		jmp @96B6
 
-	@96A3:
-	cmp #$03
-	bne @96AB
-	lda #$00
-	sta Sound_CUrrentSongNumber_Channel5_Percussion
-	@96AB:
-	cmp #$02
+:	cmp #$03
+	bne :+
+
+		lda #$00
+		sta Sound_CUrrentSongNumber_Channel5_Percussion
+
+:	cmp #$02
 	bne @96B6
-	lda #$00
-	sta Sound_CurrentSongNumber_Channel2_triangle
-	sta APU_HW__4008_Reg0_channel2
+
+		lda #$00
+		sta Sound_CurrentSongNumber_Channel2_triangle
+		sta APU_HW__4008_Reg0_channel2
 
 	@96B6:
 	ldx #$00
 	ldy #$00
 	
-	@96BA:
+	@next_logical_channel:
 	stx Sound_CurrentLogicalChannel
 	lda Sound_CurrentSongNumber_Channel0_square0,x
-	beq @96C4
-	jsr SoundCode_ExecuteTickForLogicalChannelX
-	@96C4:
+	beq @channel_not_in_use
+
+		jsr SoundCode_ExecuteTickForLogicalChannelX
+
+	@channel_not_in_use:
 	inx
-	cpx #$06
-	bcc @96BA
+	cpx #$06	; Loop from 0 to 6 (inclusive)
+	bcc @next_logical_channel
+
 	_loc_16C9:
 	rts
 ;------------------------------------------
+
+; Parameters:
+; X = Logical channel (0 to 6 inclusive)
 SoundCode_ExecuteTickForLogicalChannelX:
 	jsr Sound_Set_TrackPtr_From_TrackDataPointer1
 	dec Sound_SongPausedFlag_Channel0_square0,x
-	bne @96D4
-	jmp SoundCode_ReadNextCommand_From_TrackPtr_y
+	bne :+
 
-	@96D4:
-	cpx #$05
+		jmp SoundCode_ReadNextCommand_From_TrackPtr_y
+
+:	cpx #$05
 	beq _loc_16C9		; $96C9 -> rts
 
 	cpx #$02
@@ -941,6 +950,7 @@ SoundCode_ExecuteTickForLogicalChannelX:
 	cpx #$04
 	beq _loc_16C9		; $96C9 -> rts
 
+; -------
 SoundCode_TickForSquareWaveChannel:
 	lda #$41
 	sta Sound_TempPtr015C_lo
@@ -954,27 +964,31 @@ SoundCode_TickForSquareWaveChannel:
 	sta SoundEffectRelatedPtrLo
 	dec Sound_TabUnknown014E,x
 	bne @9703
-	inc Sound_TabUnknown0152,x
 
-	jsr _func_1C64
-	jsr _func_1CBB
-	jsr _func_1BB7
+		inc Sound_TabUnknown0152,x
+
+		jsr _func_1C64
+		jsr _func_1CBB
+		jsr _func_1BB7
 
 	@9703:
 	lda Sound_EffectTableIndex,x
 	and #$80
 	beq @9718
+
 	lda Sound_EffectRelatedBytesRead,x
 	beq @9723
-	dec Sound_EffectRelatedBytesRead,x
-	inc Sound_TabUnknown0140,x
-	jmp @9723
+
+		dec Sound_EffectRelatedBytesRead,x
+		inc Sound_TabUnknown0140,x
+		jmp @9723
 
 	@9718:
 	dec Sound_EffectTableResultHiNibble,x
 	bne @9723
-	inc Sound_EffectRelatedBytesRead,x
-	jsr _func_1CC6
+
+		inc Sound_EffectRelatedBytesRead,x
+		jsr _func_1CC6
 
 	@9723:
 	lda Sound_CacheAPUreg0and1_twonibbles,x
@@ -986,13 +1000,13 @@ SoundCode_TickForSquareWaveChannel:
 	dec Sound_TabUnknown013C_squarewavesonly,x
 	bne @9741
 
-	lda Sound_TabUnknown0138,x
-	lsr a
-	lsr a
-	lsr a
-	lsr a
-	sta Sound_TabUnknown013C_squarewavesonly,x
-	inc Sound_TabUnknown0140,x
+		lda Sound_TabUnknown0138,x
+		lsr a
+		lsr a
+		lsr a
+		lsr a
+		sta Sound_TabUnknown013C_squarewavesonly,x
+		inc Sound_TabUnknown0140,x
 
 	@9741:
 	jsr _func_1D20
@@ -1001,21 +1015,22 @@ SoundCode_TickForSquareWaveChannel:
 	jsr _func_1CED
 
 	jsr Sound_SetCarry_If_X_is_00_and_B4_is_nonzero
-	bcs @974F
+	bcs :+
 
 		jmp Sound_PokeChannelSoundRegister0_preserveAX
 
-	@974F:
-	rts
+:	rts
 ;------------------------------------------
+
 SoundCode_ReadNextCommand_From_TrackPtr_ypp:
 	iny
 SoundCode_ReadNextCommand_From_TrackPtr_y:
 	lda (SoundTrackPtrLo),y
 	cmp #$FB
 	bcs Sound_TrackCommandFBtoFF
-	jmp Sound_TrackCommand00toFA
+		jmp Sound_TrackCommand00toFA
 ;------------------------------------------
+
 Sound_TrackCommandFBtoFF:
 	sec
 	sbc #$FB
@@ -1282,8 +1297,9 @@ Sound_TrackCommand00toFA_for_NotNoiseChannel_maybe:
 	cmp #$D0
 	bcs Sound_TrackCommandD0toFA
 
-	jmp Sound_TrackCommand00toCF_or_10toCF
+		jmp Sound_TrackCommand00toCF_or_10toCF
 ;------------------------------------------
+
 Sound_TrackCommandD0toFA:
 	sec
 	sbc #$D0
@@ -1304,14 +1320,15 @@ Sound_TrackCommandD0toDF:
 	cpx #$05
 	bne @990F
 
-	jmp SoundCode_ReadNextCommand_From_TrackPtr_y
+		jmp SoundCode_ReadNextCommand_From_TrackPtr_y
 
 	@990F:
 	lda (SoundTrackPtrLo),y
 	sta Sound_EffectTableResultLoNibble,x
 	cpx #$02
 	bne @991B
-	jmp SoundCode_ReadNextCommand_From_TrackPtr_ypp
+
+		jmp SoundCode_ReadNextCommand_From_TrackPtr_ypp
 
 	@991B:
 	and #$F0
@@ -1344,9 +1361,10 @@ Sound_TrackCommandD0toDF:
 	sta Sound_TabUnknown0138,x
 	and #$F0
 	bne @9955
-	lda Sound_TabUnknown0138,x
-	ora #$10
-	sta Sound_TabUnknown0138,x
+
+		lda Sound_TabUnknown0138,x
+		ora #$10
+		sta Sound_TabUnknown0138,x
 
 	@9955:
 	lsr a
