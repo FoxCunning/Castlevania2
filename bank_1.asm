@@ -4771,9 +4771,6 @@ LevelData_Actors_2_ForestsAndBridges_5_2rooms_6739:
 	.byte $2C,$04,$03,$02,$37,$0D,$22,$46,$38,$06,$03,$02,$FF
 LevelData_Actors_2_ForestsAndBridges_5_2rooms_6766:
 	.byte $FF
-; -----------------------------------------------------------------------------
-
-	.export InhibitScrollingIf_Scene_02_05_01_YubaLake
 InhibitScrollingIf_Scene_02_05_01_YubaLake:
 	ldy #$00
 	ldx #$00
@@ -5551,9 +5548,6 @@ _func_6D8D:
 	jsr _func_1DEA1
 	jmp Object_GeneringXYmovementEngine
 ;------------------------------------------
-
-	.export InhibitScrollingIf_Scene_03_03_03_UtaLake
-	
 InhibitScrollingIf_Scene_03_03_03_UtaLake:
 	ldy #$00
 	ldx #$00
