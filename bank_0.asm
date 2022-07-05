@@ -885,34 +885,36 @@ SoundCode_NMIcallback:
 	@9689:
 	inc Sound_FadeCounter
 	lda Sound_FadeMode
-	beq @96B6
+	beq @no_fade
 
-	lda Sound_FadeCounter
-	and #$3F
-	bne @96B6
+		; Fade sound
 
-	inc Sound_FadeMode
-	lda Sound_FadeMode
-	cmp #$04
-	bne :+
+		lda Sound_FadeCounter
+		and #$3F
+		bne @no_fade
 
-		jsr Bank0TerminateSound
-		jmp @96B6
+		inc Sound_FadeMode
+		lda Sound_FadeMode
+		cmp #$04
+		bne :+
 
-:	cmp #$03
-	bne :+
+			jsr Bank0TerminateSound
+			jmp @no_fade
 
-		lda #$00
-		sta Sound_CUrrentSongNumber_Channel5_Percussion
+	:	cmp #$03
+		bne :+
 
-:	cmp #$02
-	bne @96B6
+			lda #$00
+			sta Sound_CUrrentSongNumber_Channel5_Percussion
 
-		lda #$00
-		sta Sound_CurrentSongNumber_Channel2_triangle
-		sta APU_HW__4008_Reg0_channel2
+	:	cmp #$02
+		bne @no_fade
 
-	@96B6:
+			lda #$00
+			sta Sound_CurrentSongNumber_Channel2_triangle
+			sta APU_HW__4008_Reg0_channel2
+
+	@no_fade:
 	ldx #$00
 	ldy #$00
 	
@@ -925,7 +927,7 @@ SoundCode_NMIcallback:
 
 	@channel_not_in_use:
 	inx
-	cpx #$06	; Loop from 0 to 6 (inclusive)
+	cpx #$06	; Loop from 0 to 5 (inclusive)
 	bcc @next_logical_channel
 
 	_loc_16C9:
@@ -933,7 +935,7 @@ SoundCode_NMIcallback:
 ;------------------------------------------
 
 ; Parameters:
-; X = Logical channel (0 to 6 inclusive)
+; X = Logical channel (0 to 5 inclusive)
 SoundCode_ExecuteTickForLogicalChannelX:
 	jsr Sound_Set_TrackPtr_From_TrackDataPointer1
 	dec Sound_SongPausedFlag_Channel0_square0,x
@@ -941,16 +943,17 @@ SoundCode_ExecuteTickForLogicalChannelX:
 
 		jmp SoundCode_ReadNextCommand_From_TrackPtr_y
 
-:	cpx #$05
+:	cpx #$05	; Music noise channel paused
 	beq _loc_16C9		; $96C9 -> rts
 
-	cpx #$02
+	cpx #$02	; Music triangle channel paused
 	beq _loc_16C9		; $96C9 -> rts
 
-	cpx #$04
+	cpx #$04	; SFX noise channel paused
 	beq _loc_16C9		; $96C9 -> rts
 
 ; -------
+; Execute a tick for a "paused" channel?
 SoundCode_TickForSquareWaveChannel:
 	lda #$41
 	sta Sound_TempPtr015C_lo
@@ -2458,11 +2461,12 @@ Sound_StartTracks:
 	cpx #$02
 	beq :+
 
+		; Cache APU register 3 for this channel (except Triangle channel)
 		sta Sound_CacheAPUreg3,x
 		cpx #$04
 		beq @A361
 	
-:	ldy #$00
+:	ldy #$00	; Read first byte of song data (only channels 0, 1, 2, 5)
 	lda (Sound_StartSong_TrackDataPtr_Lo),y
 	bne @A35D
 
@@ -2476,7 +2480,7 @@ Sound_StartTracks:
 	
 	@A361:
 	lda #$01
-	bne @A367
+	bne @A367	; Same as jmp
 
 	@A365:
 	lda #$00
@@ -2489,8 +2493,9 @@ Sound_StartTracks:
 	cpx #$00
 	bne @A379
 
+	; Check if a sound effect is using APU channel 0
 	lda Sound_CurrentSongNumber_Channel3_effectsquare
-	bne @A39B
+	bne @A39B	; Don't mute channel 0 if a sound effect is using it
 
 	@A379:
 	lda #$00
