@@ -548,6 +548,14 @@ SoundEffectTable:
 	.word (SoundEffectRelatedTable) ;8CD0 (CD0) ()
 	.word (SoundEffectRelatedTable) ;8CD0 (CD0) ()
 	.word (SoundEffectRelatedTable) ;8CD0 (CD0) ()
+; -----------------------------------------------------------------------------
+
+; Possibly instrument definitions
+; 1X: X = volume (low nibble for reg 0)
+; nX: ?
+; Bit 7 set: ?
+; F2-F6: ?
+; FF: End of envelope
 SoundEffectTable_0B9A:
 	.byte $14,$16,$17,$16,$F5,$FF
 SoundEffectTable_0BA0:
@@ -1047,6 +1055,8 @@ _JumpPointerTable_1760:
 	.word (Sound_TrackCommandFD_Gosub_FollowedByGosubAddress) ;977B (177B) ()
 	.word (Sound_TrackCommandFE_LoopEnd_FollowedByLoopCount_Or_FF_and_gotoAddress) ;978D (178D) ()
 	.word (Sound_TrackCommandFF_Return) ;97D2 (17D2) ()
+; -----------------------------------------
+
 Sound_TrackCommandFBtoFC_LoopBegin:
 	jsr Sound_Set_TrackDataPointer1_From_TrackPtr_y
 	lda Sound_TrackDataPointer1Lo_Channel0_square0,x
@@ -1311,69 +1321,74 @@ Sound_TrackCommandD0toFA:
 	lsr a
 	lsr a
 	jsr Sound_JumpWithParams
+; -------------------
 _JumpPointerTable_18FB:
 	.word (Sound_TrackCommandD0toDF) ;9901 (1901) ()
 	.word (Sound_TrackCommandE0toEF) ;995F (195F) ()
 	.word (Sound_TrackCommandF0toFA_savesLoNibbleTo13E) ;9987 (1987) ()
+; -----------------------------------------
+
 Sound_TrackCommandD0toDF:
 	lda (SoundTrackPtrLo),y
-	and #$0F
+	and #$0F	; Get low nibble
 	sta Sound_ChannelTempoPossibly_Channel0_square0,x
+
 	iny
 	cpx #$05
-	bne @990F
+	bne :+
 
+		; Music Noise channel ignores this command
 		jmp SoundCode_ReadNextCommand_From_TrackPtr_y
 
-	@990F:
-	lda (SoundTrackPtrLo),y
+:	lda (SoundTrackPtrLo),y
 	sta Sound_EffectTableResultLoNibble,x
 	cpx #$02
-	bne @991B
+	bne :+
 
+		; Triangle channel ignores this command
 		jmp SoundCode_ReadNextCommand_From_TrackPtr_ypp
 
-	@991B:
-	and #$F0
+:	and #$F0
 	sta Sound_CacheAPUreg0and1_twonibbles,x
 	lda Sound_EffectTableResultLoNibble,x
 	and #$0F
 	sta Sound_TabUnknown013E,x
 	sta Sound_EffectTableResultLoNibble,x
+
 	iny
 	cpx #$02
-	bne @9933
+	bne :+
 
-	jmp SoundCode_ReadNextCommand_From_TrackPtr_ypp
+		; Triangle channel ignores this and skips next byte
+		jmp SoundCode_ReadNextCommand_From_TrackPtr_ypp
 
-	@9933:
-	lda (SoundTrackPtrLo),y
+:	lda (SoundTrackPtrLo),y
 	sta Sound_EffectTableIndex,x
-	and #$80
-	beq @9943
+	and #$80	; Bit 7 flag = use low nibble for something
+	beq :+
 
-	lda (SoundTrackPtrLo),y
-	and #$0F
-	sta Sound_EffectRelatedBytesRead,x
+		lda (SoundTrackPtrLo),y
+		and #$0F
+		sta Sound_EffectRelatedBytesRead,x
 
-	@9943:
-	iny
+:	iny
 	lda (SoundTrackPtrLo),y
 
 	_loc_1946:
 	sta Sound_TabUnknown0138,x
 	and #$F0
-	bne @9955
+	bne :+
 
+		; If high nibble is zero, set bit 4
 		lda Sound_TabUnknown0138,x
 		ora #$10
 		sta Sound_TabUnknown0138,x
 
-	@9955:
+:	lsr a
 	lsr a
 	lsr a
 	lsr a
-	lsr a
+	; Store high nibble here
 	sta Sound_TabUnknown013C_squarewavesonly,x
 	jmp _loc_1991
 ;------------------------------------------
@@ -1598,8 +1613,10 @@ Sound_TrackCommand00toCF_or_10toCF:
 
 	@9AA2:
 	lda Sound_FlagsC3_Channel0_square0,x
+	; Clear bit 6
 	and #$BF
 	sta Sound_FlagsC3_Channel0_square0,x
+
 	cpx #$02
 	bne @9AEE
 
@@ -1650,35 +1667,39 @@ Sound_TrackCommand00toCF_or_10toCF:
 	@9AEE:
 	lda Sound_TabUnknown0138,x
 	and #$0F
-	sta SoundEffectRelatedPtrLo
+	sta SoundEffectRelatedPtrLo	; Counter
 	beq @9B16
 
 	lda #$00
-	sta SoundEffectRelatedPtrHi
+	sta SoundEffectRelatedPtrHi	; Carry counter
 
-	@9AFB:
+	; A = Sound_SongPausedFlag_Channel0_square0,x * SoundEffectRelatedPtrLo
+	@multiply_loop:
 	clc
 	adc Sound_SongPausedFlag_Channel0_square0,x
 	bcc @9B02
 
-	inc SoundEffectRelatedPtrHi
+		; Count Carry bits
+		inc SoundEffectRelatedPtrHi
+
 	@9B02:
-	dec SoundEffectRelatedPtrLo
-	bne @9AFB
+	dec SoundEffectRelatedPtrLo	; Count down to zero
+	bne @multiply_loop
 
 	sta SoundEffectRelatedPtrLo
-	lda #$04
-	sta Sound_PeriodTemp_Unknown9B_lo
+	lda #$04	; Repeat 4 times
+	sta Sound_PeriodTemp_Unknown9B_lo	; Counter
 
 	@9B0C:
 	lsr SoundEffectRelatedPtrHi
 	ror SoundEffectRelatedPtrLo
-	dec Sound_PeriodTemp_Unknown9B_lo
+	dec Sound_PeriodTemp_Unknown9B_lo	; Counter
 	bne @9B0C
 
 	lda SoundEffectRelatedPtrLo
 	@9B16:
 	sta Sound_TabUnknown013A_squarewavesonly,x
+
 	lda #$00
 	sta Sound_EffectRelatedBytesRead,x
 	sta Sound_EffectRelatedBytesRead_Copy,x
@@ -1687,12 +1708,15 @@ Sound_TrackCommand00toCF_or_10toCF:
 	sta Sound_TabUnknown0152,x
 	sta Sound_TabUnknown0156,x
 	sta Sound_TabUnknown015A,x
+
 	lda #$01
 	sta Sound_EffectTableResultHiNibble,x
 	lda Sound_TabUnknown0148,x
 	sta Sound_TabUnknown014E,x
+
 	lda #$80
 	sta Sound_TempPtr015C_lo
+
 	lda Sound_EffectTableIndex,x
 	bit Sound_TempPtr015C_lo
 	bne @9B4E
@@ -2054,6 +2078,8 @@ SoundCode_JustDoEightNOPs_28cyclesOfDelay:
 	rts
 ;------------------------------------------
 
+; Sets SoundTrackPtr to the start of data for logical channel X
+; Y set to 0
 Sound_Set_TrackPtr_From_TrackDataPointer1:
 	ldy #$00
 	lda Sound_TrackDataPointer1Lo_Channel0_square0,x
@@ -2215,24 +2241,40 @@ _loc_1E41:
 	rts
 ;------------------------------------------
 
+; Jumps to address taken from a table of pointers.
+; ----
+; Parameters:
+; A = index of command pointer
+; Stack: address of first pointer - 1
 Sound_JumpWithParams:
-	asl a
+	asl a	; multiply by 2 to index a 2 bytes per entry table
+
+	; Preserve X and Y
 	stx Sound_TempPtr015C_hi
 	sty Sound_TempPtr015C_lo
+
 	tay
 	iny
+
+	; Retrieve first pointer from stack
 	pla
 	sta Sound_TempPtrA7_lo
 	pla
 	sta Sound_TempPtrA7_hi
+
+	; Use index to get the desired pointer
 	lda (Sound_TempPtrA7_lo),y
 	tax
 	iny
 	lda (Sound_TempPtrA7_lo),y
+
 	sta Sound_TempPtrA7_hi
 	stx Sound_TempPtrA7_lo
+	
+	; Restore X and Y
 	ldy Sound_TempPtr015C_lo
 	ldx Sound_TempPtr015C_hi
+
 	jmp (Sound_TempPtrA7_lo)
 ; -----------------------------------------------------------------------------
 
