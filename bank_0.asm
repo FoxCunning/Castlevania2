@@ -239,6 +239,8 @@ Sound_Records:
 	.word (Sound_PCMsample5F_Config_DamageOuchSoundMaybe) ;FBCC (1FBCC) ()
 	.byte $03
 	.word (SoundData60_SFX_Pause_ch3) ;825A (25A) ()
+; -----------------------------------------------------------------------------
+
 SoundData60_SFX_Pause_ch3:
 	.byte $05,$82,$88,$10,$D5,$10,$8E,$10,$A9,$02,$B0,$88,$E0,$6A,$D0,$6A
 	.byte $B0,$6A,$A0,$6A,$90,$6A,$70,$6A,$50,$6A,$40,$6A,$FF,$00
@@ -402,6 +404,8 @@ SoundData16_SFX_WaterBottleBreaks_ch3:
 	.byte $10,$FF
 SoundData17_SFX_ch4:
 	.byte $03,$F4,$F4,$F4,$10,$F4,$E7,$E3,$E1,$E2,$E5,$B2,$FF,$FF
+; -----------------------------------------------------------------------------
+
 SoundData59_EndingSong_ch1:
 	.byte $EB,$01,$10,$D8,$70,$24,$16,$E9,$B5,$E3,$07,$73,$03,$05,$E4,$B0
 	.byte $90,$B7,$E3,$27,$85,$21,$55,$40,$20,$47,$77,$E2,$07,$E3,$A3,$8B
@@ -462,43 +466,18 @@ SoundData5B_EndingSong_ch2:
 	.byte $73,$41,$71,$D8,$12,$43,$D8,$1F,$41,$01,$21,$41,$51,$81,$D8,$12
 	.byte $53,$D8,$1F,$51,$71,$81,$51,$21,$A1,$D8,$12,$23,$D8,$1F,$21,$31
 	.byte $51,$21,$31,$A1,$D8,$12,$33,$D8,$1F,$31,$51,$71,$31,$E4,$81,$E3
-	.byte $01,$31,$81,$E4,$81,$E3,$01,$31,$81,$E4,$51,$81
-_DataPointerTable_0AC0:
-	.word ($11E3) ;11E3 (0) ([8:0][A:1][C:E][E:F])
-	.word ($E451) ;E451 (1E451) ([8:0][A:1][C:E][E:F])
-	.word ($8151) ;8151 (151) ([8:0][A:1][C:E][E:F])
-	.word ($11E3) ;11E3 (0) ([8:0][A:1][C:E][E:F])
-	.word ($E451) ;E451 (1E451) ([8:0][A:1][C:E][E:F])
-	.word ($E371) ;E371 (1E371) ([8:0][A:1][C:E][E:F])
-	.word ($2101) ;2101 (0) ([8:0][A:1][C:E][E:F])
-	.word ($7151) ;7151 (0) ([8:0][A:1][C:E][E:F])
-	.word ($01E2) ;1E2 (0) ([8:0][A:1][C:E][E:F])
-	.word ($5121) ;5121 (0) ([8:0][A:1][C:E][E:F])
-	.word ($77E3) ;77E3 (0) ([8:0][A:1][C:E][E:F])
-	.word ($FBC7) ;FBC7 (1FBC7) ([8:0][A:1][C:E][E:F])
-	.word ($1AD8) ;1AD8 (0) ([8:0][A:1][C:E][E:F])
-	.word ($01E3) ;1E3 (0) ([8:0][A:1][C:E][E:F])
-	.word ($0101) ;101 (0) ([8:0][A:1][C:E][E:F])
-	.word ($E401) ;E401 (1E401) ([8:0][A:1][C:E][E:F])
-	.word ($A1A1) ;A1A1 (21A1) ([8:0][A:1][C:E][E:F])
-	.word ($A1A1) ;A1A1 (21A1) ([8:0][A:1][C:E][E:F])
-	.word ($8181) ;8181 (181) ([8:0][A:1][C:E][E:F])
-	.word ($8181) ;8181 (181) ([8:0][A:1][C:E][E:F])
-	.word ($A1A1) ;A1A1 (21A1) ([8:0][A:1][C:E][E:F])
-	.word ($A1A1) ;A1A1 (21A1) ([8:0][A:1][C:E][E:F])
-	.word ($02FE) ;2FE (0) ([8:0][A:1][C:E][E:F])
-	.word ($90D9) ;90D9 (10D9) ([8:0][A:1][C:E][E:F])
-	.word ($03E3) ;3E3 (0) ([8:0][A:1][C:E][E:F])
-	.word ($DA03) ;DA03 (1DA03) ([8:0][A:1][C:E][E:F])
-	.word ($031F) ;31F (0) ([8:0][A:1][C:E][E:F])
-	.word ($DC03) ;DC03 (1DC03) ([8:0][A:1][C:E][E:F])
-	.word ($0F90) ;F90 (0) ([8:0][A:1][C:E][E:F])
-	.byte $FF
+	.byte $01,$31,$81,$E4,$81,$E3,$01,$31,$81,$E4,$51,$81,$E3,$11,$51,$E4
+	.byte $51,$81,$E3,$11,$51,$E4,$71,$E3,$01,$21,$51,$71,$E2,$01,$21,$51
+	.byte $E3,$77,$C7,$FB,$D8,$1A,$E3,$01,$01,$01,$01,$E4,$A1,$A1,$A1,$A1
+	.byte $81,$81,$81,$81,$A1,$A1,$A1,$A1,$FE,$02,$D9,$90,$E3,$03,$03,$DA
+	.byte $1F,$03,$03,$DC,$90,$0F,$FF
 SoundData5C_EndingSong_ch5:
 	.byte $D8,$FB,$CF,$CF,$FE,$06,$FB,$BF,$CF,$FE,$05,$BF,$BF,$FB,$B7,$17
 	.byte $B7,$17,$FE,$02,$FB,$B5,$B1,$B5,$B1,$B5,$B1,$B3,$A3,$FE,$03,$B7
 	.byte $A7,$B7,$A1,$B1,$A1,$A1,$FB,$B1,$11,$11,$11,$A1,$11,$11,$B1,$B1
 	.byte $11,$11,$11,$A1,$11,$11,$11,$FE,$02,$D9,$B7,$DA,$B7,$B0,$FF
+; -----------------------------------------------------------------------------
+
 SoundEffectTable:
 	.word (SoundEffectTable_0B9A) ;8B9A (B9A) ()
 	.word (SoundEffectTable_0BA0) ;8BA0 (BA0) ()
@@ -541,6 +520,7 @@ SoundEffectTable:
 	.word (SoundEffectTable_0CAD) ;8CAD (CAD) ()
 	.word (SoundEffectTable_0CB5) ;8CB5 (CB5) ()
 	.word (SoundEffectTable_0CC8) ;8CC8 (CC8) ()
+
 	.word (SoundEffectRelatedTable) ;8CD0 (CD0) ()
 	.word (SoundEffectRelatedTable) ;8CD0 (CD0) ()
 	.word (SoundEffectRelatedTable) ;8CD0 (CD0) ()
@@ -637,6 +617,8 @@ SoundEffectTable_0CB5:
 	.byte $F2,$F2,$FF
 SoundEffectTable_0CC8:
 	.byte $41,$42,$43,$44,$45,$46,$F5,$FF
+; -----------------------------------------------------------------------------
+
 SoundEffectRelatedTable:
 	.word (SoundEffectRelatedTable_0D10) ;8D10 (D10) ()
 	.word (SoundEffectRelatedTable_0D13) ;8D13 (D13) ()
@@ -716,6 +698,8 @@ SoundEffectRelatedTable_0E04:
 	.byte $FF
 SoundEffectRelatedTable_0E15:
 	.byte $FF
+; -----------------------------------------------------------------------------
+
 SoundData39_TownSong_ch1:
 	.byte $EB,$F1,$01,$E9,$31,$D8,$71,$01,$55,$E2,$71,$E3,$70,$E2,$5A,$E2
 	.byte $40,$50,$42,$28,$E3,$A0,$90,$A0,$E2,$00,$E2,$70,$70,$E3,$70,$E2
@@ -797,6 +781,8 @@ SoundData3C_TownSong_ch5:
 	.byte $B0,$A1,$A0,$B1,$A0,$B1,$A0,$B3,$A0,$A0,$A1,$A0,$A0,$B0,$A0,$A0
 	.byte $B0,$A0,$A0,$B2,$B0,$A0,$A0,$B0,$A0,$A0,$A0,$FE,$FF
 	.word (@song_loop)	; $99,$91
+; -----------------------------------------------------------------------------
+
 SoundData3D_WildernessSong_ch1:
 	.byte $EB,$00,$00,$E9,$71,$D7,$36,$82,$16,$F0,$FB,$E2,$A0,$50,$E1,$50
 	.byte $E2,$50,$E1,$30,$E2,$50,$E1,$10,$E2,$50,$E1,$00,$E2,$50,$E1,$10
@@ -879,8 +865,8 @@ SoundData40_WildernessSong_ch5:
 	.byte $10,$B1,$10,$10,$B1,$10,$10,$11,$10,$10,$B1,$10,$10,$11,$10,$10
 	.byte $B1,$10,$10,$11,$B0,$B0,$A1,$A0,$A0,$FE,$FF
 	.word (@song_loop)	; $EB,$95
-
 ; -----------------------------------------------------------------------------
+
 	.export SoundCode_NMIcallback
 SoundCode_NMIcallback:
 	lda APU_HW__4015_EnableChannelsMask
@@ -2304,6 +2290,8 @@ SoundData58_PasswordSong_ch5:
 	.byte $DA,$BB,$B8,$A0,$A0,$A0,$BB,$B8,$B0,$A0,$A0,$C2,$B5,$B5,$B5,$B0
 	.byte $A0,$A3,$B5,$B1,$A3,$B2,$B0,$B0,$B0,$A0,$A0,$A0,$FE,$FF
 	.word (SoundData58_PasswordSong_ch5)	; $7F,$9F
+; -----------------------------------------------------------------------------
+
 SoundData51_GameOverSong_ch1:
 	.byte $E9,$34,$D1,$77,$82,$15,$F2,$E4,$46,$F1,$E3,$B0,$E2,$B5,$E3,$90
 	.byte $E2,$95,$E3,$B0,$E2,$B5,$E3,$70,$E2,$75,$E3,$B0,$E2,$B5,$E3,$60
@@ -2324,6 +2312,8 @@ SoundData53_GameOverSong_ch2:
 	.byte $D9,$90,$41,$DA,$90,$91,$91,$DF,$90,$47,$FF
 SoundData54_GameOverSong_ch5:
 	.byte $DD,$B0,$FF
+; -----------------------------------------------------------------------------
+
 SoundData49_RuinsSong_ch1:
 	.byte $EA,$00,$EB,$00,$00,$E9,$34,$D1,$70,$19,$17,$FB,$E5,$90,$E4,$9A
 	.byte $20,$E3,$2A,$E4,$50,$E3,$5A,$F1,$E4,$90,$E3,$9A,$20,$E2,$2A,$E3
@@ -2367,6 +2357,8 @@ SoundData4C_RuinsSong_ch5:
 	.byte $A3,$A0,$A0,$A0,$B0,$B0,$B0,$A0,$A0,$A3,$B5,$A0,$A0,$A0,$B0,$B0
 	.byte $B0,$A2,$B0,$A0,$A0,$B0,$A0,$A0,$FE,$FF
 	.word (SoundData4C_RuinsSong_ch5)	; $6D,$A2
+; -----------------------------------------------------------------------------
+
 Sound_Records_Locator:
 	.word (Sound_Records -3) ;813A (13A) ()
 ; -----------------------------------------
@@ -2688,6 +2680,8 @@ SoundData48_MansionSong_ch5:
 	.byte $A0,$FB,$B1,$A2,$A0,$B1,$A0,$A0,$A0,$A0,$FE,$02,$FB,$B1,$B0,$A1
 	.byte $B0,$FE,$02,$B1,$A0,$B0,$A0,$A0,$B0,$A0,$A0,$A0,$A0,$A0,$FE,$FF
 	.word (SoundData48_MansionSong_ch5)	; $50,$A7
+; -----------------------------------------------------------------------------
+
 SoundData41_NightSong_ch1:
 	.byte $EB,$73,$04,$E9,$34,$FB,$D1,$B1,$10,$00,$E3,$40,$E2,$46,$E3,$10
 	.byte $E2,$16,$E3,$20,$E2,$26,$E3,$40,$E2,$4E,$E3,$00,$E2,$0E,$E8,$42
@@ -2746,6 +2740,8 @@ SoundData44_NightSong_ch5:
 	.byte $A1,$A1,$B1,$A1,$A1,$A1,$B1,$B1,$A1,$A1,$B1,$A1,$A1,$A0,$A0,$FE
 	.byte $FF
 	.word (SoundData44_NightSong_ch5)	; $7B,$AA
+; -----------------------------------------------------------------------------
+
 
 	_loc_2ACE:
 	clc
@@ -2758,11 +2754,11 @@ SoundData44_NightSong_ch5:
 SpriteConstructionProcess:
 	ldy #$00
 	lda (TempPtr08_lo),y
-	bne @AAE3
-	rts
+	bne :+
+	
+		rts
 
-	@AAE3:
-	iny
+:	iny
 	sta $0F
 	and #$7F
 	sta TempPtr02_hi
@@ -2770,6 +2766,7 @@ SpriteConstructionProcess:
 	ldx $04
 	lda $0F
 	bpl _AB02
+
 	lda (TempPtr08_lo),y
 	sta $0D
 	iny
@@ -2779,13 +2776,15 @@ SpriteConstructionProcess:
 	sty $0C
 	ldy #$01
 	lda ($0D),y
+
 	_AB02:
-	    jsr LoadFrom08_or_0D__if0Fnegative
+	jsr LoadFrom08_or_0D__if0Fnegative
 	clc
-	bpl @AB09
-	sec
-	@AB09:
-	iny
+	bpl :+
+
+		sec
+
+:	iny
 	ror a
 	bcs _loc_2ACE
 	adc TempPtr00_hi
@@ -2794,65 +2793,75 @@ SpriteConstructionProcess:
 	clc
 	lda TempPtr00_lo
 	and #$03
-	beq @AB1D
-	sec
-	@AB1D:
-	jsr LoadFrom08_or_0D__if0Fnegative
-	bcc @AB26
-	and #$DC
-	ora TempPtr00_lo
-	@AB26:
-	sta $96
+	beq :+
+
+		sec
+
+:	jsr LoadFrom08_or_0D__if0Fnegative
+	bcc :+
+
+		and #$DC
+		ora TempPtr00_lo
+
+:	sta $96
 	sta $0202,x
 	iny
 	lda Unknown10_CollisionAndScrollingTemp
 	beq _AB39
-	lda $96
-	eor #$40
-	sta $96
+
+		lda $96
+		eor #$40
+		sta $96
+
 	_loc_2B36:
-	sta $0202,x
+		sta $0202,x
+
 	_AB39:
 	lda Unknown10_CollisionAndScrollingTemp
 	bne @AB66
+
 	jsr LoadFrom08_or_0D__if0Fnegative
+
 	@AB40:
-	 clc
+	clc
 	adc TempPtr02_lo
 	sta $0203,x
 	lda $17
 	bmi @AB60
-	txa
-	@AB4B:
-	clc
-	adc #$C4
-	cmp $16
-	bcc @AB4B
-	tax
-	dec Temp07
-	@AB55:
-	iny
-	dec TempPtr02_hi
-	beq @AB5D
-	jmp _AB02
 
-	@AB5D:
-	stx $04
-	rts
+		txa
+	:	clc
+		adc #$C4
+		cmp $16
+		bcc :-
+
+		tax
+		dec Temp07
+		@AB55:
+		iny
+		dec TempPtr02_hi
+		beq :+
+
+			jmp _AB02
+
+	:	stx $04
+		rts
 
 	@AB60:
-	 inx
+	inx
 	inx
 	inx
 	inx
 	bne @AB55
+
 	@AB66:
-	  jsr LoadFrom08_or_0D__if0Fnegative
+	jsr LoadFrom08_or_0D__if0Fnegative
 	clc
 	adc #$08
 	jsr Math_NegateA
 	jmp @AB40
 ;------------------------------------------
+
 LoadFrom08_or_0D__if0Fnegative:
 	lda $0F
 	bpl @AB79
@@ -2863,6 +2872,7 @@ LoadFrom08_or_0D__if0Fnegative:
 	lda (TempPtr08_lo),y
 	rts
 ;------------------------------------------
+
 _func_2B7C:
 	lda $0F
 	asl a
