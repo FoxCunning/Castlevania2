@@ -637,6 +637,7 @@ SoundEffectRelatedTable:
 	.word (SoundEffectRelatedTable_0DEB) ;8DEB (DEB) ()
 	.word (SoundEffectRelatedTable_0DF3) ;8DF3 (DF3) ()
 	.word (SoundEffectRelatedTable_0E04) ;8E04 (E04) ()
+
 	.word (SoundEffectRelatedTable_0E15) ;8E15 (E15) ()
 	.word (SoundEffectRelatedTable_0E15) ;8E15 (E15) ()
 	.word (SoundEffectRelatedTable_0E15) ;8E15 (E15) ()
@@ -1717,11 +1718,13 @@ Sound_TrackCommand00toCF_or_10toCF:
 	@9B53:
 	jsr _func_1D2F
 	jsr _func_1CED
+	; Skip register write if muted / SFX using channel 0?
 	jsr Sound_SetCarry_If_X_is_00_and_B4_is_nonzero
 	bcs _loc_1B61
 
 	_loc_1B5E:
-	jsr Sound_PokeChannelSoundRegister0_preserveAX
+		jsr Sound_PokeChannelSoundRegister0_preserveAX
+
 	_loc_1B61:
 	lda (SoundTrackPtrLo),y
 	lsr a
@@ -1729,6 +1732,7 @@ Sound_TrackCommand00toCF_or_10toCF:
 	lsr a
 	lsr a
 	sta SoundEffectRelatedPtrLo
+
 	jsr _func_1C4D
 	clc
 	adc SoundEffectRelatedPtrLo
@@ -1912,25 +1916,36 @@ _func_1CBB:
 	sta Sound_PeriodTemp_Unknown9B_hi
 	rts
 ;------------------------------------------
+
+; Parameters:
+; X = Logical channel index (0-5)
 _func_1CC6:
 	lda Sound_EffectTableIndex,x
 	asl a
-	sty Sound_TempA5
+	
+	sty Sound_TempA5	; Preserve Y
+
+	; Get envelope pointer
 	tay
 	lda SoundEffectTable,y
 	sta SoundEffectRelatedPtrLo
 	lda SoundEffectTable+1,y
 	sta SoundEffectRelatedPtrHi
+
 	jsr Sound_EffectRelatedCommandReadNext
+
 	lda SoundEffectRelatedPtrLo
 	and #$0F
 	sta Sound_EffectTableResultLoNibble,x
+
 	lda SoundEffectRelatedPtrLo
 	lsr a
 	lsr a
 	lsr a
 	lsr a
 	sta Sound_EffectTableResultHiNibble,x
+
+	; Restore Y and return
 	ldy Sound_TempA5
 	rts
 ;------------------------------------------
@@ -1939,6 +1954,7 @@ _func_1CED:
 	lda Sound_TabUnknown0134,x
 	and #$04
 	beq Sound_CalculateMomentaryVolume
+
 	lda #$02
 	sta SoundEffectRelatedPtrLo
 	lda Sound_SongPausedFlag_Channel0_square0,x
@@ -2001,6 +2017,8 @@ _func_1D2F:
 	jmp _loc_1D1B
 ;------------------------------------------
 
+; Parameters:
+; X = Logical channel index (0-5)
 Sound_EffectRelatedCommandReadNext:
 	ldy Sound_EffectRelatedBytesRead,x
 	lda (SoundEffectRelatedPtrLo),y
@@ -2016,7 +2034,7 @@ _JumpPointerTable_1D57:
 	.word (Sound_EffectRelatedCommandFBtoFD_BeginLoop) ;9D64 (1D64) ()
 	.word (Sound_EffectRelatedCommandFE_LoopUntil) ;9D70 (1D70) ()
 	.word (Sound_EffectRelatedCommandFF_End_ReturnWithPreviousA) ;9D8D (1D8D) ()
-
+; -----------------------------------------
 Sound_EffectRelatedCommand00toFA_ReturnWithA:
 	sta SoundEffectRelatedPtrLo
 	rts
