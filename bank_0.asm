@@ -530,11 +530,10 @@ SoundEffectTable:
 	.word (SoundEffectRelatedTable) ;8CD0 (CD0) ()
 ; -----------------------------------------------------------------------------
 
-; Possibly instrument definitions
-; 1X: X = volume (low nibble for reg 0)
-; nX: ?
-; Bit 7 set: ?
-; F2-F6: ?
+; Instrument (envelopes) definitions
+; XY: X = duration (ticks) Y = volume (low nibble for reg 0)
+; FB: Loop start
+; FE, XX: Loop end, XX = repetitions
 ; FF: End of envelope
 SoundEffectTable_0B9A:
 	.byte $14,$16,$17,$16,$F5,$FF
@@ -653,7 +652,13 @@ SoundEffectRelatedTable:
 	.word (SoundEffectRelatedTable_0E15) ;8E15 (E15) ()
 	.word (SoundEffectRelatedTable_0E15) ;8E15 (E15) ()
 	.word (SoundEffectRelatedTable_0E15) ;8E15 (E15) ()
+; -----------------------------------------------------------------------------
 
+; More instrument (envelopes) definitions
+; XY: X = duration (ticks) Y = volume (low nibble for reg 0)
+; FB: Loop start
+; FE, XX: Loop end, XX = repetitions
+; FF: End of envelope
 SoundEffectRelatedTable_0D10:
 	.byte $FB,$1F,$FF
 SoundEffectRelatedTable_0D13:
@@ -1773,7 +1778,8 @@ _func_1B92:
 	bne _func_1BB7
 	lda Sound_TabUnknown014E,x
 	bne _func_1BB7
-	jsr _func_1C64
+
+		jsr _func_1C64
 
 _func_1BB7:
 	lda SoundEffectRelatedPtrLo
@@ -1887,28 +1893,34 @@ _func_1C64:
 	sta SoundEffectRelatedPtrLo
 	ldy Sound_TabUnknown0146,x
 	bne @9C9D
+	
 	tya
 	beq @9CB6
+	
 	@9C9D:
 	lda #$08
 	sta Sound_TempPtr015C_lo
 	lda SoundEffectRelatedPtrLo
 	bit Sound_TempPtr015C_lo
 	beq @9CAD
-	ora #$F0
-	sta SoundEffectRelatedPtrLo
+	
+		ora #$F0
+		sta SoundEffectRelatedPtrLo
+
 	@9CAD:
-	  dey
+	dey
 	beq @9CB6
-	clc
-	adc SoundEffectRelatedPtrLo
-	jmp @9CAD
+	
+		clc
+		adc SoundEffectRelatedPtrLo
+		jmp @9CAD
 
 	@9CB6:
-	 sta SoundEffectRelatedPtrLo
+	sta SoundEffectRelatedPtrLo
 	ldy Sound_TempA5
 	rts
 ;------------------------------------------
+
 _func_1CBB:
 	lda Sound_CurrentPeriodLo,x
 	sta Sound_PeriodTemp_Unknown9B_lo
@@ -1917,6 +1929,7 @@ _func_1CBB:
 	rts
 ;------------------------------------------
 
+; Reads and processes the next entry in the envelope for logical channel X.
 ; Parameters:
 ; X = Logical channel index (0-5)
 _func_1CC6:
