@@ -6,8 +6,8 @@ set path=%path%;"%~dp0\tools"
 
 set emulator=""
 :: Change to your own path as needed
-if exist "F:\Games\NES\Mesen\Mesen.exe" (
-	set emulator="F:\Games\NES\Mesen\Mesen.exe"
+if exist "..\..\..\Mesen\Mesen.exe" (
+	set emulator="..\..\..\Mesen\Mesen.exe"
 )
 if exist "C:\Games\NES\Mesen\Mesen.exe" (
 	set emulator="C:\Games\NES\Mesen\Mesen.exe"
