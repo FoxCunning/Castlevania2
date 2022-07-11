@@ -107,8 +107,8 @@
 	Temp95 = $95				; $95
 	Temp97 = $97				; $97
 
-	SoundEffectRelatedPtrLo = $99			; $99
-	SoundEffectRelatedPtrHi = $9A			; $9A
+	SoundEnvelopePtrLo = $99			; $99
+	SoundEnvelopePtrHi = $9A			; $9A
 	Sound_PeriodTemp_Unknown9B_lo = $9B		; $9B
 	Sound_PeriodTemp_Unknown9B_hi = $9C		; $9C
 	Sound_StartSong_TrackDataPtr_Lo = $9D	; $9D
@@ -154,36 +154,33 @@
 	Mapper1reg_reg1 = $0101							; $0101
 	Mapper1reg_reg2 = $0102							; $0102
 	ProgrammingMapper = $0103						; $0103
+
 	Sound_CurrentPeriodLo = $0110					; $0110
 	Sound_CurrentPeriodHi = $0115					; $0115
 	Sound_CacheAPUreg3 = $011A						; $011A
 	Sound_CacheAPUreg3_Channel2_Triangle = $011C	; $011C
 	Sound_CacheAPUreg2 = $011F						; $011F
-	Sound_EffectTableResultLoNibble = $0124			; $0124
+	Sound_EnvelopeValueLo = $0124					; $0124
 	Sound_CacheAPUreg0and1_twonibbles = $0129		; $0129
 	Sound_CurrentOctavePossibly = $012E				; $012E
-	Sound_CurrentOctavePossibl = $012E				; $012E
 	Sound_TabUnknown0131 = $0131					; $0131
-	Sound_TabUnknown0134 = $0134					; $0134
-	Sound_EffectTableIndex = $0136					; $0136
-	Sound_TabUnknown0138 = $0138					; $0138
-	Sound_TabUnknown013A_squarewavesonly = $013A	; $013A
-	Sound_TabUnknown013A_squarewavesonl = $013A		; $013A
-	Sound_TabUnknown013C_squarewavesonly = $013C	; $013C
-	Sound_TabUnknown013C_squarewavesonl = $013C		; $013C
-	Sound_TabUnknown013E = $013E				; $013E
-	Sound_TabUnknown0140 = $0140				; $0140
+	Sound_TabUnknown0134 = $0134					; $0134-$0135
+	Sound_CurrentEnvelopeIndex_1 = $0136			; $0136-$0137
+	Sound_TabUnknown0138 = $0138					; $0138-$0139
+	Sound_TabUnknown013A_squarewavesonly = $013A	; $013A-$013B	Calculated note duration?
+	Sound_TabUnknown013C_squarewavesonly = $013C	; $013C-$013D
+	Sound_TabUnknown013E = $013E				; $013E-$013F	Volume attenuation?
+	Sound_TabUnknown0140 = $0140				; $0140-$0141	Attenuation used in envelope release?
 	Sound_TabUnknown0146 = $0146				; $0146
 	Sound_TabUnknown0148 = $0148				; $0148
-	Sound_EffectRelated_Index = $014A			; $014A
-	Sound_EffectTableResultHiNibble = $014C		; $014C
+	Sound_CurrentEnvelopeIndex_2 = $014A		; $014A-$014B
+	Sound_EnvelopeValueHi = $014C				; $014C
 	Sound_TabUnknown014E = $014E				; $014E
-	Sound_EffectRelatedBytesRead = $0150		; $0150
-	Sound_TabUnknown0152 = $0152				; $0152
-	Sound_EffectRelatedBytesRead_Copy = $0154	; $0154
-	Sound_EffectRelatedBytesRead_Cop = $0154	; $0154
-	Sound_TabUnknown0156 = $0156				; $0156
-	Sound_EffectRelatedLoopCounter = $0158		; $0158
+	Sound_EnvelopeBytesRead = $0150				; $0150-$0153
+	;Sound_TabUnknown0152 = $0152				; $0152-$0153
+	Sound_EnvelopeBytesRead_Copy = $0154		; $0154
+	;Sound_TabUnknown0156 = $0156				; $0156
+	Sound_EnvelopeLoopCounter = $0158			; $0158
 	Sound_TabUnknown015A = $015A				; $015A
 	Sound_TempPtr015C_lo = $015C				; $015C
 	Sound_TempPtr015C_hi = $015D				; $015D
@@ -193,6 +190,7 @@
 	Sound_StartSong_NumTracksRemaining = $016A		; $016A
 	Sound_StartSong_CurrentLogicalChannel = $016B	; $016B
 	Sound_PCMsampleActive = $016C				; $016C
+
 	ClearedFakeBlockListY = $0171				; $0171
 	ClearedFakeBlockListX = $0172				; $0172
 	ClearedFakeBlockListLength = $0185				; $0185
@@ -208,6 +206,7 @@
 	Unknown194_PossiblyScrollingRelated = $0194				; $0194
 	Unknown195_PossiblyScrollingRelated = $0195				; $0195
 	RemainingLaurelPower = $0197			; $0197
+
 	ObjectCurrentPose1 = $0300				; $0300
 	ObjectPaletteIndex = $0312				; $0312
 	ObjectScreenYCoord = $0324				; $0324

@@ -478,56 +478,56 @@ SoundData5C_EndingSong_ch5:
 	.byte $11,$11,$11,$A1,$11,$11,$11,$FE,$02,$D9,$B7,$DA,$B7,$B0,$FF
 ; -----------------------------------------------------------------------------
 
-SoundEffectTable:
-	.word (SoundEffectTable_0B9A) ;8B9A (B9A) ()
-	.word (SoundEffectTable_0BA0) ;8BA0 (BA0) ()
-	.word (SoundEffectTable_0BA6) ;8BA6 (BA6) ()
-	.word (SoundEffectTable_0BAF) ;8BAF (BAF) ()
-	.word (SoundEffectTable_0BB3) ;8BB3 (BB3) ()
-	.word (SoundEffectTable_0BBB) ;8BBB (BBB) ()
-	.word (SoundEffectTable_0BC2) ;8BC2 (BC2) ()
-	.word (SoundEffectTable_0BC7) ;8BC7 (BC7) ()
-	.word (SoundEffectTable_0BD1) ;8BD1 (BD1) ()
-	.word (SoundEffectTable_0BDC) ;8BDC (BDC) ()
-	.word (SoundEffectTable_0BE1) ;8BE1 (BE1) ()
-	.word (SoundEffectTable_0BEB) ;8BEB (BEB) ()
-	.word (SoundEffectTable_0BF3) ;8BF3 (BF3) ()
-	.word (SoundEffectTable_0BFA) ;8BFA (BFA) ()
-	.word (SoundEffectTable_0C02) ;8C02 (C02) ()
-	.word (SoundEffectTable_0C08) ;8C08 (C08) ()
-	.word (SoundEffectTable_0C0E) ;8C0E (C0E) ()
-	.word (SoundEffectTable_0C12) ;8C12 (C12) ()
-	.word (SoundEffectTable_0C1B) ;8C1B (C1B) ()
-	.word (SoundEffectTable_0C23) ;8C23 (C23) ()
-	.word (SoundEffectTable_0C2C) ;8C2C (C2C) ()
-	.word (SoundEffectTable_0C36) ;8C36 (C36) ()
-	.word (SoundEffectTable_0C3D) ;8C3D (C3D) ()
-	.word (SoundEffectTable_0C43) ;8C43 (C43) ()
-	.word (SoundEffectTable_0C4B) ;8C4B (C4B) ()
-	.word (SoundEffectTable_0C52) ;8C52 (C52) ()
-	.word (SoundEffectTable_0C59) ;8C59 (C59) ()
-	.word (SoundEffectTable_0C59) ;8C59 (C59) ()
-	.word (SoundEffectTable_0C5F) ;8C5F (C5F) ()
-	.word (SoundEffectTable_0C65) ;8C65 (C65) ()
-	.word (SoundEffectTable_0C71) ;8C71 (C71) ()
-	.word (SoundEffectTable_0C76) ;8C76 (C76) ()
-	.word (SoundEffectTable_0C82) ;8C82 (C82) ()
-	.word (SoundEffectTable_0C8B) ;8C8B (C8B) ()
-	.word (SoundEffectTable_0C90) ;8C90 (C90) ()
-	.word (SoundEffectTable_0C95) ;8C95 (C95) ()
-	.word (SoundEffectTable_0C9C) ;8C9C (C9C) ()
-	.word (SoundEffectTable_0CA2) ;8CA2 (CA2) ()
-	.word (SoundEffectTable_0CAD) ;8CAD (CAD) ()
-	.word (SoundEffectTable_0CB5) ;8CB5 (CB5) ()
-	.word (SoundEffectTable_0CC8) ;8CC8 (CC8) ()
+SoundEnvelopePtrs_1:
+	.word (SoundEnvelope_0B9A) ;8B9A (B9A) ()
+	.word (SoundEnvelope_0BA0) ;8BA0 (BA0) ()
+	.word (SoundEnvelope_0BA6) ;8BA6 (BA6) ()
+	.word (SoundEnvelope_0BAF) ;8BAF (BAF) ()
+	.word (SoundEnvelope_0BB3) ;8BB3 (BB3) ()
+	.word (SoundEnvelope_0BBB) ;8BBB (BBB) ()
+	.word (SoundEnvelope_0BC2) ;8BC2 (BC2) ()
+	.word (SoundEnvelope_0BC7) ;8BC7 (BC7) ()
+	.word (SoundEnvelope_0BD1) ;8BD1 (BD1) ()
+	.word (SoundEnvelope_0BDC) ;8BDC (BDC) ()
+	.word (SoundEnvelope_0BE1) ;8BE1 (BE1) ()
+	.word (SoundEnvelope_0BEB) ;8BEB (BEB) ()
+	.word (SoundEnvelope_0BF3) ;8BF3 (BF3) ()
+	.word (SoundEnvelope_0BFA) ;8BFA (BFA) ()
+	.word (SoundEnvelope_0C02) ;8C02 (C02) ()
+	.word (SoundEnvelope_0C08) ;8C08 (C08) ()
+	.word (SoundEnvelope_0C0E) ;8C0E (C0E) ()
+	.word (SoundEnvelope_0C12) ;8C12 (C12) ()
+	.word (SoundEnvelope_0C1B) ;8C1B (C1B) ()
+	.word (SoundEnvelope_0C23) ;8C23 (C23) ()
+	.word (SoundEnvelope_0C2C) ;8C2C (C2C) ()
+	.word (SoundEnvelope_0C36) ;8C36 (C36) ()
+	.word (SoundEnvelope_0C3D) ;8C3D (C3D) ()
+	.word (SoundEnvelope_0C43) ;8C43 (C43) ()
+	.word (SoundEnvelope_0C4B) ;8C4B (C4B) ()
+	.word (SoundEnvelope_0C52) ;8C52 (C52) ()
+	.word (SoundEnvelope_0C59) ;8C59 (C59) ()
+	.word (SoundEnvelope_0C59) ;8C59 (C59) ()
+	.word (SoundEnvelope_0C5F) ;8C5F (C5F) ()
+	.word (SoundEnvelope_0C65) ;8C65 (C65) ()
+	.word (SoundEnvelope_0C71) ;8C71 (C71) ()
+	.word (SoundEnvelope_0C76) ;8C76 (C76) ()
+	.word (SoundEnvelope_0C82) ;8C82 (C82) ()
+	.word (SoundEnvelope_0C8B) ;8C8B (C8B) ()
+	.word (SoundEnvelope_0C90) ;8C90 (C90) ()
+	.word (SoundEnvelope_0C95) ;8C95 (C95) ()
+	.word (SoundEnvelope_0C9C) ;8C9C (C9C) ()
+	.word (SoundEnvelope_0CA2) ;8CA2 (CA2) ()
+	.word (SoundEnvelope_0CAD) ;8CAD (CAD) ()
+	.word (SoundEnvelope_0CB5) ;8CB5 (CB5) ()
+	.word (SoundEnvelope_0CC8) ;8CC8 (CC8) ()
 
-	.word (SoundEffectRelatedTable) ;8CD0 (CD0) ()
-	.word (SoundEffectRelatedTable) ;8CD0 (CD0) ()
-	.word (SoundEffectRelatedTable) ;8CD0 (CD0) ()
-	.word (SoundEffectRelatedTable) ;8CD0 (CD0) ()
-	.word (SoundEffectRelatedTable) ;8CD0 (CD0) ()
-	.word (SoundEffectRelatedTable) ;8CD0 (CD0) ()
-	.word (SoundEffectRelatedTable) ;8CD0 (CD0) ()
+	.word (SoundEnvelopePtrs_2) ;8CD0 (CD0) ()
+	.word (SoundEnvelopePtrs_2) ;8CD0 (CD0) ()
+	.word (SoundEnvelopePtrs_2) ;8CD0 (CD0) ()
+	.word (SoundEnvelopePtrs_2) ;8CD0 (CD0) ()
+	.word (SoundEnvelopePtrs_2) ;8CD0 (CD0) ()
+	.word (SoundEnvelopePtrs_2) ;8CD0 (CD0) ()
+	.word (SoundEnvelopePtrs_2) ;8CD0 (CD0) ()
 ; -----------------------------------------------------------------------------
 
 ; Instrument (envelopes) definitions
@@ -535,123 +535,123 @@ SoundEffectTable:
 ; FB: Loop start
 ; FE, XX: Loop end, XX = repetitions
 ; FF: End of envelope
-SoundEffectTable_0B9A:
+SoundEnvelope_0B9A:
 	.byte $14,$16,$17,$16,$F5,$FF
-SoundEffectTable_0BA0:
+SoundEnvelope_0BA0:
 	.byte $14,$15,$17,$26,$F5,$FF
-SoundEffectTable_0BA6:
+SoundEnvelope_0BA6:
 	.byte $12,$13,$14,$15,$16,$27,$16,$F5,$FF
-SoundEffectTable_0BAF:
+SoundEnvelope_0BAF:
 	.byte $19,$27,$F6,$FF
-SoundEffectTable_0BB3:
+SoundEnvelope_0BB3:
 	.byte $1D,$1B,$1A,$15,$17,$16,$F5,$FF
-SoundEffectTable_0BBB:
+SoundEnvelope_0BBB:
 	.byte $13,$15,$17,$18,$17,$F6,$FF
-SoundEffectTable_0BC2:
+SoundEnvelope_0BC2:
 	.byte $14,$45,$F4,$F3,$FF
-SoundEffectTable_0BC7:
+SoundEnvelope_0BC7:
 	.byte $18,$16,$45,$54,$23,$25,$24,$23,$25,$FF
-SoundEffectTable_0BD1:
+SoundEnvelope_0BD1:
 	.byte $17,$18,$17,$16,$35,$14,$15,$16,$27,$28,$FF
-SoundEffectTable_0BDC:
+SoundEnvelope_0BDC:
 	.byte $18,$17,$26,$B5,$FF
-SoundEffectTable_0BE1:
+SoundEnvelope_0BE1:
 	.byte $17,$19,$18,$17,$36,$44,$45,$46,$47,$FF
-SoundEffectTable_0BEB:
+SoundEnvelope_0BEB:
 	.byte $42,$43,$44,$25,$26,$25,$F4,$FF
-SoundEffectTable_0BF3:
+SoundEnvelope_0BF3:
 	.byte $17,$19,$18,$17,$15,$76,$FF
-SoundEffectTable_0BFA:
+SoundEnvelope_0BFA:
 	.byte $17,$16,$15,$13,$15,$14,$A3,$FF
-SoundEffectTable_0C02:
+SoundEnvelope_0C02:
 	.byte $15,$27,$26,$65,$F4,$FF
-SoundEffectTable_0C08:
+SoundEnvelope_0C08:
 	.byte $82,$83,$84,$85,$86,$FF
-SoundEffectTable_0C0E:
+SoundEnvelope_0C0E:
 	.byte $16,$17,$F6,$FF
-SoundEffectTable_0C12:
+SoundEnvelope_0C12:
 	.byte $14,$16,$17,$18,$12,$13,$14,$15,$FF
-SoundEffectTable_0C1B:
+SoundEnvelope_0C1B:
 	.byte $22,$23,$24,$25,$26,$45,$F4,$FF
-SoundEffectTable_0C23:
+SoundEnvelope_0C23:
 	.byte $1A,$28,$17,$16,$15,$14,$15,$F6,$FF
-SoundEffectTable_0C2C:
+SoundEnvelope_0C2C:
 	.byte $12,$13,$14,$25,$26,$27,$16,$15,$F6,$FF
-SoundEffectTable_0C36:
+SoundEnvelope_0C36:
 	.byte $1A,$18,$17,$16,$15,$A4,$FF
-SoundEffectTable_0C3D:
+SoundEnvelope_0C3D:
 	.byte $1A,$18,$17,$16,$A5,$FF
-SoundEffectTable_0C43:
+SoundEnvelope_0C43:
 	.byte $18,$27,$26,$15,$14,$85,$76,$FF
-SoundEffectTable_0C4B:
+SoundEnvelope_0C4B:
 	.byte $1A,$17,$16,$13,$35,$F4,$FF
-SoundEffectTable_0C52:
+SoundEnvelope_0C52:
 	.byte $26,$25,$24,$15,$24,$53,$FF
-SoundEffectTable_0C59:
+SoundEnvelope_0C59:
 	.byte $24,$43,$14,$23,$62,$FF
-SoundEffectTable_0C5F:
+SoundEnvelope_0C5F:
 	.byte $17,$26,$25,$26,$F7,$FF
-SoundEffectTable_0C65:
+SoundEnvelope_0C65:
 	.byte $FB,$83,$44,$85,$86,$45,$86,$45,$86,$45,$86,$FF
-SoundEffectTable_0C71:
+SoundEnvelope_0C71:
 	.byte $18,$17,$16,$F5,$FF
-SoundEffectTable_0C76:
+SoundEnvelope_0C76:
 	.byte $14,$16,$17,$F6,$F5,$F5,$F4,$F4,$F4,$F3,$F2,$FF
-SoundEffectTable_0C82:
+SoundEnvelope_0C82:
 	.byte $13,$15,$26,$11,$22,$13,$14,$25,$FF
-SoundEffectTable_0C8B:
+SoundEnvelope_0C8B:
 	.byte $11,$12,$14,$F5,$FF
-SoundEffectTable_0C90:
+SoundEnvelope_0C90:
 	.byte $31,$32,$33,$F4,$FF
-SoundEffectTable_0C95:
+SoundEnvelope_0C95:
 	.byte $13,$15,$16,$35,$23,$F4,$FF
-SoundEffectTable_0C9C:
+SoundEnvelope_0C9C:
 	.byte $15,$16,$25,$14,$F5,$FF
-SoundEffectTable_0CA2:
+SoundEnvelope_0CA2:
 	.byte $F1,$F1,$F2,$F2,$F3,$F3,$F4,$F4,$F4,$F4,$FF
-SoundEffectTable_0CAD:
+SoundEnvelope_0CAD:
 	.byte $22,$23,$24,$25,$16,$F5,$F4,$FF
-SoundEffectTable_0CB5:
+SoundEnvelope_0CB5:
 	.byte $15,$16,$18,$16,$25,$24,$F5,$F5,$F4,$F4,$F4,$F3,$F3,$F3,$F2,$F2
 	.byte $F2,$F2,$FF
-SoundEffectTable_0CC8:
+SoundEnvelope_0CC8:
 	.byte $41,$42,$43,$44,$45,$46,$F5,$FF
 ; -----------------------------------------------------------------------------
 
-SoundEffectRelatedTable:
-	.word (SoundEffectRelatedTable_0D10) ;8D10 (D10) ()
-	.word (SoundEffectRelatedTable_0D13) ;8D13 (D13) ()
-	.word (SoundEffectRelatedTable_0D24) ;8D24 (D24) ()
-	.word (SoundEffectRelatedTable_0D32) ;8D32 (D32) ()
-	.word (SoundEffectRelatedTable_0D43) ;8D43 (D43) ()
-	.word (SoundEffectRelatedTable_0D54) ;8D54 (D54) ()
-	.word (SoundEffectRelatedTable_0D6C) ;8D6C (D6C) ()
-	.word (SoundEffectRelatedTable_0D7D) ;8D7D (D7D) ()
-	.word (SoundEffectRelatedTable_0D8C) ;8D8C (D8C) ()
-	.word (SoundEffectRelatedTable_0D9A) ;8D9A (D9A) ()
-	.word (SoundEffectRelatedTable_0DA8) ;8DA8 (DA8) ()
-	.word (SoundEffectRelatedTable_0DB1) ;8DB1 (DB1) ()
-	.word (SoundEffectRelatedTable_0DC9) ;8DC9 (DC9) ()
-	.word (SoundEffectRelatedTable_0DE1) ;8DE1 (DE1) ()
-	.word (SoundEffectRelatedTable_0DEB) ;8DEB (DEB) ()
-	.word (SoundEffectRelatedTable_0DF3) ;8DF3 (DF3) ()
-	.word (SoundEffectRelatedTable_0E04) ;8E04 (E04) ()
-
-	.word (SoundEffectRelatedTable_0E15) ;8E15 (E15) ()
-	.word (SoundEffectRelatedTable_0E15) ;8E15 (E15) ()
-	.word (SoundEffectRelatedTable_0E15) ;8E15 (E15) ()
-	.word (SoundEffectRelatedTable_0E15) ;8E15 (E15) ()
-	.word (SoundEffectRelatedTable_0E15) ;8E15 (E15) ()
-	.word (SoundEffectRelatedTable_0E15) ;8E15 (E15) ()
-	.word (SoundEffectRelatedTable_0E15) ;8E15 (E15) ()
-	.word (SoundEffectRelatedTable_0E15) ;8E15 (E15) ()
-	.word (SoundEffectRelatedTable_0E15) ;8E15 (E15) ()
-	.word (SoundEffectRelatedTable_0E15) ;8E15 (E15) ()
-	.word (SoundEffectRelatedTable_0E15) ;8E15 (E15) ()
-	.word (SoundEffectRelatedTable_0E15) ;8E15 (E15) ()
-	.word (SoundEffectRelatedTable_0E15) ;8E15 (E15) ()
-	.word (SoundEffectRelatedTable_0E15) ;8E15 (E15) ()
-	.word (SoundEffectRelatedTable_0E15) ;8E15 (E15) ()
+SoundEnvelopePtrs_2:
+	.word (SoundEnvelope_0D10) ;8D10 (D10) ()
+	.word (SoundEnvelope_0D13) ;8D13 (D13) ()
+	.word (SoundEnvelope_0D24) ;8D24 (D24) ()
+	.word (SoundEnvelope_0D32) ;8D32 (D32) ()
+	.word (SoundEnvelope_0D43) ;8D43 (D43) ()
+	.word (SoundEnvelope_0D54) ;8D54 (D54) ()
+	.word (SoundEnvelope_0D6C) ;8D6C (D6C) ()
+	.word (SoundEnvelope_0D7D) ;8D7D (D7D) ()
+	.word (SoundEnvelope_0D8C) ;8D8C (D8C) ()
+	.word (SoundEnvelope_0D9A) ;8D9A (D9A) ()
+	.word (SoundEnvelope_0DA8) ;8DA8 (DA8) ()
+	.word (SoundEnvelope_0DB1) ;8DB1 (DB1) ()
+	.word (SoundEnvelope_0DC9) ;8DC9 (DC9) ()
+	.word (SoundEnvelope_0DE1) ;8DE1 (DE1) ()
+	.word (SoundEnvelope_0DEB) ;8DEB (DEB) ()
+	.word (SoundEnvelope_0DF3) ;8DF3 (DF3) ()
+	.word (SoundEnvelope_0E04) ;8E04 (E04) ()
+	.word (SoundEnvelope_0E15) ;8E15 (E15) ()
+	
+	.word (SoundEnvelope_0E15) ;8E15 (E15) ()
+	.word (SoundEnvelope_0E15) ;8E15 (E15) ()
+	.word (SoundEnvelope_0E15) ;8E15 (E15) ()
+	.word (SoundEnvelope_0E15) ;8E15 (E15) ()
+	.word (SoundEnvelope_0E15) ;8E15 (E15) ()
+	.word (SoundEnvelope_0E15) ;8E15 (E15) ()
+	.word (SoundEnvelope_0E15) ;8E15 (E15) ()
+	.word (SoundEnvelope_0E15) ;8E15 (E15) ()
+	.word (SoundEnvelope_0E15) ;8E15 (E15) ()
+	.word (SoundEnvelope_0E15) ;8E15 (E15) ()
+	.word (SoundEnvelope_0E15) ;8E15 (E15) ()
+	.word (SoundEnvelope_0E15) ;8E15 (E15) ()
+	.word (SoundEnvelope_0E15) ;8E15 (E15) ()
+	.word (SoundEnvelope_0E15) ;8E15 (E15) ()
 ; -----------------------------------------------------------------------------
 
 ; More instrument (envelopes) definitions
@@ -659,50 +659,50 @@ SoundEffectRelatedTable:
 ; FB: Loop start
 ; FE, XX: Loop end, XX = repetitions
 ; FF: End of envelope
-SoundEffectRelatedTable_0D10:
+SoundEnvelope_0D10:
 	.byte $FB,$1F,$FF
-SoundEffectRelatedTable_0D13:
+SoundEnvelope_0D13:
 	.byte $FB,$80,$FB,$20,$2F,$20,$21,$FE,$01,$FB,$20,$2E,$20,$22,$FE,$0F
 	.byte $FF
-SoundEffectRelatedTable_0D24:
+SoundEnvelope_0D24:
 	.byte $FB,$17,$15,$13,$11,$C0,$FB,$20,$2F,$20,$21,$FE,$0F,$FF
-SoundEffectRelatedTable_0D32:
+SoundEnvelope_0D32:
 	.byte $FB,$E0,$FB,$10,$2F,$20,$21,$FE,$02,$FB,$10,$2E,$20,$22,$FE,$0F
 	.byte $FF
-SoundEffectRelatedTable_0D43:
+SoundEnvelope_0D43:
 	.byte $FB,$80,$FB,$2F,$20,$21,$20,$FE,$03,$FB,$20,$2E,$20,$22,$FE,$0F
 	.byte $FF
-SoundEffectRelatedTable_0D54:
+SoundEnvelope_0D54:
 	.byte $FB,$80,$FB,$2F,$20,$21,$20,$FE,$02,$FB,$20,$2E,$20,$22,$FE,$02
 	.byte $FB,$20,$2D,$20,$23,$FE,$0F,$FF
-SoundEffectRelatedTable_0D6C:
+SoundEnvelope_0D6C:
 	.byte $FB,$70,$FB,$10,$2F,$20,$21,$FE,$02,$FB,$10,$2E,$20,$22,$FE,$0F
 	.byte $FF
-SoundEffectRelatedTable_0D7D:
+SoundEnvelope_0D7D:
 	.byte $FB,$17,$15,$13,$12,$11,$F0,$FB,$1F,$10,$11,$10,$FE,$0F,$FF
-SoundEffectRelatedTable_0D8C:
+SoundEnvelope_0D8C:
 	.byte $FB,$FB,$20,$2F,$20,$21,$20,$2E,$20,$22,$20,$FE,$0F,$FF
-SoundEffectRelatedTable_0D9A:
+SoundEnvelope_0D9A:
 	.byte $FB,$FB,$2F,$2E,$2F,$20,$2F,$2D,$2F,$21,$2F,$FE,$0F,$FF
-SoundEffectRelatedTable_0DA8:
+SoundEnvelope_0DA8:
 	.byte $FB,$FB,$20,$2F,$20,$21,$FE,$0F,$FF
-SoundEffectRelatedTable_0DB1:
+SoundEnvelope_0DB1:
 	.byte $FB,$E0,$FB,$20,$2F,$20,$21,$FE,$02,$FB,$20,$2E,$20,$22,$FE,$02
 	.byte $FB,$20,$2D,$20,$23,$FE,$0F,$FF
-SoundEffectRelatedTable_0DC9:
+SoundEnvelope_0DC9:
 	.byte $FB,$EF,$FB,$2F,$2E,$2F,$20,$FE,$02,$FB,$2F,$2D,$2F,$21,$FE,$02
 	.byte $FB,$2F,$2C,$2F,$22,$FE,$0F,$FF
-SoundEffectRelatedTable_0DE1:
+SoundEnvelope_0DE1:
 	.byte $FB,$90,$FB,$30,$3F,$30,$31,$FE,$0F,$FF
-SoundEffectRelatedTable_0DEB:
+SoundEnvelope_0DEB:
 	.byte $FB,$17,$15,$13,$12,$21,$F0,$FF
-SoundEffectRelatedTable_0DF3:
+SoundEnvelope_0DF3:
 	.byte $FB,$8F,$FB,$2F,$2E,$2F,$20,$FE,$04,$FB
 	.byte $2F,$2D,$2F,$21,$FE,$0F,$FF
-SoundEffectRelatedTable_0E04:
+SoundEnvelope_0E04:
 	.byte $FB,$80,$FB,$20,$2F,$20,$21,$FE,$04,$FB,$20,$2E,$20,$22,$FE,$0F
 	.byte $FF
-SoundEffectRelatedTable_0E15:
+SoundEnvelope_0E15:
 	.byte $FF
 ; -----------------------------------------------------------------------------
 
@@ -964,38 +964,39 @@ SoundCode_TickForSquareWaveChannel:
 
 	@96EE:
 	lda #$00
-	sta SoundEffectRelatedPtrLo
+	sta SoundEnvelopePtrLo
 	dec Sound_TabUnknown014E,x
 	bne @9703
 
-		inc Sound_TabUnknown0152,x
+		;inc Sound_TabUnknown0152,x
+		inc Sound_EnvelopeBytesRead+2,x
 
 		jsr _func_1C64
 		jsr _func_1CBB
 		jsr _func_1BB7
 
 	@9703:
-	lda Sound_EffectTableIndex,x
+	lda Sound_CurrentEnvelopeIndex_1,x
 	and #$80
 	beq @9718
 
-	lda Sound_EffectRelatedBytesRead,x
+	lda Sound_EnvelopeBytesRead,x
 	beq @9723
 
-		dec Sound_EffectRelatedBytesRead,x
+		dec Sound_EnvelopeBytesRead,x
 		inc Sound_TabUnknown0140,x
 		jmp @9723
 
 	@9718:
-	dec Sound_EffectTableResultHiNibble,x
+	dec Sound_EnvelopeValueHi,x
 	bne @9723
 
-		inc Sound_EffectRelatedBytesRead,x
+		inc Sound_EnvelopeBytesRead,x
 		jsr _func_1CC6
 
 	@9723:
 	lda Sound_CacheAPUreg0and1_twonibbles,x
-	sta SoundEffectRelatedPtrHi
+	sta SoundEnvelopePtrHi
 	lda Sound_SongPausedFlag_Channel0_square0,x
 	cmp Sound_TabUnknown013A_squarewavesonly,x
 	bcs @9744
@@ -1128,12 +1129,12 @@ Sound_TrackCommandFF_Return:
 
 	@97EC:
 	lda Sound_CurrentSongNumber_Channel0_square0,x
-	sta SoundEffectRelatedPtrLo
+	sta SoundEnvelopePtrLo
 	lda #$00
 	sta Sound_CurrentSongNumber_Channel0_square0,x
 	sta Sound_CacheAPUreg3,x
 	sta Sound_FlagsC3_Channel0_square0,x
-	lda SoundEffectRelatedPtrLo
+	lda SoundEnvelopePtrLo
 	cmp #$2F
 	bne @9807
 
@@ -1333,7 +1334,7 @@ Sound_TrackCommandD0toDF:
 		jmp SoundCode_ReadNextCommand_From_TrackPtr_y
 
 :	lda (SoundTrackPtrLo),y
-	sta Sound_EffectTableResultLoNibble,x
+	sta Sound_EnvelopeValueLo,x	; Temporarily store the whole byte here
 	cpx #$02
 	bne :+
 
@@ -1342,10 +1343,11 @@ Sound_TrackCommandD0toDF:
 
 :	and #$F0
 	sta Sound_CacheAPUreg0and1_twonibbles,x
-	lda Sound_EffectTableResultLoNibble,x
+
+	lda Sound_EnvelopeValueLo,x
 	and #$0F
 	sta Sound_TabUnknown013E,x
-	sta Sound_EffectTableResultLoNibble,x
+	sta Sound_EnvelopeValueLo,x
 
 	iny
 	cpx #$02
@@ -1355,13 +1357,13 @@ Sound_TrackCommandD0toDF:
 		jmp SoundCode_ReadNextCommand_From_TrackPtr_ypp
 
 :	lda (SoundTrackPtrLo),y
-	sta Sound_EffectTableIndex,x
+	sta Sound_CurrentEnvelopeIndex_1,x
 	and #$80	; Bit 7 flag = use low nibble for something
 	beq :+
 
 		lda (SoundTrackPtrLo),y
 		and #$0F
-		sta Sound_EffectRelatedBytesRead,x
+		sta Sound_EnvelopeBytesRead,x
 
 :	iny
 	lda (SoundTrackPtrLo),y
@@ -1395,7 +1397,7 @@ Sound_TrackCommandE0toEF:
 	jsr Sound_JumpWithParams
 _JumpPointerTable_196D:
 	.word (Sound_TrackCommandE6_savesNextByteToC9) ;999D (199D) ()
-	.word (Sound_TrackCommandE7_savesNextByteTo136) ;99A4 (19A4) ()
+	.word (Sound_TrackCommandE7_setInstrumentIdx) ;99A4 (19A4) ()
 	.word (Sound_TrackCommandE8_savesNextTwoNibblesTo138and13C) ;99AD (19AD) ()
 	.word (Sound_TrackCommandE9_savesNextByteTo134or129) ;99B3 (19B3) ()
 	.word (Sound_TrackCommandEA_savesNextByteTo131) ;99CE (19CE) ()
@@ -1432,10 +1434,12 @@ Sound_TrackCommandE6_savesNextByteToC9:
 	lda (SoundTrackPtrLo),y
 	sta Sound_ChannelTempoPossibly_Channel0_square0,x
 	bne _loc_1991
-Sound_TrackCommandE7_savesNextByteTo136:
+
+; Next byte = envelope index
+Sound_TrackCommandE7_setInstrumentIdx:
 	iny
 	lda (SoundTrackPtrLo),y
-	sta Sound_EffectTableIndex,x
+	sta Sound_CurrentEnvelopeIndex_1,x
 	jmp _loc_1991
 ;------------------------------------------
 
@@ -1451,14 +1455,16 @@ Sound_TrackCommandE9_savesNextByteTo134or129:
 	iny
 	lda (SoundTrackPtrLo),y
 	beq @99C2
+
 	bit Sound_TempPtr015C_lo
 	beq @99C8
+
 	@99C2:
 	sta Sound_TabUnknown0134,x
 	jmp _loc_1991
 
 	@99C8:
-	 sta Sound_CacheAPUreg0and1_twonibbles,x
+	sta Sound_CacheAPUreg0and1_twonibbles,x
 	jmp _loc_1991
 ;------------------------------------------
 
@@ -1482,7 +1488,7 @@ Sound_TrackCommandEB_savesNextTwoNibblesTo146and148_andNextByteTo14A:
 	sta Sound_TabUnknown0148,x
 	iny
 	lda (SoundTrackPtrLo),y
-	sta Sound_EffectRelated_Index,x
+	sta Sound_CurrentEnvelopeIndex_2,x
 	jmp _loc_1991
 ;------------------------------------------
 
@@ -1494,14 +1500,15 @@ Sound_TrackCommandECtoEF_flag_and_likeEB:
 	beq @9A00
 	bit Sound_TempPtr015C_lo
 	beq @9A06
+
 	@9A00:
 	sta Sound_TabUnknown0134,x
 	jmp @9A09
 
 	@9A06:
-	 sta Sound_CacheAPUreg0and1_twonibbles,x
+	sta Sound_CacheAPUreg0and1_twonibbles,x
 	@9A09:
-	  iny
+	iny
 	lda (SoundTrackPtrLo),y
 	and #$0F
 	sta Sound_TabUnknown0146,x
@@ -1513,12 +1520,12 @@ Sound_TrackCommandECtoEF_flag_and_likeEB:
 	sta Sound_TabUnknown0148,x
 	iny
 	lda (SoundTrackPtrLo),y
-	sta Sound_EffectRelated_Index,x
+	sta Sound_CurrentEnvelopeIndex_2,x
 	iny
 	jmp Sound_TrackCommandD0toDF
 ;------------------------------------------
 
-_loc_1A24:
+_loc_1A24_drums_play_note:
 	lda (SoundTrackPtrLo),y
 	lsr a
 	lsr a
@@ -1553,16 +1560,18 @@ Sound_TrackCommand00toCF_or_10toCF:
 	dey
 	lda (SoundTrackPtrLo),y
 	and #$0F
-	sta SoundEffectRelatedPtrLo
+	sta SoundEnvelopePtrLo
 	beq @9A6A
 
-	lda Sound_ChannelTempoPossibly_Channel0_square0,x
-	clc
-	@9A62:
-	adc Sound_ChannelTempoPossibly_Channel0_square0,x
-	dec SoundEffectRelatedPtrLo
-	bne @9A62
-	beq @9A6C
+		lda Sound_ChannelTempoPossibly_Channel0_square0,x
+		clc
+
+		@9A62:
+		adc Sound_ChannelTempoPossibly_Channel0_square0,x
+		dec SoundEnvelopePtrLo
+		bne @9A62
+
+		beq @9A6C
 
 	@9A6A:
 	lda Sound_ChannelTempoPossibly_Channel0_square0,x
@@ -1572,7 +1581,7 @@ Sound_TrackCommand00toCF_or_10toCF:
 	cpx #$05
 	bne @9A75
 
-	jmp _loc_1A24
+		jmp _loc_1A24_drums_play_note
 
 	@9A75:
 	lda (SoundTrackPtrLo),y
@@ -1612,24 +1621,24 @@ Sound_TrackCommand00toCF_or_10toCF:
 	cpx #$02
 	bne @9AEE
 
-	lda Sound_EffectTableResultLoNibble,x
+	lda Sound_EnvelopeValueLo,x
 	cmp #$81
 	bcs @9AD2
 
 	lda (SoundTrackPtrLo),y
 	and #$0F
-	sta SoundEffectRelatedPtrLo
+	sta SoundEnvelopePtrLo
 	sta Sound_PeriodTemp_Unknown9B_lo
 	beq @9AD2
 
-	lda Sound_EffectTableResultLoNibble,x
+	lda Sound_EnvelopeValueLo,x
 	clc
 	@9AC1:
-	adc Sound_EffectTableResultLoNibble,x
+	adc Sound_EnvelopeValueLo,x
 	cmp #$81
 	bcs @9ACC
 
-	dec SoundEffectRelatedPtrLo
+	dec SoundEnvelopePtrLo
 	bne @9AC1
 
 	@9ACC:
@@ -1638,7 +1647,7 @@ Sound_TrackCommand00toCF_or_10toCF:
 	jmp @9AD5
 
 	@9AD2:
-	lda Sound_EffectTableResultLoNibble,x
+	lda Sound_EnvelopeValueLo,x
 	@9AD5:
 	sta Sound_PeriodTemp_Unknown9B_lo
 	lda Sound_FlagsC3_Channel0_square0,x
@@ -1659,66 +1668,68 @@ Sound_TrackCommand00toCF_or_10toCF:
 	@9AEE:
 	lda Sound_TabUnknown0138,x
 	and #$0F
-	sta SoundEffectRelatedPtrLo	; Counter
+	sta SoundEnvelopePtrLo	; Counter
 	beq @9B16
 
 	lda #$00
-	sta SoundEffectRelatedPtrHi	; Carry counter
+	sta SoundEnvelopePtrHi	; Carry counter
 
-	; A = Sound_SongPausedFlag_Channel0_square0,x * SoundEffectRelatedPtrLo
+	; A = Sound_SongPausedFlag_Channel0_square0,x * [$0138,x & #$0F]
 	@multiply_loop:
 	clc
 	adc Sound_SongPausedFlag_Channel0_square0,x
 	bcc @9B02
 
-		; Count Carry bits
-		inc SoundEffectRelatedPtrHi
+		; Carry value
+		inc SoundEnvelopePtrHi
 
 	@9B02:
-	dec SoundEffectRelatedPtrLo	; Count down to zero
+	dec SoundEnvelopePtrLo	; Count down to zero
 	bne @multiply_loop
 
-	sta SoundEffectRelatedPtrLo
+	sta SoundEnvelopePtrLo
 	lda #$04	; Repeat 4 times
 	sta Sound_PeriodTemp_Unknown9B_lo	; Counter
 
 	@9B0C:
-	lsr SoundEffectRelatedPtrHi
-	ror SoundEffectRelatedPtrLo
+	lsr SoundEnvelopePtrHi
+	ror SoundEnvelopePtrLo
 	dec Sound_PeriodTemp_Unknown9B_lo	; Counter
 	bne @9B0C
 
-	lda SoundEffectRelatedPtrLo
+	lda SoundEnvelopePtrLo
 	@9B16:
-	sta Sound_TabUnknown013A_squarewavesonly,x
+	sta Sound_TabUnknown013A_squarewavesonly,x	; Calculated note duration?
 
 	lda #$00
-	sta Sound_EffectRelatedBytesRead,x
-	sta Sound_EffectRelatedBytesRead_Copy,x
-	sta Sound_EffectRelatedLoopCounter,x
+	sta Sound_EnvelopeBytesRead,x
+	sta Sound_EnvelopeBytesRead_Copy,x
+	sta Sound_EnvelopeLoopCounter,x
 	sta Sound_TabUnknown0140,x
-	sta Sound_TabUnknown0152,x
-	sta Sound_TabUnknown0156,x
-	sta Sound_TabUnknown015A,x
+
+	sta Sound_EnvelopeBytesRead+2,x			; Sound_TabUnknown0152,x
+	sta Sound_EnvelopeBytesRead_Copy+2,x	; Sound_TabUnknown0156,x
+	sta Sound_EnvelopeLoopCounter+2,x		; Sound_TabUnknown015A,x
 
 	lda #$01
-	sta Sound_EffectTableResultHiNibble,x
+	sta Sound_EnvelopeValueHi,x
+
 	lda Sound_TabUnknown0148,x
 	sta Sound_TabUnknown014E,x
 
 	lda #$80
 	sta Sound_TempPtr015C_lo
 
-	lda Sound_EffectTableIndex,x
+	lda Sound_CurrentEnvelopeIndex_1,x
 	bit Sound_TempPtr015C_lo
 	bne @9B4E
 
-	jsr _func_1CC6
-	jmp @9B53
+		jsr _func_1CC6
+		jmp @9B53
 
 	@9B4E:
 	and #$0F
-	sta Sound_EffectRelatedBytesRead,x
+	sta Sound_EnvelopeBytesRead,x
 
 	@9B53:
 	jsr _func_1D2F
@@ -1730,19 +1741,20 @@ Sound_TrackCommand00toCF_or_10toCF:
 	_loc_1B5E:
 		jsr Sound_PokeChannelSoundRegister0_preserveAX
 
+	; Play a note
 	_loc_1B61:
-	lda (SoundTrackPtrLo),y
+	lda (SoundTrackPtrLo),y	; High nibble = note index
 	lsr a
 	lsr a
 	lsr a
 	lsr a
-	sta SoundEffectRelatedPtrLo
+	sta SoundEnvelopePtrLo
 
-	jsr _func_1C4D
+	jsr _func_1C4D	; Select octave / interval shift ?
 	clc
-	adc SoundEffectRelatedPtrLo
+	adc SoundEnvelopePtrLo
 	clc
-	adc #$0C
+	adc #$0C		; Add 12 (i.e., default octave is octave 1)
 	asl a
 	tay
 	lda SoundPeriodTable,y
@@ -1768,7 +1780,7 @@ _func_1B92:
 	sta Sound_CurrentPeriodHi,x
 	jsr _func_1CBB
 	lda #$00
-	sta SoundEffectRelatedPtrLo
+	sta SoundEnvelopePtrLo
 	cpx #$02
 	beq _9BED
 	cpx #$04
@@ -1782,12 +1794,12 @@ _func_1B92:
 		jsr _func_1C64
 
 _func_1BB7:
-	lda SoundEffectRelatedPtrLo
+	lda SoundEnvelopePtrLo
 	bmi @9BC9
 
 	lda Sound_PeriodTemp_Unknown9B_lo
 	clc
-	adc SoundEffectRelatedPtrLo
+	adc SoundEnvelopePtrLo
 	sta Sound_PeriodTemp_Unknown9B_lo
 	bcc @9BD4
 
@@ -1797,7 +1809,7 @@ _func_1BB7:
 	@9BC9:
 	lda Sound_PeriodTemp_Unknown9B_lo
 	clc
-	adc SoundEffectRelatedPtrLo
+	adc SoundEnvelopePtrLo
 	sta Sound_PeriodTemp_Unknown9B_lo
 	bcs @9BD4
 
@@ -1856,41 +1868,56 @@ _func_1C4D:
 	beq :+
 
 		and #$0F
-		sta SoundEffectRelatedPtrHi
+		sta SoundEnvelopePtrHi
 		lda #$00
 		sec
-		sbc SoundEffectRelatedPtrHi
+		sbc SoundEnvelopePtrHi
 
 :	rts
 ;------------------------------------------
 
+; Prameters:
+; X = Logical channel (0 or 1 only)
 _func_1C64:
 	lda #$00
-	sta SoundEffectRelatedPtrLo
-	lda Sound_EffectRelated_Index,x
-	asl a
-	sty Sound_TempA5
+	sta SoundEnvelopePtrLo
+
+	lda Sound_CurrentEnvelopeIndex_2,x
+	asl a	; Index a two bytes per entry table
+	
+	sty Sound_TempA5	; Preserve Y (for no reason?)
+
 	tay
-	lda SoundEffectRelatedTable,y
-	sta SoundEffectRelatedPtrLo
-	lda SoundEffectRelatedTable+1,y
-	sta SoundEffectRelatedPtrHi
-	stx Sound_TempA5
+	lda SoundEnvelopePtrs_2,y
+	sta SoundEnvelopePtrLo
+	lda SoundEnvelopePtrs_2+1,y
+	sta SoundEnvelopePtrHi
+
+	stx Sound_TempA5	; Forget Y and preserve X instead
+
+	; Logical channel + 2
+	; (Why not do two inx instead?)
 	lda #$02
 	clc
 	adc Sound_TempA5
 	tax
-	jsr Sound_EffectRelatedCommandReadNext
-	ldx Sound_TempA5
-	lda SoundEffectRelatedPtrLo
+	jsr Sound_EnvelopeCommandReadNext
+	
+	ldx Sound_TempA5	; Restore X
+
+	; Save high nibble to $14E,x
+	lda SoundEnvelopePtrLo
 	lsr a
 	lsr a
 	lsr a
 	lsr a
 	sta Sound_TabUnknown014E,x
-	lda SoundEffectRelatedPtrLo
+
+	; Keep low nibble in SoundEnvelopePtrLo
+	lda SoundEnvelopePtrLo
 	and #$0F
-	sta SoundEffectRelatedPtrLo
+	sta SoundEnvelopePtrLo
+
 	ldy Sound_TabUnknown0146,x
 	bne @9C9D
 	
@@ -1900,24 +1927,24 @@ _func_1C64:
 	@9C9D:
 	lda #$08
 	sta Sound_TempPtr015C_lo
-	lda SoundEffectRelatedPtrLo
+	lda SoundEnvelopePtrLo
 	bit Sound_TempPtr015C_lo
 	beq @9CAD
 	
 		ora #$F0
-		sta SoundEffectRelatedPtrLo
+		sta SoundEnvelopePtrLo
 
 	@9CAD:
 	dey
 	beq @9CB6
 	
 		clc
-		adc SoundEffectRelatedPtrLo
+		adc SoundEnvelopePtrLo
 		jmp @9CAD
 
 	@9CB6:
-	sta SoundEffectRelatedPtrLo
-	ldy Sound_TempA5
+	sta SoundEnvelopePtrLo
+	ldy Sound_TempA5	; Restore the wrong Y (it's actually X), probably not used
 	rts
 ;------------------------------------------
 
@@ -1931,32 +1958,32 @@ _func_1CBB:
 
 ; Reads and processes the next entry in the envelope for logical channel X.
 ; Parameters:
-; X = Logical channel index (0-5)
+; X = Logical channel index (0 or 1 only)
 _func_1CC6:
-	lda Sound_EffectTableIndex,x
+	lda Sound_CurrentEnvelopeIndex_1,x
 	asl a
 	
 	sty Sound_TempA5	; Preserve Y
 
 	; Get envelope pointer
 	tay
-	lda SoundEffectTable,y
-	sta SoundEffectRelatedPtrLo
-	lda SoundEffectTable+1,y
-	sta SoundEffectRelatedPtrHi
+	lda SoundEnvelopePtrs_1,y
+	sta SoundEnvelopePtrLo
+	lda SoundEnvelopePtrs_1+1,y
+	sta SoundEnvelopePtrHi
 
-	jsr Sound_EffectRelatedCommandReadNext
+	jsr Sound_EnvelopeCommandReadNext
 
-	lda SoundEffectRelatedPtrLo
+	lda SoundEnvelopePtrLo
 	and #$0F
-	sta Sound_EffectTableResultLoNibble,x
+	sta Sound_EnvelopeValueLo,x
 
-	lda SoundEffectRelatedPtrLo
+	lda SoundEnvelopePtrLo
 	lsr a
 	lsr a
 	lsr a
 	lsr a
-	sta Sound_EffectTableResultHiNibble,x
+	sta Sound_EnvelopeValueHi,x
 
 	; Restore Y and return
 	ldy Sound_TempA5
@@ -1969,37 +1996,37 @@ _func_1CED:
 	beq Sound_CalculateMomentaryVolume
 
 	lda #$02
-	sta SoundEffectRelatedPtrLo
+	sta SoundEnvelopePtrLo
 	lda Sound_SongPausedFlag_Channel0_square0,x
 	cmp Sound_TabUnknown013A_squarewavesonly,x
 	bcc _loc_1D1B
 
 Sound_CalculateMomentaryVolume:
-	lda Sound_EffectTableResultLoNibble,x
-	beq @9D19
+	lda Sound_EnvelopeValueLo,x
+	beq @9D19	; Branch if envelope volume is zero
 
-	sec
-	sbc Sound_TabUnknown013E,x
-	bcc @9D17
+		sec
+		sbc Sound_TabUnknown013E,x
+		bcc @9D17	; Branch on underflow
 
-	sec
-	sbc Sound_TabUnknown0140,x
-	bcc @9D17
+		sec
+		sbc Sound_TabUnknown0140,x
+		bcc @9D17	; Branch on underflow
 
-	sec
-	sbc Sound_FadeMode
-	beq @9D17
-	bcs @9D19
+		sec
+		sbc Sound_FadeMode
+		beq @9D17	; Value becomes 1 if result would be 0
+		bcs @9D19	; Otherwise, store result of subtraction
 
-	@9D17:
-	lda #$01
+		@9D17:
+		lda #$01
 
 	@9D19:
-	sta SoundEffectRelatedPtrLo
+	sta SoundEnvelopePtrLo
 
 	_loc_1D1B:
-	lda SoundEffectRelatedPtrHi
-	ora SoundEffectRelatedPtrLo
+	lda SoundEnvelopePtrHi
+	ora SoundEnvelopePtrLo
 	rts
 ;------------------------------------------
 
@@ -2010,14 +2037,14 @@ _func_1D20:
 
 		lda Sound_TabUnknown0134,x
 		and #$F0
-		sta SoundEffectRelatedPtrHi
+		sta SoundEnvelopePtrHi
 
 :	rts
 ;------------------------------------------
 
 _func_1D2F:
 	lda Sound_CacheAPUreg0and1_twonibbles,x
-	sta SoundEffectRelatedPtrHi
+	sta SoundEnvelopePtrHi
 	lda #$01
 	sta Sound_TempPtr015C_lo
 	lda Sound_TabUnknown0134,x
@@ -2025,60 +2052,61 @@ _func_1D2F:
 	beq _loc_1D1B
 
 		and #$F0
-		sta SoundEffectRelatedPtrHi
+		sta SoundEnvelopePtrHi
 
 	jmp _loc_1D1B
 ;------------------------------------------
 
 ; Parameters:
-; X = Logical channel index (0-5)
-Sound_EffectRelatedCommandReadNext:
-	ldy Sound_EffectRelatedBytesRead,x
-	lda (SoundEffectRelatedPtrLo),y
+; X = Logical channel index (0, 1 only) or index + 2 (= 2, 3)
+; SoundEnvelopePtrLo = pointer to start of current envelope for this channel
+Sound_EnvelopeCommandReadNext:
+	ldy Sound_EnvelopeBytesRead,x
+	lda (SoundEnvelopePtrLo),y
 	cmp #$FB
-	bcc Sound_EffectRelatedCommand00toFA_ReturnWithA
+	bcc Sound_EnvelopeCommand00toFA_ReturnWithA
 
 	sec
 	sbc #$FB
 	jsr Sound_JumpWithParams
 _JumpPointerTable_1D57:
-	.word (Sound_EffectRelatedCommandFBtoFD_BeginLoop) ;9D64 (1D64) ()
-	.word (Sound_EffectRelatedCommandFBtoFD_BeginLoop) ;9D64 (1D64) ()
-	.word (Sound_EffectRelatedCommandFBtoFD_BeginLoop) ;9D64 (1D64) ()
-	.word (Sound_EffectRelatedCommandFE_LoopUntil) ;9D70 (1D70) ()
-	.word (Sound_EffectRelatedCommandFF_End_ReturnWithPreviousA) ;9D8D (1D8D) ()
+	.word (Sound_EnvelopeCommandFBtoFD_BeginLoop) ;9D64 (1D64) ()
+	.word (Sound_EnvelopeCommandFBtoFD_BeginLoop) ;9D64 (1D64) ()
+	.word (Sound_EnvelopeCommandFBtoFD_BeginLoop) ;9D64 (1D64) ()
+	.word (Sound_EnvelopeCommandFE_LoopUntil) ;9D70 (1D70) ()
+	.word (Sound_EnvelopeCommandFF_End_ReturnWithPreviousA) ;9D8D (1D8D) ()
 ; -----------------------------------------
-Sound_EffectRelatedCommand00toFA_ReturnWithA:
-	sta SoundEffectRelatedPtrLo
+Sound_EnvelopeCommand00toFA_ReturnWithA:
+	sta SoundEnvelopePtrLo
 	rts
 ;------------------------------------------
 
-Sound_EffectRelatedCommandFBtoFD_BeginLoop:
-	inc Sound_EffectRelatedBytesRead,x
-	lda Sound_EffectRelatedBytesRead,x
-	sta Sound_EffectRelatedBytesRead_Copy,x
-	jmp Sound_EffectRelatedCommandReadNext
+Sound_EnvelopeCommandFBtoFD_BeginLoop:
+	inc Sound_EnvelopeBytesRead,x
+	lda Sound_EnvelopeBytesRead,x
+	sta Sound_EnvelopeBytesRead_Copy,x
+	jmp Sound_EnvelopeCommandReadNext
 ;------------------------------------------
 
-Sound_EffectRelatedCommandFE_LoopUntil:
+Sound_EnvelopeCommandFE_LoopUntil:
 	iny
-	lda (SoundEffectRelatedPtrLo),y
-	cmp Sound_EffectRelatedLoopCounter,x
-	beq @9D84
-	inc Sound_EffectRelatedLoopCounter,x
-	lda Sound_EffectRelatedBytesRead_Copy,x
-	sta Sound_EffectRelatedBytesRead,x
-	jmp Sound_EffectRelatedCommandReadNext
+	lda (SoundEnvelopePtrLo),y
+	cmp Sound_EnvelopeLoopCounter,x
+	beq :+
 
-	@9D84:
-	inc Sound_EffectRelatedBytesRead,x
-	inc Sound_EffectRelatedBytesRead,x
-	jmp Sound_EffectRelatedCommandReadNext
+		inc Sound_EnvelopeLoopCounter,x
+		lda Sound_EnvelopeBytesRead_Copy,x
+		sta Sound_EnvelopeBytesRead,x
+		jmp Sound_EnvelopeCommandReadNext
+
+:	inc Sound_EnvelopeBytesRead,x
+	inc Sound_EnvelopeBytesRead,x
+	jmp Sound_EnvelopeCommandReadNext
 ;------------------------------------------
 
-Sound_EffectRelatedCommandFF_End_ReturnWithPreviousA:
-	dec Sound_EffectRelatedBytesRead,x
-	jmp Sound_EffectRelatedCommandReadNext
+Sound_EnvelopeCommandFF_End_ReturnWithPreviousA:
+	dec Sound_EnvelopeBytesRead,x
+	jmp Sound_EnvelopeCommandReadNext
 ;------------------------------------------
 
 SoundCode_JustDoEightNOPs_28cyclesOfDelay:
@@ -2168,9 +2196,9 @@ Sound_PokeChannelSoundRegister3_preserveAX:
 ;------------------------------------------
 
 Sound_TranslateChannelToRegisterOffset_PreserveA:
-	sta SoundEffectRelatedPtrLo
+	sta SoundEnvelopePtrLo
 	jsr Sound_TranslateChannelToRegisterOffset
-	lda SoundEffectRelatedPtrLo
+	lda SoundEnvelopePtrLo
 	rts
 ;------------------------------------------
 
@@ -2190,6 +2218,8 @@ Sound_TranslateChannelToRegisterOffset:
 	rts
 ;------------------------------------------
 
+; Returns:
+; Carry set if a SFX is using channel 0, clear otherwise
 Sound_SetCarry_If_X_is_00_and_B4_is_nonzero:
 	pha
 	 cpx #$00
@@ -2229,9 +2259,9 @@ SoundCode_MuteAllChannelsButDontDisableThem:
 _loc_1E41:
 	ldx #$00
 	lda Sound_CacheAPUreg0and1_twonibbles,x
-	sta SoundEffectRelatedPtrHi
+	sta SoundEnvelopePtrHi
 	lda #$00
-	sta SoundEffectRelatedPtrLo
+	sta SoundEnvelopePtrLo
 	lda #$7F
 	sta APU_HW__4001_Reg1_SweepControl
 	jsr SoundCode_JustDoEightNOPs_28cyclesOfDelay
@@ -2251,8 +2281,8 @@ _loc_1E41:
 		jsr Sound_CalculateMomentaryVolume
 
 	@9E73:
-	lda SoundEffectRelatedPtrHi
-	ora SoundEffectRelatedPtrLo
+	lda SoundEnvelopePtrHi
+	ora SoundEnvelopePtrLo
 	jsr Sound_PokeChannelSoundRegister0_preserveAX
 	ldx Sound_CurrentLogicalChannel
 	rts
