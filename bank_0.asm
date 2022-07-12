@@ -284,6 +284,7 @@ SoundData11_SFX_ch4:
 	.byte $01,$58,$88,$A8,$FF
 SoundData12_SFX_DiamondBoundingEffect_ch3:
 	.byte $04,$70,$89,$10,$50,$02
+; Part of SFX $12, possibly referenced as result of bugged code, or unused
 SpriteConstructionData_0356:
 	.byte $70,$89,$C0,$A0,$A0,$50,$80,$A0,$60,$50,$40,$A0,$FF
 SoundData13_SFX_KnifeEffect_ch3:
@@ -957,7 +958,7 @@ SoundCode_ExecuteTickForLogicalChannelX:
 SoundCode_TickForSquareWaveChannel:
 	lda #$41
 	sta Sound_TempPtr015C_lo
-	lda Sound_FlagsC3_Channel0_square0,x
+	lda Sound_SFXFlag,x
 	bit Sound_TempPtr015C_lo
 	beq @96EE
 	bne _loc_16C9		; $96C9 -> rts
@@ -965,7 +966,7 @@ SoundCode_TickForSquareWaveChannel:
 	@96EE:
 	lda #$00
 	sta SoundEnvelopePtrLo
-	dec Sound_TabUnknown014E,x
+	dec Sound_014E_CurEnvDuration,x
 	bne @9703
 
 		;inc Sound_TabUnknown0152,x
@@ -984,7 +985,7 @@ SoundCode_TickForSquareWaveChannel:
 	beq @9723
 
 		dec Sound_EnvelopeBytesRead,x
-		inc Sound_TabUnknown0140,x
+		inc Sound_0140_ReleaseAttenuation,x
 		jmp @9723
 
 	@9718:
@@ -998,19 +999,21 @@ SoundCode_TickForSquareWaveChannel:
 	lda Sound_CacheAPUreg0and1_twonibbles,x
 	sta SoundEnvelopePtrHi
 	lda Sound_SongPausedFlag_Channel0_square0,x
-	cmp Sound_TabUnknown013A_squarewavesonly,x
+	cmp Sound_013A_CalculatedNoteDuration,x
 	bcs @9744
 
-	dec Sound_TabUnknown013C_squarewavesonly,x
+	dec Sound_013C_EnvReleaseSpeed,x
 	bne @9741
 
-		lda Sound_TabUnknown0138,x
+		; Reload initial value into $013C,x
+		lda Sound_0138_BaseNoteDuration,x
 		lsr a
 		lsr a
 		lsr a
 		lsr a
-		sta Sound_TabUnknown013C_squarewavesonly,x
-		inc Sound_TabUnknown0140,x
+		sta Sound_013C_EnvReleaseSpeed,x
+		; Increase volume attenuation?
+		inc Sound_0140_ReleaseAttenuation,x
 
 	@9741:
 	jsr _func_1D20
@@ -1060,9 +1063,9 @@ Sound_TrackCommandFBtoFC_LoopBegin:
 	jmp SoundCode_ReadNextCommand_From_TrackPtr_y
 ;------------------------------------------
 Sound_TrackCommandFD_Gosub_FollowedByGosubAddress:
-	lda Sound_FlagsC3_Channel0_square0,x
+	lda Sound_SFXFlag,x
 	ora #$02
-	sta Sound_FlagsC3_Channel0_square0,x
+	sta Sound_SFXFlag,x
 	jsr Sound_Fetch_TrackDataPointer1
 	jsr Sound_Set_ReturnPointer_From_TrackPtr_y
 	jsr Sound_Set_TrackPtr_From_TrackDataPointer1
@@ -1113,13 +1116,13 @@ Sound_TrackCommandFE_LoopEnd_FollowedByLoopCount_Or_FF_and_gotoAddress:
 ;------------------------------------------
 
 Sound_TrackCommandFF_Return:
-	lda Sound_FlagsC3_Channel0_square0,x
+	lda Sound_SFXFlag,x
 	and #$02
 	beq @97EC
 
-	lda Sound_FlagsC3_Channel0_square0,x
+	lda Sound_SFXFlag,x
 	and #$FD
-	sta Sound_FlagsC3_Channel0_square0,x
+	sta Sound_SFXFlag,x
 	lda Sound_ReturnPointerLo_Channel0_square0,x
 	sta Sound_TrackDataPointer1Lo_Channel0_square0,x
 	lda Sound_ReturnPointerHi_Channel0_square0,x
@@ -1133,7 +1136,7 @@ Sound_TrackCommandFF_Return:
 	lda #$00
 	sta Sound_CurrentSongNumber_Channel0_square0,x
 	sta Sound_CacheAPUreg3,x
-	sta Sound_FlagsC3_Channel0_square0,x
+	sta Sound_SFXFlag,x
 	lda SoundEnvelopePtrLo
 	cmp #$2F
 	bne @9807
@@ -1156,7 +1159,7 @@ Sound_TrackCommandFF_Return:
 	@9816:
 	lda #$00
 	sta Sound_CacheAPUreg3,x
-	sta Sound_FlagsC3_Channel0_square0,x
+	sta Sound_SFXFlag,x
 	cpx #$02
 	beq @9823
 
@@ -1173,7 +1176,7 @@ Sound_TrackCommandFF_Return:
 ;------------------------------------------
 
 Sound_TrackCommand00toFA:
-	lda Sound_FlagsC3_Channel0_square0,x
+	lda Sound_SFXFlag,x
 	and #$01
 	bne Sound_TrackCommand00toFA_for_NoiseChannel_maybe
 
@@ -1214,9 +1217,9 @@ Sound_TrackCommand00to0F_for_LogicalChannel0_or_1_or_3:
 	and #$F0
 	sta Sound_CacheAPUreg0and1_twonibbles,x
 	iny
-	lda Sound_FlagsC3_Channel0_square0,x
+	lda Sound_SFXFlag,x
 	ora #$08
-	sta Sound_FlagsC3_Channel0_square0,x
+	sta Sound_SFXFlag,x
 	lda (SoundTrackPtrLo),y
 	beq @9876
 
@@ -1224,9 +1227,9 @@ Sound_TrackCommand00to0F_for_LogicalChannel0_or_1_or_3:
 	bne _loc_187C
 
 	@9876:
-	lda Sound_FlagsC3_Channel0_square0,x
+	lda Sound_SFXFlag,x
 	and #$F7
-	sta Sound_FlagsC3_Channel0_square0,x
+	sta Sound_SFXFlag,x
 	_loc_187C:
 	lda (SoundTrackPtrLo),y
 	jsr Sound_SetCarry_If_X_is_00_and_B4_is_nonzero
@@ -1346,7 +1349,7 @@ Sound_TrackCommandD0toDF:
 
 	lda Sound_EnvelopeValueLo,x
 	and #$0F
-	sta Sound_TabUnknown013E,x
+	sta Sound_013E_EnvAttenuation,x
 	sta Sound_EnvelopeValueLo,x
 
 	iny
@@ -1369,21 +1372,21 @@ Sound_TrackCommandD0toDF:
 	lda (SoundTrackPtrLo),y
 
 	_loc_1946:
-	sta Sound_TabUnknown0138,x
+	sta Sound_0138_BaseNoteDuration,x
 	and #$F0
 	bne :+
 
 		; If high nibble is zero, set bit 4
-		lda Sound_TabUnknown0138,x
+		lda Sound_0138_BaseNoteDuration,x
 		ora #$10
-		sta Sound_TabUnknown0138,x
+		sta Sound_0138_BaseNoteDuration,x
 
 :	lsr a
 	lsr a
 	lsr a
 	lsr a
 	; Store high nibble here
-	sta Sound_TabUnknown013C_squarewavesonly,x
+	sta Sound_013C_EnvReleaseSpeed,x
 	jmp _loc_1991
 ;------------------------------------------
 
@@ -1415,7 +1418,7 @@ Sound_TrackCommandE0toE5_savesThisByteTo12E:
 Sound_TrackCommandF0toFA_savesLoNibbleTo13E:
 	lda (SoundTrackPtrLo),y
 	and #$0F
-	sta Sound_TabUnknown013E,x
+	sta Sound_013E_EnvAttenuation,x
 	jmp _loc_1991
 ;------------------------------------------
 
@@ -1471,7 +1474,7 @@ Sound_TrackCommandE9_savesNextByteTo134or129:
 Sound_TrackCommandEA_savesNextByteTo131:
 	iny
 	lda (SoundTrackPtrLo),y
-	sta Sound_TabUnknown0131,x
+	sta Sound_0131_IntervalShift,x
 	jmp _loc_1991
 ;------------------------------------------
 
@@ -1479,13 +1482,13 @@ Sound_TrackCommandEB_savesNextTwoNibblesTo146and148_andNextByteTo14A:
 	iny
 	lda (SoundTrackPtrLo),y
 	and #$0F
-	sta Sound_TabUnknown0146,x
+	sta Sound_0146_EnvMultiplier,x
 	lda (SoundTrackPtrLo),y
 	lsr a
 	lsr a
 	lsr a
 	lsr a
-	sta Sound_TabUnknown0148,x
+	sta Sound_0148_EnvValueDuration,x
 	iny
 	lda (SoundTrackPtrLo),y
 	sta Sound_CurrentEnvelopeIndex_2,x
@@ -1511,13 +1514,13 @@ Sound_TrackCommandECtoEF_flag_and_likeEB:
 	iny
 	lda (SoundTrackPtrLo),y
 	and #$0F
-	sta Sound_TabUnknown0146,x
+	sta Sound_0146_EnvMultiplier,x
 	lda (SoundTrackPtrLo),y
 	lsr a
 	lsr a
 	lsr a
 	lsr a
-	sta Sound_TabUnknown0148,x
+	sta Sound_0148_EnvValueDuration,x
 	iny
 	lda (SoundTrackPtrLo),y
 	sta Sound_CurrentEnvelopeIndex_2,x
@@ -1590,8 +1593,8 @@ Sound_TrackCommand00toCF_or_10toCF:
 	bne @9AA2
 
 	lda #$40
-	ora Sound_FlagsC3_Channel0_square0,x
-	sta Sound_FlagsC3_Channel0_square0,x
+	ora Sound_SFXFlag,x
+	sta Sound_SFXFlag,x
 	cpx #$02
 	beq @9A95
 
@@ -1613,10 +1616,10 @@ Sound_TrackCommand00toCF_or_10toCF:
 	jmp Sound_PokeChannelSoundRegister3_preserveAX
 
 	@9AA2:
-	lda Sound_FlagsC3_Channel0_square0,x
+	lda Sound_SFXFlag,x
 	; Clear bit 6
 	and #$BF
-	sta Sound_FlagsC3_Channel0_square0,x
+	sta Sound_SFXFlag,x
 
 	cpx #$02
 	bne @9AEE
@@ -1650,7 +1653,7 @@ Sound_TrackCommand00toCF_or_10toCF:
 	lda Sound_EnvelopeValueLo,x
 	@9AD5:
 	sta Sound_PeriodTemp_Unknown9B_lo
-	lda Sound_FlagsC3_Channel0_square0,x
+	lda Sound_SFXFlag,x
 	and #$80
 	beq @9AE9
 
@@ -1666,7 +1669,7 @@ Sound_TrackCommand00toCF_or_10toCF:
 	jmp _loc_1B5E
 
 	@9AEE:
-	lda Sound_TabUnknown0138,x
+	lda Sound_0138_BaseNoteDuration,x
 	and #$0F
 	sta SoundEnvelopePtrLo	; Counter
 	beq @9B16
@@ -1688,7 +1691,7 @@ Sound_TrackCommand00toCF_or_10toCF:
 	bne @multiply_loop
 
 	sta SoundEnvelopePtrLo
-	lda #$04	; Repeat 4 times
+	lda #$04	; Repeat 4 times (why not unroll the loop?)
 	sta Sound_PeriodTemp_Unknown9B_lo	; Counter
 
 	@9B0C:
@@ -1699,13 +1702,13 @@ Sound_TrackCommand00toCF_or_10toCF:
 
 	lda SoundEnvelopePtrLo
 	@9B16:
-	sta Sound_TabUnknown013A_squarewavesonly,x	; Calculated note duration?
+	sta Sound_013A_CalculatedNoteDuration,x	; Calculated note duration?
 
 	lda #$00
 	sta Sound_EnvelopeBytesRead,x
 	sta Sound_EnvelopeBytesRead_Copy,x
 	sta Sound_EnvelopeLoopCounter,x
-	sta Sound_TabUnknown0140,x
+	sta Sound_0140_ReleaseAttenuation,x
 
 	sta Sound_EnvelopeBytesRead+2,x			; Sound_TabUnknown0152,x
 	sta Sound_EnvelopeBytesRead_Copy+2,x	; Sound_TabUnknown0156,x
@@ -1714,8 +1717,8 @@ Sound_TrackCommand00toCF_or_10toCF:
 	lda #$01
 	sta Sound_EnvelopeValueHi,x
 
-	lda Sound_TabUnknown0148,x
-	sta Sound_TabUnknown014E,x
+	lda Sound_0148_EnvValueDuration,x
+	sta Sound_014E_CurEnvDuration,x
 
 	lda #$80
 	sta Sound_TempPtr015C_lo
@@ -1785,10 +1788,10 @@ _func_1B92:
 	beq _9BED
 	cpx #$04
 	beq _func_1BB7
-	lda Sound_FlagsC3_Channel0_square0,x
+	lda Sound_SFXFlag,x
 	and #$01
 	bne _func_1BB7
-	lda Sound_TabUnknown014E,x
+	lda Sound_014E_CurEnvDuration,x
 	bne _func_1BB7
 
 		jsr _func_1C64
@@ -1823,7 +1826,7 @@ _func_1BB7:
 	and #$10
 	beq _9BED
 
-	lda Sound_FlagsC3_Channel0_square0,x
+	lda Sound_SFXFlag,x
 	and #$08
 	bne _9BED
 	beq _9BF7
@@ -1863,7 +1866,7 @@ SoundPeriodTable2:
 _func_1C4D:
 	lda #$80
 	sta Sound_TempPtr015C_lo
-	lda Sound_TabUnknown0131,x
+	lda Sound_0131_IntervalShift,x
 	bit Sound_TempPtr015C_lo
 	beq :+
 
@@ -1911,14 +1914,14 @@ _func_1C64:
 	lsr a
 	lsr a
 	lsr a
-	sta Sound_TabUnknown014E,x
+	sta Sound_014E_CurEnvDuration,x
 
 	; Keep low nibble in SoundEnvelopePtrLo
 	lda SoundEnvelopePtrLo
 	and #$0F
 	sta SoundEnvelopePtrLo
 
-	ldy Sound_TabUnknown0146,x
+	ldy Sound_0146_EnvMultiplier,x
 	bne @9C9D
 	
 	tya
@@ -1931,6 +1934,7 @@ _func_1C64:
 	bit Sound_TempPtr015C_lo
 	beq @9CAD
 	
+		; Make it negative
 		ora #$F0
 		sta SoundEnvelopePtrLo
 
@@ -1998,7 +2002,7 @@ _func_1CED:
 	lda #$02
 	sta SoundEnvelopePtrLo
 	lda Sound_SongPausedFlag_Channel0_square0,x
-	cmp Sound_TabUnknown013A_squarewavesonly,x
+	cmp Sound_013A_CalculatedNoteDuration,x
 	bcc _loc_1D1B
 
 Sound_CalculateMomentaryVolume:
@@ -2006,11 +2010,11 @@ Sound_CalculateMomentaryVolume:
 	beq @9D19	; Branch if envelope volume is zero
 
 		sec
-		sbc Sound_TabUnknown013E,x
+		sbc Sound_013E_EnvAttenuation,x
 		bcc @9D17	; Branch on underflow
 
 		sec
-		sbc Sound_TabUnknown0140,x
+		sbc Sound_0140_ReleaseAttenuation,x
 		bcc @9D17	; Branch on underflow
 
 		sec
@@ -2060,6 +2064,8 @@ _func_1D2F:
 ; Parameters:
 ; X = Logical channel index (0, 1 only) or index + 2 (= 2, 3)
 ; SoundEnvelopePtrLo = pointer to start of current envelope for this channel
+; Returns:
+; Value of next envelope in SoundEnvelopePtrLo and A
 Sound_EnvelopeCommandReadNext:
 	ldy Sound_EnvelopeBytesRead,x
 	lda (SoundEnvelopePtrLo),y
@@ -2274,7 +2280,7 @@ _loc_1E41:
 	lda Sound_CurrentSongNumber_Channel0_square0
 	beq @9E73
 
-	lda Sound_FlagsC3_Channel0_square0
+	lda Sound_SFXFlag
 	and #$40
 	bne @9E73
 
@@ -2451,7 +2457,7 @@ Bank0TerminateSound:
 	dex
 	sta Sound_CurrentSongNumber_Channel0_square0,x
 	sta Sound_CacheAPUreg3,x
-	sta Sound_FlagsC3_Channel0_square0,x
+	sta Sound_SFXFlag,x
 	bne @mute_loop
 
 	sta Sound_FadeMode
@@ -2460,9 +2466,9 @@ Bank0TerminateSound:
 
 _func_22C2_square_channels:
 	sta Sound_TabUnknown0134,x
-	sta Sound_TabUnknown0146,x
+	sta Sound_0146_EnvMultiplier,x
 _func_22C8_triangle_channel:
-	sta Sound_TabUnknown0131,x
+	sta Sound_0131_IntervalShift,x
 	rts
 ;------------------------------------------
 
@@ -2570,17 +2576,19 @@ Sound_StartTracks:
 	beq @A361
 	
 	@A35D:
-	and #$F0
-	bne @A365
-	
+	and #$F0	; The first byte of sound effects has 0 in the high nibble
+	bne @A365	; while music usually starts with $E in the first high nibble
+
 	@A361:
 	lda #$01
 	bne @A367	; Same as jmp
 
 	@A365:
 	lda #$00
+
 	@A367:
-	sta Sound_FlagsC3_Channel0_square0,x
+	sta Sound_SFXFlag,x	; Set to 1 for SFX, 0 for music
+	
 	lda Sound_StartSong_CurrentLogicalChannel
 	tay
 	lda Sound_ChannelRegisterOffsetTable,y
