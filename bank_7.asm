@@ -570,7 +570,7 @@ PlotAction08_RunMainMenuScreen_Start_pressed:
 
 	@C3A9:
 	lda #$01
-	sta Sound_FadeMode
+	sta Sound_FadeValue
 	lda #$C0
 	sta TimeRelated2A
 	lda #$0F
@@ -3410,7 +3410,7 @@ TriggerDayNightTransition:
 	lda #$04
 	sta PlotAction05_GameLoop_WhichAction
 	lda #$01
-	sta Sound_FadeMode
+	sta Sound_FadeValue
 	pla
 	pla
 	jmp _loc_1CE11

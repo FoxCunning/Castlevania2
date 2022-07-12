@@ -1936,7 +1936,7 @@ EncodePassword_WaitForStartKey:
 	and #$10
 	beq _loc_12E01
 	lda #$01
-	sta Sound_FadeMode
+	sta Sound_FadeValue
 	lda #$C0
 	sta Password_DelayBeforeContinuing
 	inc PasswordActionState
@@ -2026,7 +2026,7 @@ DecodePassword_VerifyChecksum:
 	bcs @AED7
 	jsr DecodePassword_Decompress
 	lda #$01
-	sta Sound_FadeMode
+	sta Sound_FadeValue
 	lda #$C0
 	sta Password_DelayBeforeContinuing
 	lda #$5A

@@ -105,12 +105,13 @@
 	Temp93 = $93				; $93
 	Temp94 = $94				; $94
 	Temp95 = $95				; $95
+	Temp96 = $96				; $96
 	Temp97 = $97				; $97
 
 	SoundEnvelopePtrLo = $99			; $99
 	SoundEnvelopePtrHi = $9A			; $9A
-	Sound_PeriodTemp_Unknown9B_lo = $9B		; $9B
-	Sound_PeriodTemp_Unknown9B_hi = $9C		; $9C
+	Sound_CalcPeriod_Lo = $9B			; $9B	Calculated period value after slide/tremolo
+	Sound_CalcPeriod_Hi = $9C			; $9C	Calculated period value after slide/tremolo
 	Sound_StartSong_TrackDataPtr_Lo = $9D	; $9D
 	Sound_StartSong_TrackDataPtr_Hi = $9E	; $9E
 	SoundTrackPtrLo = $A1					; $A1
@@ -121,16 +122,21 @@
 	Sound_TempPtrA7_lo = $A7				; $A7
 	Sound_TempPtrA7_hi = $A8				; $A8
 	Sound_FadeCounter = $A9					; $A9
-	Sound_FadeMode = $AA					; $AA
+	Sound_FadeValue = $AA					; $AA
 
-	Sound_SongPausedFlag_Channel0_square0 = $AB			; $AB-$B0 one byte per logical channel
+	Sound_NoteTicksLeft_Channel0_square0 = $AB			; $AB-$B0 one byte per logical channel
 	Sound_CurrentSongNumber_Channel0_square0 = $B1		; $B1-$B2
 	Sound_CurrentSongNumber_Channel2_triangle = $B3		; $B3
 	Sound_CurrentSongNumber_Channel3_effectsquare = $B4	; $B4-$B5
 	Sound_CUrrentSongNumber_Channel5_Percussion = $B6	; $B6
 	Sound_TrackDataPointer1Lo_Channel0_square0 = $B7	; $B7-$BC
 	Sound_TrackDataPointer1Hi_Channel0_square0 = $BD	; $BD-$C2
-	Sound_SFXFlag = $C3									; $C3-$C8 one byte per logical channel: set for SFX, clear for music
+
+	; Bit 0: set if SFX, clear if Music
+	; Bit 1: ?
+	; Bit 6: Rest?
+	Sound_SoundFlags = $C3								; $C3-$C8 one byte per logical channel
+
 	Sound_ChannelTempoPossibly_Channel0_square0 = $C9	; $C9-$CE one byte per logical channel
 	Sound_ReturnPointerLo_Channel0_square0 = $CF		; $CF-$D4 one byte per logical channel
 	Sound_ReturnPointerHi_Channel0_square0 = $D5		; $D5-$DA one byte per logical channel
@@ -160,25 +166,29 @@
 	Sound_CacheAPUreg3 = $011A						; $011A
 	Sound_CacheAPUreg3_Channel2_Triangle = $011C	; $011C
 	Sound_CacheAPUreg2 = $011F						; $011F
-	Sound_EnvelopeValueLo = $0124				; $0124
+
+	Sound_Env1_Volume = $0124					; $0124-$0128	Low nibble of envelope 1 value
 	Sound_CacheAPUreg0and1_twonibbles = $0129	; $0129
-	Sound_CurrentOctavePossibly = $012E			; $012E
-	Sound_0131_IntervalShift = $0131			; $0131-$0133	Octave/interval shift? Bit 7 set = subtract
+	Sound_FreqDividerExp = $012E				; $012E-$0130	All frequencies will be divided by 2^(value)
+	
+	; Signed value to be added/subtracted from note index (all notes in the channel)
+	Sound_0131_IntervalShift = $0131			; $0131-$0133	Interval shift
+	
 	Sound_TabUnknown0134 = $0134				; $0134-$0135
 	Sound_CurrentEnvelopeIndex_1 = $0136		; $0136-$0137
 	Sound_0138_BaseNoteDuration = $0138			; $0138-$0139	Base note duration as read from song data?
 	Sound_013A_CalculatedNoteDuration = $013A	; $013A-$013B	Calculated note duration?
-	Sound_013C_EnvReleaseSpeed = $013C			; $013C-$013D	Release speed?
-	Sound_013E_EnvAttenuation = $013E			; $013E-$013F	Volume attenuation?
-	Sound_0140_ReleaseAttenuation = $0140		; $0140-$0141	Attenuation used in envelope release?
-	Sound_0146_EnvMultiplier = $0146			; $0146-$0147	Envelope value multiplier
-	Sound_0148_EnvValueDuration = $0148			; $0148-$0149	How many ticks to stay on this value
+	Sound_013C_Env1_ReleaseSpeed = $013C		; $013C-$013D	Release speed?
+	Sound_013E_Env1_Attenuation = $013E			; $013E-$013F	Volume attenuation?
+	Sound_0140_Env1_ReleaseAttenuation = $0140	; $0140-$0141	Attenuation used in envelope release?
+	Sound_0146_Env2_Multiplier = $0146			; $0146-$0147	Envelope value multiplier
+	Sound_0148_Env2_Duration = $0148			; $0148-$0149	How many ticks to stay on this value
 	Sound_CurrentEnvelopeIndex_2 = $014A		; $014A-$014B
-	Sound_EnvelopeValueHi = $014C				; $014C
-	Sound_014E_CurEnvDuration = $014E			; $014E-$014F	Current envelope value duration (ticks left for this envelope value)
+	Sound_Env1_TicksLeft = $014C				; $014C-$014D	Current envelope value duration (ticks left for this envelope value)
+	Sound_014E_Env2_CurrentDuration = $014E		; $014E-$014F	Current envelope value duration (ticks left for this envelope value)
 	Sound_EnvelopeBytesRead = $0150				; $0150-$0153
 	;Sound_TabUnknown0152 = $0152				; $0152-$0153
-	Sound_EnvelopeBytesRead_Copy = $0154		; $0154
+	Sound_EnvelopeBytesRead_Copy = $0154		; $0154-$0157
 	;Sound_TabUnknown0156 = $0156				; $0156
 	Sound_EnvelopeLoopCounter = $0158			; $0158
 	Sound_TabUnknown015A = $015A				; $015A
