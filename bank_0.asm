@@ -658,11 +658,11 @@ SoundEnvelopePtrs_2:
 ; -----------------------------------------------------------------------------
 
 ; More instrument (envelopes) definitions
-; XY: X = duration (ticks) Y = pitch shift (signed: bit 3 is sign, max value is 7)
+; XY: X = duration (ticks before value applied again) Y = pitch shift (signed: bit 3 is sign, max value is 7)
 ; FB: Loop start
 ; FE, XX: Loop end, XX = repetitions
 ; FF: End of envelope
-SoundEnvelope_0D10:	; Slow slide down?
+SoundEnvelope_0D10:	; Constant -1 pitch (if multiplier is 1)
 	.byte $FB,$1F,$FF
 SoundEnvelope_0D13:
 	.byte $FB,$80,$FB,$20,$2F,$20,$21,$FE,$01,$FB,$20,$2E,$20,$22,$FE,$0F
@@ -956,37 +956,37 @@ SoundCode_ExecuteTickForLogicalChannelX:
 	beq _loc_16C9		; $96C9 -> rts
 
 ; -------
-; Execute a tick for a "paused" channel?
+; Execute a tick for a channel to keep playing the current note
 SoundCode_TickForSquareWaveChannel:
 	lda #$41
 	sta Sound_TempPtr015C_lo
 	lda Sound_SoundFlags,x
 	bit Sound_TempPtr015C_lo
-	beq @96EE
+	beq @pitch_envelope
 	bne _loc_16C9		; $96C9 -> rts
 
-	@96EE:
+	@pitch_envelope:
 	lda #$00
 	sta SoundEnvelopePtrLo
-	dec Sound_014E_Env2_CurrentDuration,x
-	bne @9703
+	dec Sound_Env2_TicksLeft,x
+	bne @volume_envelope
 
 		;inc Sound_TabUnknown0152,x
-		inc Sound_EnvelopeBytesRead+2,x
+		inc Sound_Env2_BytesRead,x
 
 		jsr Sound_CalculatePitch_Env2
 		jsr Sound_SetCalculatedPeriod
-		jsr _func_1BB7
+		jsr _func_1BB7_apply_note_period
 
-	@9703:
+	@volume_envelope:
 	lda Sound_CurrentEnvelopeIndex_1,x
 	and #$80
 	beq @9718
 
-	lda Sound_EnvelopeBytesRead,x
+	lda Sound_Env1_BytesRead,x
 	beq @9723
 
-		dec Sound_EnvelopeBytesRead,x
+		dec Sound_Env1_BytesRead,x
 		inc Sound_0140_Env1_ReleaseAttenuation,x
 		jmp @9723
 
@@ -994,33 +994,34 @@ SoundCode_TickForSquareWaveChannel:
 	dec Sound_Env1_TicksLeft,x
 	bne @9723
 
-		inc Sound_EnvelopeBytesRead,x
+		inc Sound_Env1_BytesRead,x
 		jsr Sound_NextEnvValue_Env1
 
 	@9723:
 	lda Sound_CacheAPUreg0and1_twonibbles,x
 	sta SoundEnvelopePtrHi
 	lda Sound_NoteTicksLeft_Channel0_square0,x
-	cmp Sound_013A_CalculatedNoteDuration,x
-	bcs @9744
+	cmp Sound_NoteSustainTicks,x
+	bcs @skip_release
 
-	dec Sound_013C_Env1_ReleaseSpeed,x
-	bne @9741
+		; Ticks left < sustain = apply release
+		dec Sound_013C_Env1_ReleaseTicksLeft,x
+		bne @apply_duty
 
-		; Reload initial value into $013C,x
-		lda Sound_0138_BaseNoteDuration,x
-		lsr a
-		lsr a
-		lsr a
-		lsr a
-		sta Sound_013C_Env1_ReleaseSpeed,x
-		; Increase volume attenuation?
-		inc Sound_0140_Env1_ReleaseAttenuation,x
+			; Reload initial value into $013C,x
+			lda Sound_0138_SustainReleaseSpeed,x
+			lsr a
+			lsr a
+			lsr a
+			lsr a
+			sta Sound_013C_Env1_ReleaseTicksLeft,x
+			; Increase volume attenuation
+			inc Sound_0140_Env1_ReleaseAttenuation,x
 
-	@9741:
-	jsr _func_1D20
+		@apply_duty:
+		jsr _release_duty
 
-	@9744:
+	@skip_release:
 	jsr _calculate_volume
 
 	jsr Sound_SetCarry_If_X_is_00_and_B4_is_nonzero
@@ -1199,7 +1200,7 @@ _JumpPointerTable_1841:
 	.word (Sound_TrackCommand00to0F_for_LogicalChannel0_or_1_or_3) ;9856 (1856) ()
 	.word (Sound_TrackCommand00to0F_for_LogicalChannel4) ;9891 (1891) ()
 Sound_TrackCommand10toFA:
-	lda Sound_ChannelTempoPossibly_Channel0_square0,x
+	lda Sound_ChannelTempo_Channel0_square0,x
 	sta Sound_NoteTicksLeft_Channel0_square0,x
 	cpx #$04
 	bne Sound_TrackCommand00to0F_followedBy00_or_10toFA_for_LogicalChannelNot4
@@ -1213,7 +1214,7 @@ Sound_TrackCommand00to0F_for_LogicalChannel0_or_1_or_3:
 		jmp _989F
 
 	@985D:
-	sta Sound_ChannelTempoPossibly_Channel0_square0,x
+	sta Sound_ChannelTempo_Channel0_square0,x
 	iny
 	lda (SoundTrackPtrLo),y
 	and #$F0
@@ -1244,7 +1245,7 @@ Sound_TrackCommand00to0F_for_LogicalChannel0_or_1_or_3:
 
 Sound_TrackCommand00to0F_for_LogicalChannel2:
 	lda (SoundTrackPtrLo),y
-	sta Sound_ChannelTempoPossibly_Channel0_square0,x
+	sta Sound_ChannelTempo_Channel0_square0,x
 	iny
 	jmp _loc_187C
 ;------------------------------------------
@@ -1253,7 +1254,7 @@ Sound_TrackCommand00to0F_for_LogicalChannel4:
 	lda (SoundTrackPtrLo),y
 	beq _98C8
 
-	sta Sound_ChannelTempoPossibly_Channel0_square0,x
+	sta Sound_ChannelTempo_Channel0_square0,x
 	lda #$30
 	sta Sound_CacheAPUreg0and1_twonibbles,x
 	jmp SoundCode_ReadNextCommand_From_TrackPtr_ypp
@@ -1261,7 +1262,7 @@ Sound_TrackCommand00to0F_for_LogicalChannel4:
 	_989F:
 	 iny
 Sound_TrackCommand00to0F_followedBy00_or_10toFA_for_LogicalChannelNot4:
-	lda Sound_ChannelTempoPossibly_Channel0_square0,x
+	lda Sound_ChannelTempo_Channel0_square0,x
 	sta Sound_NoteTicksLeft_Channel0_square0,x
 	lda (SoundTrackPtrLo),y
 	lsr a
@@ -1287,7 +1288,7 @@ Sound_TrackCommand00to0F_followedBy00_or_10toFA_for_LogicalChannelNot4:
 	_98C8:
 	iny
 Sound_TrackCommand00to0F_followedBy00_or_10toFA_for_LogicalChannel4:
-	lda Sound_ChannelTempoPossibly_Channel0_square0,x
+	lda Sound_ChannelTempo_Channel0_square0,x
 	sta Sound_NoteTicksLeft_Channel0_square0,x
 	lda (SoundTrackPtrLo),y
 	lsr a
@@ -1329,7 +1330,7 @@ _JumpPointerTable_18FB:
 Sound_TrackCommandD0toDF:
 	lda (SoundTrackPtrLo),y
 	and #$0F	; Get low nibble
-	sta Sound_ChannelTempoPossibly_Channel0_square0,x
+	sta Sound_ChannelTempo_Channel0_square0,x
 
 	iny
 	cpx #$05
@@ -1368,27 +1369,27 @@ Sound_TrackCommandD0toDF:
 
 		lda (SoundTrackPtrLo),y
 		and #$0F
-		sta Sound_EnvelopeBytesRead,x
+		sta Sound_Env1_BytesRead,x
 
 :	iny
 	lda (SoundTrackPtrLo),y
 
 	_loc_1946:
-	sta Sound_0138_BaseNoteDuration,x
+	sta Sound_0138_SustainReleaseSpeed,x
 	and #$F0
 	bne :+
 
-		; If high nibble is zero, set bit 4
-		lda Sound_0138_BaseNoteDuration,x
+		; If ticks left (high nibble) would be zero, set it to 1
+		lda Sound_0138_SustainReleaseSpeed,x
 		ora #$10
-		sta Sound_0138_BaseNoteDuration,x
+		sta Sound_0138_SustainReleaseSpeed,x
 
 :	lsr a
 	lsr a
 	lsr a
 	lsr a
 	; Store high nibble here
-	sta Sound_013C_Env1_ReleaseSpeed,x
+	sta Sound_013C_Env1_ReleaseTicksLeft,x
 	jmp _process_next_track_command
 ;------------------------------------------
 
@@ -1401,8 +1402,8 @@ Sound_TrackCommandE0toEF:
 	sbc #$06
 	jsr Sound_JumpWithParams
 _JumpPointerTable_196D:
-	.word (Sound_TrackCommandE6_savesNextByteToC9) ;999D (199D) ()
-	.word (Sound_TrackCommandE7_setInstrumentIdx) ;99A4 (19A4) ()
+	.word (Sound_TrackCommandE6_setTempo) ;999D (199D) ()
+	.word (Sound_TrackCommandE7_selectVolumeEnvelope) ;99A4 (19A4) ()
 	.word (Sound_TrackCommandE8_savesNextTwoNibblesTo138and13C) ;99AD (19AD) ()
 	.word (Sound_TrackCommandE9_savesNextByteTo134or129) ;99B3 (19B3) ()
 	.word (Sound_TrackCommandEA_savesNextByteTo131) ;99CE (19CE) ()
@@ -1434,14 +1435,15 @@ _process_next_track_command:
 		jmp SoundCode_ReadNextCommand_From_TrackPtr_y
 ;------------------------------------------
 
-Sound_TrackCommandE6_savesNextByteToC9:
+; Next byte = tempo
+Sound_TrackCommandE6_setTempo:
 	iny
 	lda (SoundTrackPtrLo),y
-	sta Sound_ChannelTempoPossibly_Channel0_square0,x
+	sta Sound_ChannelTempo_Channel0_square0,x
 	bne _process_next_track_command
 
 ; Next byte = envelope index
-Sound_TrackCommandE7_setInstrumentIdx:
+Sound_TrackCommandE7_selectVolumeEnvelope:
 	iny
 	lda (SoundTrackPtrLo),y
 	sta Sound_CurrentEnvelopeIndex_1,x
@@ -1465,7 +1467,7 @@ Sound_TrackCommandE9_savesNextByteTo134or129:
 	beq @99C8
 
 	@99C2:
-	sta Sound_TabUnknown0134,x
+	sta Sound_0134_Env1_Flags,x
 	jmp _process_next_track_command
 
 	@99C8:
@@ -1500,29 +1502,34 @@ Sound_TrackCommandEB_savesNextTwoNibblesTo146and148_andNextByteTo14A:
 Sound_TrackCommandECtoEF_flag_and_likeEB:
 	lda #$0F
 	sta Sound_TempPtr015C_lo
+
 	iny
 	lda (SoundTrackPtrLo),y
 	beq @9A00
+
 	bit Sound_TempPtr015C_lo
 	beq @9A06
 
 	@9A00:
-	sta Sound_TabUnknown0134,x
+	sta Sound_0134_Env1_Flags,x
 	jmp @9A09
 
 	@9A06:
 	sta Sound_CacheAPUreg0and1_twonibbles,x
+
 	@9A09:
 	iny
 	lda (SoundTrackPtrLo),y
 	and #$0F
 	sta Sound_0146_Env2_Multiplier,x
+
 	lda (SoundTrackPtrLo),y
 	lsr a
 	lsr a
 	lsr a
 	lsr a
 	sta Sound_0148_Env2_Duration,x
+	
 	iny
 	lda (SoundTrackPtrLo),y
 	sta Sound_CurrentEnvelopeIndex_2,x
@@ -1569,18 +1576,18 @@ Sound_TrackCommand00toCF_or_10toCF:
 	sta SoundEnvelopePtrLo	; Used as counter
 	beq @keep_tempo
 
-		lda Sound_ChannelTempoPossibly_Channel0_square0,x
+		lda Sound_ChannelTempo_Channel0_square0,x
 		clc
 
 		@tempo_multiply:
-		adc Sound_ChannelTempoPossibly_Channel0_square0,x
+		adc Sound_ChannelTempo_Channel0_square0,x
 		dec SoundEnvelopePtrLo
 		bne @tempo_multiply
 
 		beq @set_ticks_left	; Same effect as JMP
 
 	@keep_tempo:
-	lda Sound_ChannelTempoPossibly_Channel0_square0,x
+	lda Sound_ChannelTempo_Channel0_square0,x
 
 	@set_ticks_left:
 	sta Sound_NoteTicksLeft_Channel0_square0,x
@@ -1675,15 +1682,15 @@ Sound_TrackCommand00toCF_or_10toCF:
 		jmp @poke_reg0
 
 	@square_channels_note:
-	lda Sound_0138_BaseNoteDuration,x
+	lda Sound_0138_SustainReleaseSpeed,x
 	and #$0F
 	sta SoundEnvelopePtrLo	; Counter
-	beq @set_note_duration
+	beq @set_note_sustain
 
 		lda #$00
 		sta SoundEnvelopePtrHi	; Carry counter
 
-		; A = [Ticks left * duration value (low nibble)] / 16
+		; Sustain = [Ticks left * base duration value (low nibble)] / 16
 		@multiply_loop:
 		clc
 		adc Sound_NoteTicksLeft_Channel0_square0,x
@@ -1708,25 +1715,25 @@ Sound_TrackCommand00toCF_or_10toCF:
 
 			lda SoundEnvelopePtrLo
 
-	@set_note_duration:
-	sta Sound_013A_CalculatedNoteDuration,x
-
-	; Reset/Start envelope 1
+	@set_note_sustain:
+	sta Sound_NoteSustainTicks,x
+	
+	; Reset/Start envelopes
 	lda #$00
-	sta Sound_EnvelopeBytesRead,x
-	sta Sound_EnvelopeBytesRead_Copy,x
-	sta Sound_EnvelopeLoopCounter,x
+	sta Sound_Env1_BytesRead,x
+	sta Sound_Env1_BytesRead_Copy,x
+	sta Sound_Env1_LoopCounter,x
 	sta Sound_0140_Env1_ReleaseAttenuation,x
 
-	sta Sound_EnvelopeBytesRead+2,x			; Sound_TabUnknown0152,x
-	sta Sound_EnvelopeBytesRead_Copy+2,x	; Sound_TabUnknown0156,x
-	sta Sound_EnvelopeLoopCounter+2,x		; Sound_TabUnknown015A,x
+	sta Sound_Env2_BytesRead,x
+	sta Sound_Env2_BytesRead_Copy,x
+	sta Sound_Env2_LoopCounter,x
 
 	lda #$01
 	sta Sound_Env1_TicksLeft,x
 
 	lda Sound_0148_Env2_Duration,x
-	sta Sound_014E_Env2_CurrentDuration,x
+	sta Sound_Env2_TicksLeft,x
 
 	lda #$80
 	sta Sound_TempPtr015C_lo
@@ -1739,10 +1746,10 @@ Sound_TrackCommand00toCF_or_10toCF:
 
 	@9B4E:
 	and #$0F
-	sta Sound_EnvelopeBytesRead,x
+	sta Sound_Env1_BytesRead,x
 
 	@9B53:
-	jsr _calculate_duty
+	jsr _new_note_duty
 	jsr _calculate_volume
 	; Skip register write if muted / SFX using channel 0?
 	jsr Sound_SetCarry_If_X_is_00_and_B4_is_nonzero
@@ -1796,18 +1803,21 @@ _func_1B92:
 	beq _9BED
 
 	cpx #$04
-	beq _func_1BB7
+	beq _func_1BB7_apply_note_period
 
 	lda Sound_SoundFlags,x
 	and #$01
-	bne _func_1BB7
+	bne _func_1BB7_apply_note_period
 
-	lda Sound_014E_Env2_CurrentDuration,x
-	bne _func_1BB7
+	lda Sound_Env2_TicksLeft,x
+	bne _func_1BB7_apply_note_period
 
 	jsr Sound_CalculatePitch_Env2
+;------------------------------------------
 
-_func_1BB7:
+; Applies note period modifiers from Pitch Envelope and writes the resulting
+; value to Registers 2 and 3 if needed
+_func_1BB7_apply_note_period:
 	lda SoundEnvelopePtrLo	; This is now a signed period shift value
 	bmi @9BC9
 
@@ -1933,7 +1943,7 @@ Sound_CalculatePitch_Env2:
 	lsr a
 	lsr a
 	lsr a
-	sta Sound_014E_Env2_CurrentDuration,x
+	sta Sound_Env2_TicksLeft,x
 
 	; Keep low nibble in SoundEnvelopePtrLo
 	lda SoundEnvelopePtrLo
@@ -2015,67 +2025,76 @@ Sound_NextEnvValue_Env1:
 ;------------------------------------------
 
 _calculate_volume:
-	lda Sound_TabUnknown0134,x
+	lda Sound_0134_Env1_Flags,x
 	and #$04
 	beq Sound_CalculateMomentaryVolume
 
+		; If the note is past the sustain, cut volume to 2
+		; instead of releasing gradually
 		lda #$02
 		sta SoundEnvelopePtrLo
 		lda Sound_NoteTicksLeft_Channel0_square0,x
-		cmp Sound_013A_CalculatedNoteDuration,x
+		cmp Sound_NoteSustainTicks,x
 		bcc _prepare_reg0_value
 
 ; Uses envelope, channel attenuation, release and fade to calculate an actual
 ; output volume for the active square wave channel
 Sound_CalculateMomentaryVolume:
 	lda Sound_Env1_Volume,x
-	beq @9D19	; Branch if envelope volume is zero
+	beq @set_volume	; Branch if envelope volume is zero
 
 		sec
 		sbc Sound_013E_Env1_Attenuation,x
-		bcc @9D17	; Branch on underflow
+		bcc @set_volume_to_1	; Branch on underflow
 
 		sec
 		sbc Sound_0140_Env1_ReleaseAttenuation,x
-		bcc @9D17	; Branch on underflow
+		bcc @set_volume_to_1	; Branch on underflow
 
 		sec
 		sbc Sound_FadeValue
-		beq @9D17	; Value becomes 1 if result would be 0
-		bcs @9D19	; Otherwise, store result of subtraction
+		beq @set_volume_to_1	; Value becomes 1 if result would be 0
+		bcs @set_volume			; Otherwise, store result of subtraction
 
-		@9D17:
+		@set_volume_to_1:
 		lda #$01
 
-	@9D19:
+	@set_volume:
 	sta SoundEnvelopePtrLo
 
+	; Parameters:
+	; SoundEnvelopePtrHi = high nibble (duty/flags)
+	; SoundEnvelopePtrLo = low nibble (volume)
 	_prepare_reg0_value:
 	lda SoundEnvelopePtrHi	; Duty/Flags
 	ora SoundEnvelopePtrLo	; Volume
 	rts
 ;------------------------------------------
 
-_func_1D20:
-	lda Sound_TabUnknown0134,x
+; If Env1 Flag 1 is set: SoundEnvelopePtrHi = High nibble of flags
+; Don't change the value otherwise
+_release_duty:
+	lda Sound_0134_Env1_Flags,x
 	and #$02
 	beq :+
 
 		; Take Duty value from $0134,x if bit 1 is set
-		lda Sound_TabUnknown0134,x
+		lda Sound_0134_Env1_Flags,x
 		and #$F0
 		sta SoundEnvelopePtrHi
 
 :	rts
 ;------------------------------------------
 
-_calculate_duty:
+; If Env1 Flag 0 is set: prepare Reg0 values using high nibble of flags
+; Otherwise use the previous value in CacheAPUReg0
+_new_note_duty:
 	lda Sound_CacheAPUreg0and1_twonibbles,x
 	sta SoundEnvelopePtrHi
 
 	lda #$01
 	sta Sound_TempPtr015C_lo
-	lda Sound_TabUnknown0134,x
+	lda Sound_0134_Env1_Flags,x
 	bit Sound_TempPtr015C_lo
 	beq _prepare_reg0_value
 
@@ -2092,7 +2111,7 @@ _calculate_duty:
 ; Returns:
 ; Value of next envelope in SoundEnvelopePtrLo and A
 Sound_EnvelopeCommandReadNext:
-	ldy Sound_EnvelopeBytesRead,x
+	ldy Sound_Env1_BytesRead,x
 	lda (SoundEnvelopePtrLo),y
 	cmp #$FB
 	bcc Sound_EnvelopeCommand00toFA_ReturnWithA
@@ -2113,30 +2132,30 @@ Sound_EnvelopeCommand00toFA_ReturnWithA:
 ;------------------------------------------
 
 Sound_EnvelopeCommandFBtoFD_BeginLoop:
-	inc Sound_EnvelopeBytesRead,x
-	lda Sound_EnvelopeBytesRead,x
-	sta Sound_EnvelopeBytesRead_Copy,x
+	inc Sound_Env1_BytesRead,x
+	lda Sound_Env1_BytesRead,x
+	sta Sound_Env1_BytesRead_Copy,x
 	jmp Sound_EnvelopeCommandReadNext
 ;------------------------------------------
 
 Sound_EnvelopeCommandFE_LoopUntil:
 	iny
 	lda (SoundEnvelopePtrLo),y
-	cmp Sound_EnvelopeLoopCounter,x
+	cmp Sound_Env1_LoopCounter,x
 	beq :+
 
-		inc Sound_EnvelopeLoopCounter,x
-		lda Sound_EnvelopeBytesRead_Copy,x
-		sta Sound_EnvelopeBytesRead,x
+		inc Sound_Env1_LoopCounter,x
+		lda Sound_Env1_BytesRead_Copy,x
+		sta Sound_Env1_BytesRead,x
 		jmp Sound_EnvelopeCommandReadNext
 
-:	inc Sound_EnvelopeBytesRead,x
-	inc Sound_EnvelopeBytesRead,x
+:	inc Sound_Env1_BytesRead,x
+	inc Sound_Env1_BytesRead,x
 	jmp Sound_EnvelopeCommandReadNext
 ;------------------------------------------
 
 Sound_EnvelopeCommandFF_End_ReturnWithPreviousA:
-	dec Sound_EnvelopeBytesRead,x
+	dec Sound_Env1_BytesRead,x
 	jmp Sound_EnvelopeCommandReadNext
 ;------------------------------------------
 
@@ -2503,7 +2522,7 @@ Bank0TerminateSound:
 ;------------------------------------------
 
 _func_22C2_square_channels:
-	sta Sound_TabUnknown0134,x
+	sta Sound_0134_Env1_Flags,x
 	sta Sound_0146_Env2_Multiplier,x
 _func_22C8_triangle_channel:
 	sta Sound_0131_IntervalShift,x

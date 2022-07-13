@@ -135,9 +135,15 @@
 	; Bit 0: set if SFX, clear if Music
 	; Bit 1: ?
 	; Bit 6: Rest?
-	Sound_SoundFlags = $C3								; $C3-$C8 one byte per logical channel
+	Sound_SoundFlags = $C3						; $C3-$C8 one byte per logical channel
 
-	Sound_ChannelTempoPossibly_Channel0_square0 = $C9	; $C9-$CE one byte per logical channel
+	Sound_ChannelTempo_Channel0_square0 = $C9	; $C9-$CE one byte per logical channel
+	Sound_ChannelTempo_Channel1_square1 = $CA	; $CA
+	Sound_ChannelTempo_Channel2_triangle = $CB	; $CB
+	Sound_ChannelTempo_Channel3_square0 = $CC	; $CC
+	Sound_ChannelTempo_Channel4_noise = $CD		; $CD
+	Sound_ChannelTempo_Channel5_noise = $CE		; $CE also used for percussions/DPCM
+
 	Sound_ReturnPointerLo_Channel0_square0 = $CF		; $CF-$D4 one byte per logical channel
 	Sound_ReturnPointerHi_Channel0_square0 = $D5		; $D5-$DA one byte per logical channel
 	Sound_LoopCounter_Channel0_square0 = $DB			; $DB-$E0 one byte per logical channel
@@ -174,24 +180,37 @@
 	; Signed value to be added/subtracted from note index (all notes in the channel)
 	Sound_0131_IntervalShift = $0131			; $0131-$0133	Interval shift
 	
-	Sound_TabUnknown0134 = $0134				; $0134-$0135
+	; Low nibble = flags
+	; bit 0: high nibble = duty for new notes
+	; bit 1: high nibble = duty for release
+	; bit 2: don't use release, set volume to 2 after sustain instead
+	; bit 3: unused
+	Sound_0134_Env1_Flags = $0134				; $0134-$0135
+
 	Sound_CurrentEnvelopeIndex_1 = $0136		; $0136-$0137
-	Sound_0138_BaseNoteDuration = $0138			; $0138-$0139	Base note duration as read from song data?
-	Sound_013A_CalculatedNoteDuration = $013A	; $013A-$013B	Calculated note duration?
-	Sound_013C_Env1_ReleaseSpeed = $013C		; $013C-$013D	Release speed?
-	Sound_013E_Env1_Attenuation = $013E			; $013E-$013F	Volume attenuation?
-	Sound_0140_Env1_ReleaseAttenuation = $0140	; $0140-$0141	Attenuation used in envelope release?
-	Sound_0146_Env2_Multiplier = $0146			; $0146-$0147	Envelope value multiplier
-	Sound_0148_Env2_Duration = $0148			; $0148-$0149	How many ticks to stay on this value
+	
+	; High nibble = ticks between release attenuations
+	; Low nibble = sustain ticks multiplier
+	Sound_0138_SustainReleaseSpeed = $0138		; $0138-$0139
+
+	; How many ticks before release attenuation starts for the current note
+	; Calculated using note ticks (tempo * duration) and SustainReleaseSpeed
+	Sound_NoteSustainTicks = $013A				; $013A-$013B
+	
+	Sound_013C_Env1_ReleaseTicksLeft = $013C	; $013C-$013D	How many ticks before the next release attenuation is applied
+	Sound_013E_Env1_Attenuation = $013E			; $013E-$013F	Volume attenuation? Works as "reverse" channel volume
+	Sound_0140_Env1_ReleaseAttenuation = $0140	; $0140-$0141	Attenuation value used in envelope release
+	Sound_0146_Env2_Multiplier = $0146			; $0146-$0147	Pitch envelope value multiplier
+	Sound_0148_Env2_Duration = $0148			; $0148-$0149	How many ticks to wait before starting the pitch envelope
 	Sound_CurrentEnvelopeIndex_2 = $014A		; $014A-$014B
 	Sound_Env1_TicksLeft = $014C				; $014C-$014D	Current envelope value duration (ticks left for this envelope value)
-	Sound_014E_Env2_CurrentDuration = $014E		; $014E-$014F	Current envelope value duration (ticks left for this envelope value)
-	Sound_EnvelopeBytesRead = $0150				; $0150-$0153
-	;Sound_TabUnknown0152 = $0152				; $0152-$0153
-	Sound_EnvelopeBytesRead_Copy = $0154		; $0154-$0157
-	;Sound_TabUnknown0156 = $0156				; $0156
-	Sound_EnvelopeLoopCounter = $0158			; $0158
-	Sound_TabUnknown015A = $015A				; $015A
+	Sound_Env2_TicksLeft = $014E				; $014E-$014F	Current envelope value duration (ticks left for this envelope value)
+	Sound_Env1_BytesRead = $0150				; $0150-$0151
+	Sound_Env2_BytesRead = $0152				; $0152-$0153
+	Sound_Env1_BytesRead_Copy = $0154			; $0154-$0155
+	Sound_Env2_BytesRead_Copy = $0156			; $0156-$0157
+	Sound_Env1_LoopCounter = $0158				; $0158-$0159
+	Sound_Env2_LoopCounter = $015A				; $015A-$015B
 	Sound_TempPtr015C_lo = $015C				; $015C
 	Sound_TempPtr015C_hi = $015D				; $015D
 	Sound_CurrentLogicalChannel = $0164			; $0164
