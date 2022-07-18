@@ -1336,7 +1336,7 @@ Sound_TrackCommandD0toDF:
 	cpx #$05
 	bne :+
 
-		; Music Noise channel ignores this command
+		; Music Noise channel does not have further parameters after this command
 		jmp SoundCode_ReadNextCommand_From_TrackPtr_y
 
 :	lda (SoundTrackPtrLo),y
@@ -1344,7 +1344,7 @@ Sound_TrackCommandD0toDF:
 	cpx #$02
 	bne :+
 
-		; Triangle channel ignores this command
+		; Triangle channel don't use bytes 2 and 3 of this command
 		jmp SoundCode_ReadNextCommand_From_TrackPtr_ypp
 
 :	and #$F0
@@ -1594,7 +1594,7 @@ Sound_TrackCommand00toCF_or_10toCF:
 	cpx #$05
 	bne :+
 
-		; Percussion channel jumps out
+		; Percussion channel jumps into a specialised routine
 		jmp _loc_1A24_drums_play_note
 
 	; Non-percussion channels
@@ -1636,45 +1636,54 @@ Sound_TrackCommand00toCF_or_10toCF:
 	bne @square_channels_note
 
 		; Triangle channel note
-		lda Sound_Env1_Volume,x
+
+		lda Sound_Env1_Volume,x	; This will be used to calculate the frequency
 		cmp #$81
 		bcs @9AD2
 
+			; Env1 values < $81 for Triangle channel
 			lda (SoundTrackPtrLo),y
-			and #$0F
+			and #$0F	; Take the low nibble (tempo multiplier)
 			sta SoundEnvelopePtrLo
 			sta Sound_CalcPeriod_Lo
-			beq @9AD2
+			beq @9AD2	; If zero, use the Emv1 value as is
 
-			lda Sound_Env1_Volume,x
-			clc
+				; Do (Env1 value * Tempo multiplier) + Tempo multiplier
+				lda Sound_Env1_Volume,x
+				clc
 
-			@9AC1:
-			adc Sound_Env1_Volume,x
-			cmp #$81
-			bcs @9ACC
+				@9AC1:
+				adc Sound_Env1_Volume,x
+				cmp #$81	; Max value cap
+				bcs @9ACC
 
-			dec SoundEnvelopePtrLo
-			bne @9AC1
+				dec SoundEnvelopePtrLo
+				bne @9AC1
 
-			@9ACC:
-			clc
-			adc Sound_CalcPeriod_Lo
-			jmp @9AD5
+				@9ACC:
+				clc
+				adc Sound_CalcPeriod_Lo
+				jmp @9AD5
 
 		@9AD2:
+		; Env1 Values >= $81 for Triangle channel
 		lda Sound_Env1_Volume,x
+
 		@9AD5:
 		sta Sound_CalcPeriod_Lo
+
 		lda Sound_SoundFlags,x
 		and #$80
 		beq @9AE9
 
-		lda #$FF
-		sta Sound_CacheAPUreg3_Channel2_Triangle
-		jsr Sound_PokeChannelSoundRegister3_preserveAX
-		lda #$00
-		beq @9AEB
+			; "Mute" channel
+
+			lda #$FF	; Value for Reg 3 (length counter load and timer high)
+			sta Sound_CacheAPUreg3_Channel2_Triangle
+			jsr Sound_PokeChannelSoundRegister3_preserveAX
+
+			lda #$00	; Value for Reg 0
+			beq @9AEB	; Same as JMP
 
 		@9AE9:
 		lda Sound_CalcPeriod_Lo
@@ -1858,6 +1867,8 @@ _func_1BB7_apply_note_period:
 	@9BEA:
 	sta Sound_CacheAPUreg3,x
 
+	; Writes CalcPeriod_Lo to channel 2
+	; and, if needed, CalcPeriod_Hi to channel 3
 	_9BED:
 	lda Sound_CalcPeriod_Hi
 	jsr Sound_SetCarry_If_X_is_00_and_B4_is_nonzero
@@ -1982,6 +1993,7 @@ Sound_CalculatePitch_Env2:
 ;------------------------------------------
 
 ; Sets the calculated period to the current note period value
+; CalcPeriod_Lo/Hi = CurrentPeriodLo/Hi
 Sound_SetCalculatedPeriod:
 	lda Sound_CurrentPeriodLo,x
 	sta Sound_CalcPeriod_Lo

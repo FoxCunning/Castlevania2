@@ -135,6 +135,7 @@
 	; Bit 0: set if SFX, clear if Music
 	; Bit 1: ?
 	; Bit 6: Rest?
+	; Bit 7: Mute channel?
 	Sound_SoundFlags = $C3						; $C3-$C8 one byte per logical channel
 
 	Sound_ChannelTempo_Channel0_square0 = $C9	; $C9-$CE one byte per logical channel
