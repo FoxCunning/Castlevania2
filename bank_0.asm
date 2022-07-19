@@ -1543,27 +1543,28 @@ _loc_1A24_drums_play_note:
 	lsr a
 	lsr a
 	lsr a
-	cmp #$0C
+	cmp #$0C	; Rest
 	beq @9A46	; -> rts
 
-	tax
-	cmp #$0A
-	bne @9A3A
+		tax
+		cmp #$0A
+		bne @9A3A
 
-		lda #$03
+			; Note index 10: play the "snare" on the noise channel first
+			lda #$03
+			jsr Bank0PlayTracks
+			ldx #$0A	; Then play the DPCM snare ($5D)
+
+		@9A3A:
+		lda @drum_track_indexes,x
+		sta Sound_StartSong_LatestSongIndex
 		jsr Bank0PlayTracks
-		ldx #$0A
-
-	@9A3A:
-	lda @data_1A47_indexed,x
-	sta Sound_StartSong_LatestSongIndex
-	jsr Bank0PlayTracks
-	ldx Sound_CurrentLogicalChannel
+		ldx Sound_CurrentLogicalChannel
 
 	@9A46:
 	rts
 
-	@data_1A47_indexed:
+	@drum_track_indexes:
 	.byte $02,$02,$02,$02,$03,$03,$03,$03,$03,$04,$5D,$5E
 ; -----------------------------------------
 
