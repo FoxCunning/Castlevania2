@@ -1,5 +1,11 @@
 @ECHO OFF
 
+set extra_params=""
+
+if "%1" == "custom" (
+	set extra_params="-Dcustom_music"
+)
+
 setlocal enabledelayedexpansion
 set path=%path%;"%~dp0\tools"
 ::cls
@@ -9,8 +15,8 @@ set emulator=""
 if exist "..\..\..\Mesen\Mesen.exe" (
 	set emulator="..\..\..\Mesen\Mesen.exe"
 )
-if exist "C:\Games\NES\Mesen\Mesen.exe" (
-	set emulator="C:\Games\NES\Mesen\Mesen.exe"
+if exist "..\..\..\..\Mesen\Mesen.exe" (
+	set emulator="..\..\..\..\Mesen.exe"
 )
 
 if exist "out\Castlevania2.nes" (copy "out\Castlevania2.nes" "out\Castlevania2.backup.nes" >nul)
@@ -33,7 +39,7 @@ for %%f in (bank_*.asm) do (
 	REM echo | set /p d="!newsrc! - !errorlevel!"
 
 	REM del out\%%~nf.o >nul 2>&1
-	ca65 -U -l %%~nf.lst -g %%f -o out\%%~nf.o
+	ca65 -U %extra_params% -l %%~nf.lst -g %%f -o out\%%~nf.o
 	if !errorlevel! neq 0 goto Error
 	REM echo | set /p d="... "
 )
