@@ -207,15 +207,15 @@ AnyBankPlayTracks:
 ;------------------------------------------
 NMI_MapDesiredVROMpages:
 	lda Mapper1reg_reg0
-	sta SoundData4D_DraculaSong_ch1
+	sta $8000
 	lsr a
-	sta SoundData4D_DraculaSong_ch1
+	sta $8000
 	lsr a
-	sta SoundData4D_DraculaSong_ch1
+	sta $8000
 	lsr a
-	sta SoundData4D_DraculaSong_ch1
+	sta $8000
 	lsr a
-	sta SoundData4D_DraculaSong_ch1
+	sta $8000
 	lda Mapper1reg_reg1
 	sta $BFFF
 	lsr a
