@@ -1,6 +1,6 @@
 @ECHO OFF
 
-set extra_params=""
+set extra_params="-Dnone"
 
 if "%1" == "custom" (
 	set extra_params="-Dcustom_music"
