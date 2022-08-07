@@ -1098,7 +1098,7 @@ Sound_TrackCommandD0toDF:
 	cpx #$02
 	bne :+
 
-		; Triangle channel don't use bytes 2 and 3 of this command
+		; Triangle channel doesn't have bytes 2 and 3 for this command
 		jmp SoundCode_ReadNextCommand_From_TrackPtr_ypp
 
 :	and #$F0
