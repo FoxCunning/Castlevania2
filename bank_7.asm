@@ -8656,19 +8656,21 @@ LevelData_Screens_0_Towns_14_A:
 Sound_PCMsample5D_Config:
 	.byte $0E,$7F	;,$F3,$17
 	.byte >(Sound_PCMsample5D_Data<<2)
+	.byte $17	; Size: $170
 ; -----------------------------------------
 
 	.export Sound_PCMsample5E_Config
 Sound_PCMsample5E_Config:
 	.byte $0F,$00	;,$F0,$0B
 	.byte >(Sound_PCMsample5E_Data<<2)
+	.byte $0B	; Size: $0B0
 ; -----------------------------------------
 
 	.export Sound_PCMsample5F_Config_DamageOuchSoundMaybe
 Sound_PCMsample5F_Config_DamageOuchSoundMaybe:
 	.byte $0F,$00	;,$F9,$0A
 	.byte >(Sound_PCMsample5F_Data<<2)
-	.byte $0A
+	.byte $0A	; Size: $0A0
 ; -----------------------------------------
 	
 	.byte $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
@@ -8692,7 +8694,7 @@ Sound_PCMsample5E_Data:
 	.byte $A5,$54,$A9,$54,$AA,$95,$2A,$AA,$94,$95,$2A,$AA,$55,$55,$2A,$56
 	.byte $66,$AA,$9A,$AA,$B5,$5A,$AD,$AB,$5A,$B5,$6B,$6B,$6B,$5A,$B5,$AA
 	.byte $B5,$56,$AA,$D5,$55,$56,$AA,$AA,$AA,$AA,$AA,$AA,$AA,$95,$55,$55
-	
+	; Padding to align data of next sample
 	.byte $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
 
 Sound_PCMsample5D_Data:
@@ -8721,7 +8723,7 @@ Sound_PCMsample5D_Data:
 	.byte $8B,$55,$A6,$A6,$AA,$3C,$5A,$39,$38,$B9,$54,$AA,$95,$AA,$65,$5A
 	.byte $9C,$C7,$59,$B2,$AE,$D4,$B1,$D4,$63,$C5,$34,$6A,$65,$69,$65,$4C
 	.byte $E3,$54,$D6,$33,$4D,$71,$92,$EA,$9A,$AB,$56,$55,$5A
-	
+	; Padding to align data of next sample
 	.byte $FF,$FF,$FF
 
 Sound_PCMsample5F_Data:
@@ -8736,7 +8738,7 @@ Sound_PCMsample5F_Data:
 	.byte $8C,$DA,$FF,$FF,$BF,$D6,$B5,$08,$08,$20,$29,$82,$90,$D6,$56,$25
 	.byte $A9,$A6,$DD,$FF,$FF,$AF,$DA,$35,$22,$80,$A0,$A2,$80,$A0,$5A,$A7
 	.byte $94,$4A,$5B,$FD,$FF,$FF,$CD,$7A,$8B,$02,$01,$8A,$04,$22,$88,$76
-
+	; Padding to align data of next sample
 	.byte $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
 	.byte $FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF,$FF
 
