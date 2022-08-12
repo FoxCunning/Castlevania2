@@ -700,13 +700,13 @@ SoundCode_ExecuteTickForLogicalChannelX:
 
 		jmp SoundCode_ReadNextCommand_From_TrackPtr_y
 
-:	cpx #$05	; Music noise channel paused
+:	cpx #$05	; Music noise channel tick
 	beq _loc_16C9		; $96C9 -> rts
 
-	cpx #$02	; Music triangle channel paused
+	cpx #$02	; Music triangle channel tick
 	beq _loc_16C9		; $96C9 -> rts
 
-	cpx #$04	; SFX noise channel paused
+	cpx #$04	; SFX noise channel tick
 	beq _loc_16C9		; $96C9 -> rts
 
 ; -------
@@ -1642,16 +1642,19 @@ _func_1BB7_apply_note_period:
 :	rts
 ;------------------------------------------
 
+; Note 0 = C0
 SoundPeriodTable:
 	.byte $5C
 SoundPeriodTableHi:
 	.byte $0D
-SoundPeriodTable2:
-	.word $0C9C,$0BE8,$0B3C,$0A9A,$0A02,$0972,$08EA,$086A
-	.word $07F2,$0780,$0714,$06AE,$064E,$05F4,$059E,$054D
-	.word $0501,$04B9,$0475,$0435,$03F9,$03C0,$038A,$0357
-	.word $0327,$02FA,$02CF,$02A7,$0281,$025D,$023B,$021B
-	.word $01FC,$01E0,$01C5
+	.word $0C9C,$0BE8,$0B3C,$0A9A,$0A02,$0972,$08EA
+	.word $086A,$07F2,$0780,$0714
+	; Octave 1
+	.word $06AE,$064E,$05F4,$059E,$054D,$0501,$04B9,$0475
+	.word $0435,$03F9,$03C0,$038A
+	; Octave 2
+	.word $0357,$0327,$02FA,$02CF,$02A7,$0281,$025D,$023B
+	.word $021B,$01FC,$01E0,$01C5
 ;------------------------------------------
 
 ; Returns:
