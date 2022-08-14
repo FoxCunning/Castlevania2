@@ -807,7 +807,7 @@ _JumpPointerTable_1760:
 	.word (Sound_TrackCommandFBtoFC_LoopBegin) ;976A (176A) ()
 	.word (Sound_TrackCommandFD_Gosub_FollowedByGosubAddress) ;977B (177B) ()
 	.word (Sound_TrackCommandFE_LoopEnd_FollowedByLoopCount_Or_FF_and_gotoAddress) ;978D (178D) ()
-	.word (Sound_TrackCommandFF_Return) ;97D2 (17D2) ()
+	.word (Sound_TrackCommandFF_ReturnOrSFXEnd) ;97D2 (17D2) ()
 ; -----------------------------------------
 
 Sound_TrackCommandFBtoFC_LoopBegin:
@@ -821,10 +821,15 @@ Sound_TrackCommandFBtoFC_LoopBegin:
 ;------------------------------------------
 Sound_TrackCommandFD_Gosub_FollowedByGosubAddress:
 	lda Sound_SoundFlags,x
-	ora #$02
+	ora #$02	; Set "gosub" flag
 	sta Sound_SoundFlags,x
+	
+	; Save next word as "subroutine" address
 	jsr Sound_Fetch_TrackDataPointer1
+	; Set return pointer
 	jsr Sound_Set_ReturnPointer_From_TrackPtr_y
+
+	; Move track data pointer to "subroutine" and start reading data from there
 	jsr Sound_Set_TrackPtr_From_TrackDataPointer1
 	jmp SoundCode_ReadNextCommand_From_TrackPtr_y
 ;------------------------------------------
@@ -872,45 +877,51 @@ Sound_TrackCommandFE_LoopEnd_FollowedByLoopCount_Or_FF_and_gotoAddress:
 	jmp SoundCode_ReadNextCommand_From_TrackPtr_y
 ;------------------------------------------
 
-Sound_TrackCommandFF_Return:
+Sound_TrackCommandFF_ReturnOrSFXEnd:
 	lda Sound_SoundFlags,x
 	and #$02
-	beq @97EC
+	beq @sfx_end
 
-	lda Sound_SoundFlags,x
-	and #$FD
-	sta Sound_SoundFlags,x
-	lda Sound_ReturnPointerLo_Channel0_square0,x
-	sta Sound_TrackDataPointer1Lo_Channel0_square0,x
-	lda Sound_ReturnPointerHi_Channel0_square0,x
-	sta Sound_TrackDataPointer1Hi_Channel0_square0,x
-	jsr Sound_Set_TrackPtr_From_TrackDataPointer1
-	jmp SoundCode_ReadNextCommand_From_TrackPtr_y
+		; Clear "gosub" flag
+		lda Sound_SoundFlags,x
+		and #$FD
+		sta Sound_SoundFlags,x
 
-	@97EC:
+		lda Sound_ReturnPointerLo_Channel0_square0,x
+		sta Sound_TrackDataPointer1Lo_Channel0_square0,x
+		lda Sound_ReturnPointerHi_Channel0_square0,x
+		sta Sound_TrackDataPointer1Hi_Channel0_square0,x
+		jsr Sound_Set_TrackPtr_From_TrackDataPointer1
+		jmp SoundCode_ReadNextCommand_From_TrackPtr_y
+
+	@sfx_end:
 	lda Sound_CurrentSongNumber_Channel0_square0,x
 	sta SoundEnvelopePtrLo
+
 	lda #$00
 	sta Sound_CurrentSongNumber_Channel0_square0,x
 	sta Sound_CacheAPUreg3,x
 	sta Sound_SoundFlags,x
+
 	lda SoundEnvelopePtrLo
 	cmp #$2F
-	bne @9807
+	bne :+
 
-	jsr Bank0TerminateSound
-	lda #$45
-	jmp Bank0PlayTracks
+		; Start playing the "Mansion" song as soon as SFX $2F ends?
+		jsr Bank0TerminateSound
+		lda #$45
+		jmp Bank0PlayTracks
 
-	@9807:
-	cpx #$05
+:	cpx #$05
 	beq @982B	; -> rts
+
 	cpx #$03
 	bne @9816
 
 	lda Sound_CurrentSongNumber_Channel0_square0
 	beq @9816
 
+		; Fade out pulse channels?
 		jmp _loc_1E41
 
 	@9816:
@@ -1967,6 +1978,7 @@ Sound_Set_TrackDataPointer1_From_TrackPtr_y:
 :	rts
 ;------------------------------------------
 
+; TraclDataPoiinter1 = next word read from track data
 Sound_Fetch_TrackDataPointer1:
 	iny
 	lda (SoundTrackPtrLo),y
@@ -1977,6 +1989,7 @@ Sound_Fetch_TrackDataPointer1:
 	rts
 ;------------------------------------------
 
+; ReturnPointer = current track data position + 1
 Sound_Set_ReturnPointer_From_TrackPtr_y:
 	iny
 	tya
