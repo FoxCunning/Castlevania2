@@ -1160,7 +1160,7 @@ _JumpPointerTable_196D:
 	.word (Sound_TrackCommandE7_selectVolumeEnvelope) ;99A4 (19A4) ()
 	.word (Sound_TrackCommandE8_savesNextTwoNibblesTo138and13C) ;99AD (19AD) ()
 	.word (Sound_TrackCommandE9_savesNextByteTo134or129) ;99B3 (19B3) ()
-	.word (Sound_TrackCommandEA_savesNextByteTo131) ;99CE (19CE) ()
+	.word (Sound_TrackCommandEA_setIntervalShift) ;99CE (19CE) ()
 	.word (Sound_TrackCommandEB_savesNextTwoNibblesTo146and148_andNextByteTo14A) ;99D7 (19D7) ()
 	.word (Sound_TrackCommandECtoEF_flag_and_likeEB) ;99F1 (19F1) ()
 	.word (Sound_TrackCommandECtoEF_flag_and_likeEB) ;99F1 (19F1) ()
@@ -1229,7 +1229,7 @@ Sound_TrackCommandE9_savesNextByteTo134or129:
 	jmp _process_next_track_command
 ;------------------------------------------
 
-Sound_TrackCommandEA_savesNextByteTo131:
+Sound_TrackCommandEA_setIntervalShift:
 	iny
 	lda (SoundTrackPtrLo),y
 	sta Sound_0131_IntervalShift,x
@@ -1392,16 +1392,16 @@ Sound_TrackCommand00toCF_or_10toCF:
 
 		; Triangle channel note
 
-		lda Sound_Env1_Volume,x	; This will be used to calculate the frequency
+		lda Sound_Env1_Volume,x	; This will be used to calculate the length
 		cmp #$81
-		bcs @9AD2
+		bcs @counter_halted
 
 			; Env1 values < $81 for Triangle channel
 			lda (SoundTrackPtrLo),y
 			and #$0F	; Take the low nibble (tempo multiplier)
 			sta SoundEnvelopePtrLo
 			sta Sound_CalcPeriod_Lo
-			beq @9AD2	; If zero, use the Emv1 value as is
+			beq @counter_halted	; If zero, use the Emv1 value as is
 
 				; Do (Env1 value * Tempo multiplier) + Tempo multiplier
 				lda Sound_Env1_Volume,x
@@ -1417,15 +1417,15 @@ Sound_TrackCommand00toCF_or_10toCF:
 
 				@9ACC:
 				clc
-				adc Sound_CalcPeriod_Lo
+				adc Sound_CalcPeriod_Lo	; Here used as frame counter
 				jmp @9AD5
 
-		@9AD2:
+		@counter_halted:
 		; Env1 Values >= $81 for Triangle channel
 		lda Sound_Env1_Volume,x
 
 		@9AD5:
-		sta Sound_CalcPeriod_Lo
+		sta Sound_CalcPeriod_Lo	; Here used as frame counter
 
 		lda Sound_SoundFlags,x
 		and #$80
@@ -1524,28 +1524,28 @@ Sound_TrackCommand00toCF_or_10toCF:
 
 	; Play a note
 	@read_note:
-	lda (SoundTrackPtrLo),y	; High nibble = note index (0 to B, i.e. two octaves range)
+	lda (SoundTrackPtrLo),y	; High nibble = note index (0 to B, i.e. one octave range)
 	lsr a
 	lsr a
 	lsr a
 	lsr a
-	sta SoundEnvelopePtrLo
+	sta SoundEnvelopePtrLo	; Index in period table
 
-	jsr Sound_GetNoteShift	; Select octave / interval shift ?
+	jsr Sound_GetNoteShift	; Select interval shift, if any
 	clc
 	adc SoundEnvelopePtrLo
 	clc
 	adc #$0C		; Add 12 (i.e., default octave is octave 1)
 	asl a
 	tay
-	lda SoundPeriodTable,y
+	lda SoundPeriodTable+0,y
 	sta Sound_CurrentPeriodLo,x
-	lda SoundPeriodTableHi,y
+	lda SoundPeriodTable+1,y
 	sta Sound_CurrentPeriodHi,x
 
 	; Adjust octave according to channel settings
 	ldy Sound_FreqDividerExp,x
-:	tya
+:	tya	; Why are we doing this instead of CPY?
 	cmp #$05
 	beq _func_1B92
 
@@ -1642,17 +1642,15 @@ _func_1BB7_apply_note_period:
 :	rts
 ;------------------------------------------
 
-; Note 0 = C0
+; Notes are C to B
 SoundPeriodTable:
-	.byte $5C
-SoundPeriodTableHi:
-	.byte $0D
-	.word $0C9C,$0BE8,$0B3C,$0A9A,$0A02,$0972,$08EA
+	; Base octave
+	.word $0D5C,$0C9C,$0BE8,$0B3C,$0A9A,$0A02,$0972,$08EA
 	.word $086A,$07F2,$0780,$0714
-	; Octave 1
+	; Octave + 1
 	.word $06AE,$064E,$05F4,$059E,$054D,$0501,$04B9,$0475
 	.word $0435,$03F9,$03C0,$038A
-	; Octave 2
+	; Octave + 2
 	.word $0357,$0327,$02FA,$02CF,$02A7,$0281,$025D,$023B
 	.word $021B,$01FC,$01E0,$01C5
 ;------------------------------------------
@@ -1676,7 +1674,7 @@ Sound_GetNoteShift:
 :	rts
 ;------------------------------------------
 
-; Calculates current envelope volume using Envelope_2
+; Calculates current envelope pitch using Envelope_2
 ; Prameters:
 ; X = Logical channel (0 or 1 only)
 Sound_CalculatePitch_Env2:
