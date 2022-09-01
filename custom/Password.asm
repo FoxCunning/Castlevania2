@@ -68,7 +68,29 @@ SoundData57_PasswordSong_ch2:
 	.word (@Sub_1)
 
 	; --- 16
-	.byte 
+	.byte $FD
+	.word (@Sub_2_1)
+
+	; --- 17
+	.byte $FD
+	.word (@Sub_1)
+
+	; --- 18
+	.byte $E4,$60,$60,$60	; F#2 x 3
+	.byte $A3,$C0,$A0		; A#2, rest, A#2
+	.byte $E3,$10,$10,$10	; C#3 x 3
+	.byte $62,$C0,$A0		; F#3, rest, A#3
+	.byte $E2,$10			; C#4
+
+	; --- 19
+	.byte $D7,$0F			; Legato
+
+	.byte $FB				; Loop start
+
+	.byte $E4,$72,$B2		; G2, B2
+	.byte $E3,$21,$61,$73	; D3, F#3, G3
+
+	.byte $FE,$02			; Loop x 2
 
 	; --- END
 	.byte $FE,$FF
@@ -139,6 +161,7 @@ SoundData57_PasswordSong_ch2:
 	.byte $E3				; Octave = 3
 	.byte $FB,$40,$FE,$10	; E3 x 16
 
+	@Sub_2_1:
 	; ---
 	.byte $20,$20,$10,$10	; D3, D3, C#3, C#3
 	.byte $E4,$90,$90		; A2, A2
